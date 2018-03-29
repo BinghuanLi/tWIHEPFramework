@@ -29,6 +29,7 @@
 #include "SingleTopRootAnalysis/Histogramming/Recon/HistogrammingJetAngular.hpp"
 #include "SingleTopRootAnalysis/Histogramming/Recon/HistogrammingJet.hpp"
 #include "SingleTopRootAnalysis/Histogramming/Recon/HistogrammingNPvtx.hpp"
+#include "SingleTopRootAnalysis/Histogramming/Recon/HistogrammingTagEfficiency.hpp"
 // Include cuts classes
 //#include "SingleTopRootAnalysis/Cuts/Other/CutTriangularSumDeltaPhiLepMET.hpp"
 //#include "SingleTopRootAnalysis/Cuts/Other/CutEMuOverlap.hpp"
@@ -272,7 +273,8 @@ int main(int argc, char **argv)
   // ******** Cuts and Histograms applied to all studies ********
 
   //mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, dobWeight, useLeptonSFs, usebTagReweight));
-
+ 
+  /*
   //mystudy.AddCut(new HistogrammingMuon(particlesObj,"All"));  // make the muon plots, hopefully.
   //mystudy.AddCut(new HistogrammingMuon(particlesObj,"Tight"));  // make the muon plots, hopefully.
   //mystudy.AddCut(new HistogrammingMuon(particlesObj,"Veto"));  // make the muon plots, hopefully.
@@ -333,16 +335,19 @@ int main(int argc, char **argv)
   //mystudy.AddCut(new CutLeptonMCMatchId(particlesObj));
   //mystudy.AddCut(new CutLeptonMCPromptFS(particlesObj, useMCPromptFS)); // do not add this cut for conversions 
   //mystudy.AddCut(new CutLeptonMCPromptGamma(particlesObj, useMCPromptGamma)); // only for Gamma Conversions
+ */
 
   mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, whichtrig));
 
   //mystudy.AddCut(new HistogrammingMuon(particlesObj,"Tight"));  // make the muon plots, hopefully.
-
+  /*
   mystudy.AddCut(new HistogrammingMET(particlesObj));
   mystudy.AddCut(new HistogrammingMtW(particlesObj,useInvertedIsolation));
   mystudy.AddCut(new HistogrammingJetAngular(particlesObj,useInvertedIsolation));
   mystudy.AddCut(new HistogrammingJet(particlesObj));
   mystudy.AddCut(new HistogrammingNPvtx(particlesObj));
+  */
+  mystudy.AddCut(new HistogrammingTagEfficiency(particlesObj));
   
   //mystudy.AddCut(new CutTriangularSumDeltaPhiLepMET(particlesObj));  
   //if (isemu){
@@ -359,10 +364,10 @@ int main(int argc, char **argv)
   //if (whichtrig) mystudy.AddVars(new BDTVars(true));
   //mystudy.AddVars(new BDTVars(true));
  
-  mystudy.AddVars(new HadTopVars(true));
-  mystudy.AddVars(new ttHVars(true));
+  //mystudy.AddVars(new HadTopVars(true));
+  //mystudy.AddVars(new ttHVars(true));
   
-  mystudy.AddVars(new WeightVars());
+  //mystudy.AddVars(new WeightVars());
   TFile *_skimBDTFile;
   TString NNname = mystudy.GetHistogramFileName() + "skimBDT.root" ;
   _skimBDTFile = new TFile(NNname,"RECREATE"); 

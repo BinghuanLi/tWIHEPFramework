@@ -132,7 +132,6 @@ def makeAllSystHists(nominal,systHists,region,savePost=""):
             for ignore in ignoreSystPlots:
                 if ignore in syst: doPlot = False
             if not doPlot: continue
-            # To Be Reviewed
             if "Down" in syst or "stat" in syst or "down" in syst: continue
             downSystName = syst.split("Up")[0]+"Down"
             shortenedName = syst.split("Up")[0]

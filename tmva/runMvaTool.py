@@ -29,7 +29,7 @@ if "ele" in sys.argv:
 samples = ["tW_top_nfh","tW_antitop_nfh","tChan_top","tChan_antitop","sChan","zz","zPlusJetsLowMass","zPlusJetsHighMass","wz","ww","wPlusJetsMadgraph","wPlusJetsMCatNLO","ttbar","ttbarBU"]
 if reducedttbarSet: samples = ["ttbar"]
 
-regions = ["","3j2t","2j1t","4j1t","4j2t"]
+regions = ["3j1t","3j2t","2j1t","4j1t","4j2t"]
 if reducedttbarSet: regions = [""]
 if onlySignal: regions = [""]
 
@@ -45,40 +45,55 @@ systDir = "tWSysts"+elePostfix
 #    systDir = sys.argv[2]
 if reducedttbarSet or onlySignal: systDir = ""
 
-for region in regions:
+for i in range(len(regions)):
+
+    region = regions[i]
 
     if (not os.path.isdir(outDir+region)):
-        subprocess.call("mkdir -p "+outDir+region,shell=True)
-    if (not os.path.isdir(outDir+region+"Systs/")):
-        subprocess.call("mkdir -p "+outDir+region+"Systs/",shell=True)
-    if (not os.path.isdir(outDir+region+"QCD/")):
-        subprocess.call("mkdir -p "+outDir+region+"QCD/",shell=True)
+        subprocess.call("mkdir -p "+outDir+region+"/",shell=True)
+    if (not os.path.isdir(outDir+"Systs"+region+"/")):
+        subprocess.call("mkdir -p "+outDir+"Systs"+region+"/",shell=True)
+    if (not os.path.isdir(outDir+"QCD"+region+"/")):
+        subprocess.call("mkdir -p "+outDir+"QCD"+region+"/",shell=True)
     for syst in systs:
-        if (not os.path.isdir(outDir+region+syst+"/")):
-            subprocess.call("mkdir -p "+outDir+region+syst+"/",shell=True)
+        if (not os.path.isdir(outDir+syst+region+"/")):
+            subprocess.call("mkdir -p "+outDir+syst+region+"/",shell=True)
 
 def runMvaOnce(systDir):
     
     toRun = []
 
-    for region in regions:
-
-        for sample in samples:
+    for sample in samples:
             #    continue
-            if not os.path.exists(outDir+region+"/output_"+sample+".root") or os.stat(outDir+region+"/output_"+sample+".root").st_size < 350: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+region+elePostfix+"/\\\",\\\""+outDir+region+"/\\\");\"")
-            for syst in systs:
-                if not os.path.exists(outDir+region+syst+"/output_"+sample+".root") or os.stat(outDir+region+syst+"/output_"+sample+".root").st_size < 350: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+region+syst+elePostfix+"/\\\",\\\""+outDir+region+syst+"/\\\");\"")
+        runSample = False
+        for region in regions:
+            if not os.path.exists(outDir+region+"/output_"+sample+".root") or os.stat(outDir+region+"/output_"+sample+".root").st_size < 350: runSample = True
+        if runSample: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+elePostfix+"/\\\",\\\""+outDir+"\\\");\"")
+        for syst in systs:
+            runSysts = False
+            for region in regions:
+                if not os.path.exists(outDir+syst+region+"/output_"+sample+".root") or os.stat(outDir+syst+region+"/output_"+sample+".root").st_size < 350: runSysts = True
+            if runSysts: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+syst+elePostfix+"/\\\",\\\""+outDir+syst+"\\\");\"")
 
-        for sample in samplesData:
-            #    continue
-            if not os.path.exists(outDir+region+"/output_"+sample+".root") or os.stat(outDir+region+"/output_"+sample+".root").st_size < 350: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+region+"Data"+elePostfix+"/\\\",\\\""+outDir+region+"/\\\");\"")
-            if not os.path.exists(outDir+region+"QCD/output_"+sample+".root") or os.stat(outDir+region+"QCD/output_"+sample+".root") < 350: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tWInv"+region+"Data"+elePostfix+"/\\\",\\\""+outDir+region+"QCD/\\\");\"")
+    for sample in samplesData:
+        #    continue
+        runData = False
+        for region in regions:
+            if not os.path.exists(outDir+region+"/output_"+sample+".root") or os.stat(outDir+region+"/output_"+sample+".root").st_size < 350: runData = True
+        if runData: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tWData"+elePostfix+"/\\\",\\\""+outDir+"\\\",);\"")
+        runQCD = False
+        for region in regions:
+            if not os.path.exists(outDir+"QCD"+region+"/output_"+sample+".root") or os.stat(outDir+"QCD"+region+"/output_"+sample+".root") < 350: runQCD = True
+        if runQCD: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tWInvData"+elePostfix+"/\\\",\\\""+outDir+"QCD\\\",);\"")
 
     #And do the theory uncertainties if they exist
-        if systDir:
-            for sample in os.listdir(systDir):
-                systDir = "tW{0}Systs{1}/".format(region,elePostfix)
-                if not os.path.exists(outDir+region+"Systs/output_"+sample+".root") or os.stat(outDir+region+"Systs/output_"+sample+".root").st_size < 350: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\""+systDir+"/\\\",\\\""+outDir+region+"Systs/\\\");\"")
+    if systDir:
+        for sample in os.listdir(systDir):
+            systDir = "tW{0}Systs{1}/".format("",elePostfix)
+            runSyst = False
+            for region in regions:
+                if not os.path.exists(outDir+"Systs"+region+"/output_"+sample+".root") or os.stat(outDir+"Systs"+region+"/output_"+sample+".root").st_size < 350: runSyst = False
+            if runSyst: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\""+systDir+"/\\\",\\\""+outDir+"Systs\\\","+str(i)+");\"")
 
     nFinished = 0
     nRunning = 0

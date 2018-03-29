@@ -44,32 +44,38 @@
 
 class mvaTool {
  public :
-  mvaTool();
+  mvaTool(Int_t channel = 0);
   //  ~mvaTool();
 
   void doBothTraining(TString inDir);
   void doTraining(TString inDir, bool isttbar);
   void doReading(TString sampleName, TString inDir = "tW",TString outDir = "mvaOutput/", bool isData = false);
+  void doReadingNoMVA(TString sampleName, TString inDir = "tW",TString outDir = "mvaOutput/", bool isData = false);
 
+  void setChannel(Int_t channel){_channel = channel;};
   //  void doReading();
 
  private:
 
-  //Used to loop over things
-  void processMCSample(TString sampleName,TString inDir,TString outDir, float * treevars, bool isData);
-  void loopInSample(TString dirName, TString sampleName, float* treevars, bool isData);
-  void createHists(TString sampleName);
-  void fillHists(TString sampleName, float* treevars, double mvaValue, double mvawJets, double theweight);
-  void saveHists(TFile * outFile);
-  void setbTagVars(TChain* theTree);
+  Int_t _channel; //The channel we want to read
+  std::vector<TString> regionNames;
 
-  void makeStatVariationHists(TString sampleName,TFile* outputFile);
+  //Used to loop over things
+  void processMCSample(TString sampleName,TString inDir,TString outDir, float * treevars, bool isData, bool doMVA = true);
+  void loopInSample(TString dirName, TString sampleName, float* treevars, bool isData, bool doMVA = true);
+  void createHists(TString sampleName);
+  void fillHists(TString sampleName, float* treevars, double mvaValue, double mvawJets, double theweight, float met, float mtw, int theChannel);
+  void saveHists(std::vector<TFile *> outFile);
+  void setbTagVars(TChain* theTree); 
+
+  void makeStatVariationHists(TString sampleName,std::vector<TFile*> outputFile);
 
   std::tuple<float,float> calculatebTagSyst(float,std::vector<float>);
+  std::tuple<float,float> calculatebMistagSyst(float,std::vector<float>);
 
-  std::map<TString,std::vector<TH1F*> > theHistoMap;
-  std::map<TString,std::vector<TH1F*> > bdtHistoMap;
-  std::map<TString,TH2F*> the2DHistoMap;
+  std::map<TString,std::vector<std::vector<TH1F*> > > theHistoMap;
+  std::map<TString,std::vector<std::vector<TH1F*> > > bdtHistoMap;
+  std::map<TString,std::vector<TH2F*> > the2DHistoMap;
 
   std::vector<TString > varList;
   std::vector<TString > samplelist;

@@ -12,12 +12,12 @@ taskname = "EvtSel"
 frameworkDir = "/publicfs/cms/data/TopQuark/cms13TeV/Binghuan/tWIHEPFramework/"
 executable = "bin/ttH/ttH_generic.x"
 #executable = "Wt_nVertOnly.x"
-configFile = "config/overall/ttH.MultiLeptons.EleMuSR.config"
+configFile = "config/overall/ttH.MultiLeptons.DiMuSR.config"
 invPostfix = ""
 #mcPostfix = " -MCatNLO -mc -bTagReshape -lepSFs -PileUpWgt -chargeMis -FakeRate -TriggerSFs"
 #mcPostfix = " -MCatNLO -mc -lepSFs -chargeMis -FakeRate -TriggerSFs -bTagReshape"
 mcPostfix = " -chargeMis -FakeRate"
-triggerName = "TTHLep_2Ele "
+triggerName = "TTHLep_2Mu "
 nJets = 3
 nbJets = 1
 fileListDirectory = "config/files/ttH_Mor17/"
@@ -47,12 +47,12 @@ samplesMC76=[
 #samplesMC=[
 #"TTHnobb","TTWToLNuext2","TTWToLNuext1","TTZToLLNuNu","TTZToLL_M1to10","TTJets_sinLepTbar_v1","TTJets_sinLepTbar_ext1","TTJets_sinLepT_v1","TTJets_sinLepT_ext1","TTJets_diLep_v1","TTJets_diLep_ext1","TTGToJets_ext1","WGToLNuG_ext2","TGJets_v1","WGToLNuG_ext1","ZGTo2LG","TGJets_ext1","WpWpJJ","WW_DS_To2L2Nu","WWW_4F","WWZ","WZZ","ZZZ","tZq","TTTT","tWll","amcWJets","WZTo3LNu","WWTo2L2Nu","ZZTo4L"
 #]
-samplesMC=[
-"TTHnobb","TTWToLNuext2","TTWToLNuext1","TTZToLLNuNu","TTZToLL_M1to10","TTJets_sinLepTbar_v1","TTJets_sinLepTbar_ext1","TTJets_sinLepT_v1","TTJets_sinLepT_ext1","TTJets_diLep_v1","TTJets_diLep_ext1","WpWpJJ","WW_DS_To2L2Nu","WWW_4F","WWZ","WZZ","ZZZ","tZq","TTTT","tWll","amcWJets","WZTo3LNu","WWTo2L2Nu","ZZTo4L"
-]
-#samplesMC = [
-#"TTHnobb","TTWToLNuext2","TTWToLNuext1"
+#samplesMC=[
+#"TTHnobb","TTWToLNuext2","TTWToLNuext1","TTZToLLNuNu","TTZToLL_M1to10","TTJets_sinLepTbar_v1","TTJets_sinLepTbar_ext1","TTJets_sinLepT_v1","TTJets_sinLepT_ext1","TTJets_diLep_v1","TTJets_diLep_ext1","WpWpJJ","WW_DS_To2L2Nu","WWW_4F","WWZ","WZZ","ZZZ","tZq","TTTT","tWll","amcWJets","WZTo3LNu","WWTo2L2Nu","ZZTo4L"
 #]
+samplesMC = [
+"TTHnobb","TTWToLNuext2","TTWToLNuext1"
+]
 samplesConv = [
 "TTGToJets_ext1","WGToLNuG_ext2","TGJets_v1","WGToLNuG_ext1","ZGTo2LG","TGJets_ext1"
 ]

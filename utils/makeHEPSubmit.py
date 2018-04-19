@@ -12,12 +12,12 @@ taskname = "EvtSel"
 frameworkDir = "/publicfs/cms/data/TopQuark/cms13TeV/Binghuan/tWIHEPFramework/"
 executable = "bin/ttH/ttH_generic.x"
 #executable = "Wt_nVertOnly.x"
-configFile = "config/overall/ttH.MultiLeptons.DiMuSR.config"
+configFile = "config/overall/ttH.MultiLeptons.EleMuSR.config"
 invPostfix = ""
-#mcPostfix = " -MCatNLO -mc -bTagReshape -lepSFs -PileUpWgt -chargeMis -FakeRate -TriggerSFs"
+mcPostfix = " -MCatNLO -mc -bTagReshape -lepSFs -PileUpWgt -chargeMis -FakeRate -TriggerSFs"
 #mcPostfix = " -MCatNLO -mc -lepSFs -chargeMis -FakeRate -TriggerSFs -bTagReshape"
-mcPostfix = " -chargeMis -FakeRate"
-triggerName = "TTHLep_2Mu "
+#mcPostfix = " -chargeMis -FakeRate"
+triggerName = "TTHLep_MuEle "
 nJets = 3
 nbJets = 1
 fileListDirectory = "config/files/ttH_Mor17/"
@@ -47,12 +47,12 @@ samplesMC76=[
 #samplesMC=[
 #"TTHnobb","TTWToLNuext2","TTWToLNuext1","TTZToLLNuNu","TTZToLL_M1to10","TTJets_sinLepTbar_v1","TTJets_sinLepTbar_ext1","TTJets_sinLepT_v1","TTJets_sinLepT_ext1","TTJets_diLep_v1","TTJets_diLep_ext1","TTGToJets_ext1","WGToLNuG_ext2","TGJets_v1","WGToLNuG_ext1","ZGTo2LG","TGJets_ext1","WpWpJJ","WW_DS_To2L2Nu","WWW_4F","WWZ","WZZ","ZZZ","tZq","TTTT","tWll","amcWJets","WZTo3LNu","WWTo2L2Nu","ZZTo4L"
 #]
-#samplesMC=[
-#"TTHnobb","TTWToLNuext2","TTWToLNuext1","TTZToLLNuNu","TTZToLL_M1to10","TTJets_sinLepTbar_v1","TTJets_sinLepTbar_ext1","TTJets_sinLepT_v1","TTJets_sinLepT_ext1","TTJets_diLep_v1","TTJets_diLep_ext1","WpWpJJ","WW_DS_To2L2Nu","WWW_4F","WWZ","WZZ","ZZZ","tZq","TTTT","tWll","amcWJets","WZTo3LNu","WWTo2L2Nu","ZZTo4L"
-#]
-samplesMC = [
-"TTHnobb","TTWToLNuext2","TTWToLNuext1"
+samplesMC=[
+"TTHnobb","TTWToLNuext2","TTWToLNuext1","TTZToLLNuNu","TTZToLL_M1to10","TTJets_sinLepTbar_v1","TTJets_sinLepTbar_ext1","TTJets_sinLepT_v1","TTJets_sinLepT_ext1","TTJets_diLep_v1","TTJets_diLep_ext1","WpWpJJ","WW_DS_To2L2Nu","WWW_4F","WWZ","WZZ","ZZZ","tZq","TTTT","tWll","amcWJets","WZTo3LNu","WWTo2L2Nu","ZZTo4L"
 ]
+#samplesMC = [
+#"TTHnobb","TTWToLNuext2","TTWToLNuext1"
+#]
 samplesConv = [
 "TTGToJets_ext1","WGToLNuG_ext2","TGJets_v1","WGToLNuG_ext1","ZGTo2LG","TGJets_ext1"
 ]
@@ -144,12 +144,6 @@ if "sig2" in sys.argv:
     nJets = 4
     nbJets = 1
     analysis += "4j1t"
-if triggerName == "TTHLep_MuEle ":
-    analysis += "MuEle"
-if triggerName == "TTHLep_2Ele ":
-    analysis += "2Ele"
-if triggerName == "TTHLep_2Mu ":
-    analysis += "2Mu"
 if "jesUp" in sys.argv:
     if triggerName == "TTHLep_MuEle ":
         configFile = "config/overall/ttH.MultiLeptons.EleMuJESup.config"
@@ -186,11 +180,11 @@ if "wJetsReg" in sys.argv and "ttbarReg" in sys.argv:
     print "Please only use one of ttbar and wJets -Reg! Exiting..."
     sys.exit()
 if "convs" in sys.argv:
-    mcPostfix = " -mcPromptGamma"
+    mcPostfix += " -mcPromptGamma"
     analysis += "Conv"
     sample = samplesConv
 else :
-    mcPostfix = " -mcPromptFS"
+    mcPostfix += " -mcPromptFS"
 if "data" in sys.argv:
     mcPostfix = ""
     analysis += "Data"
@@ -229,6 +223,12 @@ if "flips" in sys.argv:
     if triggerName == "TTHLep_2Ele ":
         sample = samplesDataDiEle
         configFile = "config/overall/ttH.MultiLeptons.DiEleFlips.config"
+if triggerName == "TTHLep_MuEle ":
+    analysis += "MuEle"
+if triggerName == "TTHLep_2Ele ":
+    analysis += "DiEle"
+if triggerName == "TTHLep_2Mu ":
+    analysis += "DiMu"
 if "systs" in sys.argv:
     analysis += "Systs"
     sample = samplesSyst
@@ -513,6 +513,7 @@ for k in sample:
     os.popen('mkdir -p '+workpath + sampleName + "/skims")
     os.popen('mkdir -p '+workpath + sampleName + "/logs")
 
+    ''''''''''
     if not smallerJobs:
 
         submitFileName = workpath + sampleName + "/scripts/" + sampleName + ".submit"
@@ -544,7 +545,7 @@ for k in sample:
 #           print >> allJobFile, "hep_sub "+ submitPath + " -name job@schedd01.ihep.ac.cn"
             print >> allJobFile, "hep_sub "+ shFileName + " -o "+logFileName+ " -e "+errorFileName
 #           print >> allJobFile, "condor_submit "+ submitPath + " -group cms -name job@schedd01.ihep.ac.cn"
-
+    '''''''''''
     print >> MergeFile, "hadd -f "+analysis+"/"+sampleName + "/hists/merged"+sampleName+".root  "+analysis+"/"+sampleName + "/hists/"+sampleName+"*hists.root"
     print >> MergeFile, "hadd -f "+analysis+"/"+sampleName + "/skims/merged"+sampleName+".root  "+analysis+"/"+sampleName + "/skims/"+sampleName+"*Skim.root"
 

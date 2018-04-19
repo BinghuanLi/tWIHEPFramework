@@ -22,8 +22,9 @@ mvaTool::mvaTool(Int_t channel){
     //    varList.push_back("M_hadronicWPhi");
   
   baseName = "";
-
-  varList.push_back("M_nJet2040");
+    
+    /*
+    varList.push_back("M_nJet2040");
   //    varList.push_back("M_HT");
     varList.push_back("M_DeltaRBJetLepton");
     varList.push_back("M_DeltaRlightjets");
@@ -42,7 +43,7 @@ mvaTool::mvaTool(Int_t channel){
     //    varList.push_back("M_E_Jet1MET");
     //varList.push_back("M_Jet1Jet2Jet3_Centrality");
     //  varList.push_back("M_Pt_Jet1_2040");
-
+    */
     
     //varList.push_back("M_hadronicWEta");
     //varList.push_back("M_DeltaRBJethadronicW");
@@ -56,6 +57,46 @@ mvaTool::mvaTool(Int_t channel){
     //varList.push_back("M_DeltaRBJethadronicW");
     //varList.push_back("M_Pt_sys");
 
+    varList.push_back("leadLep_corrpt");
+    varList.push_back("secondLep_corrpt");
+    varList.push_back("massll");
+    varList.push_back("Sum2lCharge");
+    varList.push_back("Jet_numLoose");
+    varList.push_back("Jet_numbLoose");
+    varList.push_back("Jet_numbMedium");
+    varList.push_back("mht");
+    varList.push_back("Met_type1PF_pt");
+    varList.push_back("metLD");
+    varList.push_back("Bin2l");
+    varList.push_back("Dilep_bestMVA");
+    varList.push_back("Dilep_worseMVA");
+    varList.push_back("Dilep_pdgId");
+    varList.push_back("Dilep_htllv");
+    varList.push_back("Dilep_mtWmin");
+    varList.push_back("Dilep_nTight");
+    varList.push_back("HighestJetCSV");
+    varList.push_back("leadJetCSV");
+    varList.push_back("secondJetCSV");
+    varList.push_back("thirdJetCSV");
+    varList.push_back("fourthJetCSV");
+    varList.push_back("HtJet");
+    varList.push_back("ttbarBDT_2lss");
+    varList.push_back("ttvBDT_2lss");
+    varList.push_back("Mt_metleadlep");
+    varList.push_back("maxeta");
+    varList.push_back("leadLep_jetdr");
+    varList.push_back("secondLep_jetdr");
+    varList.push_back("minMllAFOS");
+    varList.push_back("minMllAFAS");
+    varList.push_back("minMllSFOS");
+    varList.push_back("nLepFO");
+    varList.push_back("nLepTight");
+    varList.push_back("puWeight");
+    varList.push_back("bWeight");
+    varList.push_back("TriggerSF");
+    varList.push_back("lepSF");
+    varList.push_back("leadLep_BDT");
+    varList.push_back("secondLep_BDT");
 
   //The list of samples. this is used by the reading, not the training.
   samplelist.push_back("tW_top_nfh");
@@ -70,10 +111,12 @@ mvaTool::mvaTool(Int_t channel){
   systlist.push_back("_Trig_down");
   systlist.push_back("_bTag_up");
   systlist.push_back("_bTag_down");
+  /*
   systlist.push_back("_mistag_up");
   systlist.push_back("_mistag_down");
   systlist.push_back("_PDF_up");
   systlist.push_back("_PDF_down");
+  */
 }
 
 void mvaTool::doBothTraining(TString inDir){
@@ -291,12 +334,12 @@ void mvaTool::loopInSample(TString dirWithTrees, TString sampleName, float* tree
   float lepPt = -100., lepPhi = 100.;
 
   int theChannel = -1;
-
+  /*
   theTree->SetBranchAddress( "M_Pt_Lepton",&lepPt);
   theTree->SetBranchAddress( "M_Phi_Lepton",&lepPhi);
   theTree->SetBranchAddress( "Met_type1PFxy_pt",&met);
   theTree->SetBranchAddress( "Met_type1PFxy_phi",&metPhi);
-  
+  */
   if (doMVA){
     theTree->SetBranchAddress( "channel",&theChannel);
     theTree->SetBranchAddress( "M_nBJet3040",&nbJets3040);
@@ -331,7 +374,7 @@ void mvaTool::loopInSample(TString dirWithTrees, TString sampleName, float* tree
     theTree->SetBranchAddress( "bWeight_down_jes", &bWeightjerDown );
     theTree->SetBranchAddress( "bWeight_up_lf", &bWeightlfUp );
     theTree->SetBranchAddress( "bWeight_down_lf", &bWeightlfDown );
-
+    /*
     theTree->SetBranchAddress( "misTagWeight_central", &mistagWeight );
     theTree->SetBranchAddress( "misTagWeight_up_hfstats1", &mistagWeighthfs1Up );
     theTree->SetBranchAddress( "misTagWeight_down_hfstats1", &mistagWeighthfs1Down );
@@ -345,10 +388,10 @@ void mvaTool::loopInSample(TString dirWithTrees, TString sampleName, float* tree
     theTree->SetBranchAddress( "misTagWeight_down_jes", &mistagWeightjerDown );
     theTree->SetBranchAddress( "misTagWeight_up_lf", &mistagWeightlfUp );
     theTree->SetBranchAddress( "misTagWeight_down_lf", &mistagWeightlfDown );
-    
+     
     theTree->SetBranchAddress( "EVENT_PDFtthbbWeightUp",&pdfUp );
     theTree->SetBranchAddress( "EVENT_PDFtthbbWeightDown",&pdfDown );
-
+    */
     std::cout << "[loopInSample] Finished assigning lepton weights" << std::endl;
   }
   
@@ -407,10 +450,12 @@ void mvaTool::loopInSample(TString dirWithTrees, TString sampleName, float* tree
       fillHists(sampleName+"_bTag_down",treevars,mvaValue,mvawJetsValue,theweight * std::get<1>(bSysts),met,mtw,theChannel);
       mistagSysts = calculatebTagSyst(mistagWeight,{mistagWeighthfs1Up,mistagWeighthfs1Down,mistagWeighthfs2Up,mistagWeighthfs2Down,mistagWeightcferr1Up,mistagWeightcferr1Down,mistagWeightcferr2Up,mistagWeightcferr2Down,mistagWeightjerUp,mistagWeightjerDown,mistagWeightlfUp,mistagWeightlfDown});
       //      std::cout << "mistag systs: " << std::get<0>(mistagSysts) << " " << std::get<1>(mistagSysts) << std::endl;
+      /*
       fillHists(sampleName+"_mistag_up",treevars,mvaValue,mvawJetsValue,theweight * std::get<0>(mistagSysts),met,mtw,theChannel);
       fillHists(sampleName+"_mistag_down",treevars,mvaValue,mvawJetsValue,theweight * std::get<1>(mistagSysts),met,mtw,theChannel);
       fillHists(sampleName+"_PDF_up",treevars,mvaValue,mvawJetsValue,theweight*pdfUp,met,mtw,theChannel);
       fillHists(sampleName+"_PDF_down",treevars,mvaValue,mvawJetsValue,theweight*pdfDown,met,mtw,theChannel);
+      */
     }
   }
 
@@ -429,6 +474,7 @@ void mvaTool::createHists(TString sampleName){
       int nbins = 1;
       double xmin = -1000;
       double xmax = 1000;
+      /*
       if (varList[i] ==  "M_DeltaRBJetLepton") {nbins = 20; xmin = 0; xmax = 6.;};
       if (varList[i] ==  "M_DeltaRlightjets") {nbins = 20; xmin = 0; xmax = 6.;};
       if (varList[i] == "M_topMass2_lep") {nbins = 20; xmin = 0.; xmax = 600.;};
@@ -453,7 +499,47 @@ void mvaTool::createHists(TString sampleName){
       if (varList[i] == "M_cosThetaStar_lepOnly") {nbins = 20; xmin = -1.; xmax = 1.;};
       if (varList[i] == "lightJet1CSV") {nbins = 20; xmin = 0.; xmax = 1.;};
       if (varList[i] == "lightJet2CSV") {nbins = 20; xmin = 0.; xmax = 1.;};
-
+      */
+      if(varList[i]== "leadLep_corrpt") {nbins= 10; xmin= 0; xmax= 200;};
+      if(varList[i]== "secondLep_corrpt") {nbins= 10; xmin= 0; xmax= 100;};
+      if(varList[i]== "massll") {nbins= 10; xmin= 0; xmax= 400;};
+      if(varList[i]== "Sum2lCharge") {nbins= 2; xmin= -2; xmax= 2;};
+      if(varList[i]== "Jet_numLoose") {nbins= 4; xmin= 3.5; xmax= 7.5;};
+      if(varList[i]== "Jet_numbLoose") {nbins= 6; xmin= -0.5; xmax= 5.5;};
+      if(varList[i]== "Jet_numbMedium") {nbins= 6; xmin= -0.5; xmax= 5.5;};
+      if(varList[i]== "mht") {nbins= 10; xmin= 0; xmax= 400;};
+      if(varList[i]== "Met_type1PF_pt") {nbins= 10; xmin= 0; xmax= 400;};
+      if(varList[i]== "metLD") {nbins= 10; xmin= 0; xmax= 2;};
+      if(varList[i]== "Bin2l") {nbins= 8; xmin= 0.5; xmax= 8.5;};
+      if(varList[i]== "Dilep_bestMVA") {nbins= 8; xmin= 0.6; xmax= 1;};
+      if(varList[i]== "Dilep_worseMVA") {nbins= 8; xmin= 0.6; xmax= 1;};
+      if(varList[i]== "Dilep_pdgId") {nbins= 3; xmin= -0.5; xmax= 2.5;};
+      if(varList[i]== "Dilep_htllv") {nbins= 10; xmin= 0; xmax= 600;};
+      if(varList[i]== "Dilep_mtWmin") {nbins= 10; xmin= 0; xmax= 200;};
+      if(varList[i]== "Dilep_nTight") {nbins= 3; xmin= -0.5; xmax= 2.5;};
+      if(varList[i]== "HighestJetCSV") {nbins= 15; xmin= 0; xmax= 1;};
+      if(varList[i]== "leadJetCSV") {nbins= 15; xmin= 0; xmax= 1;};
+      if(varList[i]== "secondJetCSV") {nbins= 15; xmin= 0; xmax= 1;};
+      if(varList[i]== "thirdJetCSV") {nbins= 15; xmin= 0; xmax= 1;};
+      if(varList[i]== "fourthJetCSV") {nbins= 15; xmin= 0; xmax= 1;};
+      if(varList[i]== "HtJet") {nbins= 10; xmin= 0; xmax= 1000;};
+      if(varList[i]== "ttbarBDT_2lss") {nbins= 10; xmin= -1; xmax= 1;};
+      if(varList[i]== "ttvBDT_2lss") {nbins= 10; xmin= -1; xmax= 1;};
+      if(varList[i]== "Mt_metleadlep") {nbins= 10; xmin= 0; xmax= 400;};
+      if(varList[i]== "maxeta") {nbins= 10; xmin= 0; xmax= 2.5;};
+      if(varList[i]== "leadLep_jetdr") {nbins= 10; xmin= 0; xmax= 4;};
+      if(varList[i]== "secondLep_jetdr") {nbins= 10; xmin= 0; xmax= 4;};
+      if(varList[i]== "minMllAFOS") {nbins= 10; xmin= 0; xmax= 300;};
+      if(varList[i]== "minMllAFAS") {nbins= 10; xmin= 0; xmax= 300;};
+      if(varList[i]== "minMllSFOS") {nbins= 10; xmin= 0; xmax= 300;};
+      if(varList[i]== "nLepFO") {nbins= 6; xmin= -0.5; xmax= 5.5;};
+      if(varList[i]== "nLepTight") {nbins= 6; xmin= -0.5; xmax= 5.5;};
+      if(varList[i]== "puWeight") {nbins= 30; xmin= 0.6; xmax= 1.4;};
+      if(varList[i]== "bWeight") {nbins= 30; xmin= 0.6; xmax= 1.4;};
+      if(varList[i]== "TriggerSF") {nbins= 30; xmin= 0.88; xmax= 1.12;};
+      if(varList[i]== "lepSF") {nbins= 30; xmin= 0.6; xmax= 1.4;};
+      if(varList[i]== "leadLep_BDT") {nbins= 10; xmin= -1; xmax= 1;};
+      if(varList[i]== "secondLep_BDT") {nbins= 10; xmin= -1; xmax= 1;};
 
       TH1F* histo = new TH1F((varList[i] + "_" + sampleName).Data(), (varList[i] + "_" + sampleName).Data(),nbins,xmin,xmax);
       histo->Sumw2();

@@ -8,6 +8,13 @@ reducedttbarSet = False
 
 onlySignal = False
 
+useMVA = True
+
+runMacro = "runMVAReading"
+if not useMVA: runMacro = "runReadingNoMVA"
+
+inputtWIHEPFrameworkDirectory = "tW"
+
 nProcesserAtATime = 5
 
 outDir = sys.argv[1]
@@ -34,6 +41,7 @@ samples = ["tW_top_nfh","tW_antitop_nfh","tChan_top","tChan_antitop","sChan","zz
 if reducedttbarSet: samples = ["ttbar"]
 
 regions = ["3j1t","3j2t","2j1t","4j1t","4j2t"]
+if useMVA: regions = [""]
 if reducedttbarSet: regions = [""]
 if onlySignal: regions = [""]
 
@@ -47,7 +55,7 @@ systDir = ""
 systDir = "tWSysts"+elePostfix
 #if len(sys.argv) > 2:
 #    systDir = sys.argv[2]
-if reducedttbarSet or onlySignal: systDir = ""
+if reducedttbarSet or onlySignal or not useMVA: systDir = ""
 
 if (not os.path.isdir(outDir+"/submit/")):
     subprocess.call("mkdir -p "+outDir + "/submit/",shell=True)
@@ -57,7 +65,6 @@ if (not os.path.isdir(outDir+"/logs/")):
 for i in range(len(regions)):
 
     region = regions[i]
-
     
     if (not os.path.isdir(outDir+region)):
         subprocess.call("mkdir -p "+outDir+region+"/",shell=True)
@@ -89,32 +96,32 @@ def makeSubmissionFiles(systDir):
         runSample = False
         for region in regions:
             if not os.path.exists(outDir+region+"/output_"+sample+".root") or os.stat(outDir+region+"/output_"+sample+".root").st_size < 350: runSample = True
-        if runSample: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+elePostfix+"/\\\",\\\""+outDir+"\\\");\"")
+        if runSample: toRun.append("root -b -q \"../../framework/tmva/"+runMacro+".C(\\\""+sample+"\\\",\\\"{0}".format(inputtWIHEPFrameworkDirectory)+elePostfix+"/\\\",\\\""+outDir+"\\\");\"")
         for syst in systs:
             runSysts = False
             for region in regions:
                 if not os.path.exists(outDir+syst+region+"/output_"+sample+".root") or os.stat(outDir+syst+region+"/output_"+sample+".root").st_size < 350: runSysts = True
-            if runSysts: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tW"+syst+elePostfix+"/\\\",\\\""+outDir+syst+"\\\");\"")
+            if runSysts: toRun.append("root -b -q \"../../framework/tmva/"+runMacro+".C(\\\""+sample+"\\\",\\\"{0}".format(inputtWIHEPFrameworkDirectory)+syst+elePostfix+"/\\\",\\\""+outDir+syst+"\\\");\"")
 
     for sample in samplesData:
         #    continue
         runData = False
         for region in regions:
             if not os.path.exists(outDir+region+"/output_"+sample+".root") or os.stat(outDir+region+"/output_"+sample+".root").st_size < 350: runData = True
-        if runData: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tWData"+elePostfix+"/\\\",\\\""+outDir+"\\\");\"")
+        if runData: toRun.append("root -b -q \"../../framework/tmva/"+runMacro+".C(\\\""+sample+"\\\",\\\"{0}Data".format(inputtWIHEPFrameworkDirectory)+elePostfix+"/\\\",\\\""+outDir+"\\\");\"")
         runQCD = False
         for region in regions:
             if not os.path.exists(outDir+"QCD"+region+"/output_"+sample+".root") or os.stat(outDir+"QCD"+region+"/output_"+sample+".root") < 350: runQCD = True
-        if runQCD: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\"tWInvData"+elePostfix+"/\\\",\\\""+outDir+"QCD\\\");\"")
+        if runQCD: toRun.append("root -b -q \"../../framework/tmva/"+runMacro+".C(\\\""+sample+"\\\",\\\"{0}InvData".format(inputtWIHEPFrameworkDirectory)+elePostfix+"/\\\",\\\""+outDir+"QCD\\\");\"")
 
     #And do the theory uncertainties if they exist
     if systDir:
         for sample in os.listdir(systDir):
-            systDir = "tW{0}Systs{1}/".format("",elePostfix)
+            systDir = "{2}{0}Systs{1}/".format("",elePostfix,inputtWIHEPFrameworkDirectory)
             runSyst = False
             for region in regions:
                 if not os.path.exists(outDir+"Systs"+region+"/output_"+sample+".root") or os.stat(outDir+"Systs"+region+"/output_"+sample+".root").st_size < 350: runSyst = True
-            if runSyst: toRun.append("root -b -q \"../../framework/tmva/runMVAReading.C(\\\""+sample+"\\\",\\\""+systDir+"/\\\",\\\""+outDir+"Systs\\\");\"")
+            if runSyst: toRun.append("root -b -q \"../../framework/tmva/"+runMacro+".C(\\\""+sample+"\\\",\\\""+systDir+"/\\\",\\\""+outDir+"Systs\\\");\"")
 
     nFinished = 0
     nRunning = 0

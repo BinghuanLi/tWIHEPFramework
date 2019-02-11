@@ -656,7 +656,6 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr, std::vector<Lepton>& selec
   Double_t minlepdr = -1.;
   Double_t maxlepdr = -1.;
   
-  /*
   int lep_num =selectedLeptons.size();
   
   if (lep_num == 1){
@@ -668,6 +667,7 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr, std::vector<Lepton>& selec
     minlepdr = TMath::Min(selectedLeptons.at(0).DeltaR(*this),selectedLeptons.at(1).DeltaR(*this));
     maxlepdr = TMath::Max(selectedLeptons.at(0).DeltaR(*this),selectedLeptons.at(1).DeltaR(*this));
   }
+  /*
 
   int clean_num =0;
   if(whichtrig>=2 && whichtrig <= 5){//2L categories

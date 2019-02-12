@@ -340,9 +340,12 @@ int main(int argc, char **argv)
         mystudy.AddCut(new CutLeptonTightCharge(particlesObj,"TTHFake"));
     }
   }
-  mystudy.AddCut(new CutJetN(particlesObj,nJets));
+  
+  //mystudy.AddCut(new CutJetN(particlesObj,nJets));
+  
   mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
   mystudy.AddCut(new CutTauN(particlesObj, "Loose"));
+  
   //mystudy.AddCut(new CutLeptonN(particlesObj, leptonTypeToSelect));     //require that lepton to be isolated, central, high pt
   /*
   if(!isTrainMVA){
@@ -379,8 +382,8 @@ int main(int argc, char **argv)
   //mystudy.AddCut(new CutLeptonMCMatchId(particlesObj));
   //mystudy.AddCut(new CutLeptonMCPromptGamma(particlesObj, useMCPromptGamma)); // only for Gamma Conversions
   
-  mystudy.AddCut(new CutLeptonMCPromptFS(particlesObj, useMCPromptFS, isTriLepton, isQuaLepton)); // do not add this cut for conversions 
-  mystudy.AddCut(new CutLeptonMCRightCharge(particlesObj, useMCRightCharge));// do not add this cut for MCPromptGamma
+  //mystudy.AddCut(new CutLeptonMCPromptFS(particlesObj, useMCPromptFS, isTriLepton, isQuaLepton)); // do not add this cut for conversions 
+  //mystudy.AddCut(new CutLeptonMCRightCharge(particlesObj, useMCRightCharge));// do not add this cut for MCPromptGamma
   
   mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, whichtrig));
 
@@ -410,12 +413,12 @@ int main(int argc, char **argv)
   //if (whichtrig) mystudy.AddVars(new BDTVars(true));
   //mystudy.AddVars(new BDTVars(true));
 
-  //mystudy.AddVars(new HadTopVars());
+  mystudy.AddVars(new HadTopVars());
   
   mystudy.AddVars(new ResTopVars());
   mystudy.AddVars(new ttHVars());
   
-  //mystudy.AddVars(new HjTagger());
+  mystudy.AddVars(new HjTagger());
   //mystudy.AddVars(new DNNVars());
   
   mystudy.AddVars(new WeightVars());

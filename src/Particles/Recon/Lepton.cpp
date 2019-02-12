@@ -806,8 +806,11 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
     SetisoPhoton		(evtr -> Muon_isoR04Photon   	-> operator[](iE));
     SetisoPU		(evtr -> Muon_isoR04PU   		-> operator[](iE));
     Setchi2		(evtr -> Muon_chi2   		-> operator[](iE));
-    Setdxy		(evtr -> Muon_dxy_bt   		-> operator[](iE));
-    Setdz			(evtr -> Muon_dz_bt   		-> operator[](iE));
+    // I should use best track version , but it's not available in this version of Ntuple 
+    //Setdxy		(evtr -> Muon_dxy_bt   		-> operator[](iE));
+    //Setdz			(evtr -> Muon_dz_bt   		-> operator[](iE));
+    Setdxy		(evtr -> Muon_dxy_pv   		-> operator[](iE));
+    Setdz			(evtr -> Muon_dz_pv   		-> operator[](iE));
     SetunCorrPt			(evtr -> Muon_pt   		-> operator[](iE));
     //std::cout << "Debug: <Lepton::Fill()>  Read Muon from Tree : Just after Muon_dz Fill " << std::endl;
     SetvalidHits		(evtr -> Muon_validHits   	-> operator[](iE));
@@ -831,7 +834,7 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
     Setjetdr       (evtr -> Muon_jetdr      -> operator[](iE));
     Setjetl1corr       (evtr -> Muon_jetl1corr      -> operator[](iE));
     Setjetislep       (evtr -> Muon_jetislep      -> operator[](iE));
-    Setjetidx       (evtr -> Muon_jetidx      -> operator[](iE));
+    //Setjetidx       (evtr -> Muon_jetidx      -> operator[](iE));
     SetpdgId       (evtr -> Muon_pdgId      -> operator[](iE));
     Setjetpt       (evtr -> Muon_jetpt      -> operator[](iE));
     SetisGlobal       (evtr -> Muon_isGlobal      -> operator[](iE));
@@ -884,13 +887,13 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
     // for MC , the pt is already smear and scaled
     // for Data , the pt is not scaled and smeared yet
     // this needs to be updated when new samples comes
-    //if(isSimulation){
+    if(!isSimulation){
         lepPt        = evtr -> patElectron_pt     -> operator[](iE) * evtr -> patElectron_energySF -> operator[](iE);
         lepE         = evtr -> patElectron_energy     -> operator[](iE) * evtr -> patElectron_energySF -> operator[](iE);
-    /*
     }else{
+        lepPt        = evtr -> patElectron_pt     -> operator[](iE) ;
+        lepE         = evtr -> patElectron_energy     -> operator[](iE);
     }
-    */
 //   
 //    std::cout << "Debug: <Lepton::Fill()>  Read Electron from Tree : Just Before 4Momentum Fill " << std::endl;
     SetCharge       (evtr -> patElectron_charge      -> operator[](iE));
@@ -915,7 +918,7 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
     Setjetdr       (evtr -> patElectron_jetdr      -> operator[](iE));
     Setjetl1corr       (evtr -> patElectron_jetl1corr      -> operator[](iE));
     Setjetislep       (evtr -> patElectron_jetislep      -> operator[](iE));
-    Setjetidx       (evtr -> patElectron_jetidx      -> operator[](iE));
+//    Setjetidx       (evtr -> patElectron_jetidx      -> operator[](iE));
     Setjetpt       (evtr -> patElectron_jetpt      -> operator[](iE));
     SetSCeta       (evtr -> patElectron_SCeta      -> operator[](iE));
     SetisPassMvanontrigwpLoose		(evtr -> patElectron_isPassMvanontrigwpLoose   		-> operator[](iE));
@@ -1048,7 +1051,7 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
     SetjetptratioV2(1);
     Setptrel(0);
     Setlepjetchtrks(0);
-  }else if(jetidx()>=0){ // recalculate ptratio and ptrel for JesSF && ele Scale & Smear purpose and only for the case where jet is found
+  }else if(abs(jetptratio()-1.)>0.0001){ // recalculate ptratio and ptrel for JesSF && ele Scale & Smear purpose and only for the case where jet is found
     SetjetptratioV2(jetptratio());
   }
 

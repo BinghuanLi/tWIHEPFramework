@@ -95,6 +95,7 @@ EventWeight::EventWeight(EventContainer *EventContainerObj,Double_t TotalMCatNLO
     stringstream strNumber, puName;
     strNumber<<"Events.Source."<<sNumber;
     puName <<"PileUp.Source."<<sNumber;
+    std::cout<<"InPUWeight SourceNumber is " << sNumber << " strNumber is "<< strNumber.str()<< std::endl; 
     Double_t totMCnloEvt = conf -> GetValue(strNumber.str().c_str(), -1.);
     pileupHistName=conf -> GetValue(puName.str().c_str(),"null");
     SetTotalMCatNLOEvents(totMCnloEvt);

@@ -341,7 +341,7 @@ int main(int argc, char **argv)
     }
   }
   
-  //mystudy.AddCut(new CutJetN(particlesObj,nJets));
+  mystudy.AddCut(new CutJetN(particlesObj,nJets));
   
   mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
   mystudy.AddCut(new CutTauN(particlesObj, "Loose"));
@@ -408,21 +408,21 @@ int main(int argc, char **argv)
 
   //Add in any variables to the skim tree that you want here
   
-  mystudy.AddVars(new TestVar());
+  //mystudy.AddVars(new TestVar());
   
   //if (whichtrig) mystudy.AddVars(new BDTVars(true));
   //mystudy.AddVars(new BDTVars(true));
 
   mystudy.AddVars(new HadTopVars());
-  
+ 
   mystudy.AddVars(new ResTopVars());
   mystudy.AddVars(new ttHVars());
   
   mystudy.AddVars(new HjTagger());
+  
   //mystudy.AddVars(new DNNVars());
   
   mystudy.AddVars(new WeightVars());
- 
  
   TFile *_skimBDTFile;
   TString NNname = mystudy.GetHistogramFileName() + "skimBDT.root" ;

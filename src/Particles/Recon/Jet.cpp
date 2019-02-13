@@ -504,6 +504,7 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr, std::vector<Lepton>& selec
 {
 
   int eventNumber = evtr -> EVENT_event; 
+  //std::cout<< " in Jet fill eventNumber is  " << eventNumber << std::endl;
   Double_t jetPt, jetEta,jetPhi,jetE, jetCharge, jetM;
   Double_t jetUncorrPt, jetUncorrE, jesSF, jerSF;
   jetUncorrPt = evtr->Jet_Uncorr_pt -> operator[](iE);
@@ -529,6 +530,7 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr, std::vector<Lepton>& selec
     SetPtEtaPhiE(1,1,1,3);
   }
 
+  //std::cout<< " in Jet fill P4 is set " << std::endl;
   SetnumberOfConstituents		(evtr -> Jet_numberOfConstituents     	-> operator[](iE));
   SetchargedMultiplicity		(evtr -> Jet_chargedMultiplicity     	-> operator[](iE)); 
   //SetbDiscriminator 			(evtr -> Jet_pfCombinedInclusiveSecondaryVertexV2BJetTags     	-> operator[](iE));
@@ -572,6 +574,7 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr, std::vector<Lepton>& selec
   SetisMediumBdisc       ( bDiscriminator() > _MWPbTagCut );
   SetisTightBdisc       ( bDiscriminator() > _TWPbTagCut );
  
+  //std::cout<< " in Jet fill all vars are set " << std::endl;
   // Now we want to do the JER and JES systematic adjustments to the jet. This also requires correcting the MET.
   if (_jesUp || _jesDown || _jerUp || _jerDown) SystematicPtShift(evtr, iE, met, useLepAwareJets);  
 

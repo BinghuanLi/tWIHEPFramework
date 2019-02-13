@@ -186,7 +186,8 @@ Bool_t CutTriggerSelection::Apply()
     if((fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId())+fabs(ContainerObj -> fakeLeptons.at(2).pdgId()))==39)selectedChannel =64;//isMMM
   }
 
-  Int_t SourceNumber = GetEventContainer()->GetSourceNumber();
+  Int_t SourceNumber = ContainerObj->GetSourceNumber();
+  //std::cout<<"InTriggerCut SourceNumber is " << SourceNumber << std::endl; 
   Int_t SampleType = SourceNumber < 200000? 0:(SourceNumber % 10000); //1000/1001 SEle, 2000/2001 SMu, 3000/3001 2Mu, 4000/4001 2EleR, 5000/5001 MuEleR
   
   Bool_t passesTrigger = kFALSE;  //Event passes the trigger selection

@@ -629,13 +629,14 @@ Int_t EventContainer::ReadEvent()
   // Reconstructed
   else {
     Int_t SourceNumber = GetSourceNumber();
+    
     if(SourceNumber<200000){
         isSimulation = kTRUE;//_eventTree->isSimulation;
         HiggsDecay = _eventTree -> HiggsDecay;
     }else{
         isSimulation = kFALSE;
     }
-    if(SourceNumber = 999999){
+    if(SourceNumber == 999999){
         //std::cout<< " set sourceNumber to the value in Ntuple "<< std::endl;
         SetSourceNumber(_eventTree -> SourceNumber);
         SourceNumber = GetSourceNumber();
@@ -714,6 +715,7 @@ Int_t EventContainer::ReadEvent()
     missingEtVec_xy.SetPtEtaPhiE(missingEt_xy,0.,missingPhi_xy,missingEt_xy);
 
     // lepAwareJets collections
+    //std::cout<< " now we fill lep aware jets, sourceNumber is : " << SourceNumber << " GetSourceNumber is " << GetSourceNumber() << " isSimulation? "<< isSimulation <<std::endl;
     for(Int_t io = 0;io < _eventTree -> Jet_pt->size(); io++) {
       newJet.Clear();
       useObj = newJet.Fill(1.0,1.0, *fakeleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, true, isSimulation, _trigID);
@@ -750,6 +752,7 @@ Int_t EventContainer::ReadEvent()
 	    unIsolatedMuons.push_back(newMuon);
       } // if useObj
 
+      //std::cout<< " now we fill leptons Muon "<< std::endl;
       newLepton.Clear();
       useObj = newLepton.Fill(*muonsVetoPtr, *lepJetsPtr, _eventTree, io,"MuLoose", isSimulation, SourceNumber ,13);// 13 means Muon
       if(_debugEvt == eventNumber && _sync == 11){
@@ -822,6 +825,7 @@ Int_t EventContainer::ReadEvent()
         unIsolatedElectrons.push_back(newElectron);
       }
       
+      //std::cout<< " now we fill leptons Electron "<< std::endl;
       newLepton.Clear();
       useObj = newLepton.Fill(*muonsVetoPtr,*lepJetsPtr ,_eventTree, io,"EleLoose", isSimulation, SourceNumber ,11);// 11 means Electron
       if(_debugEvt == eventNumber && _sync == 20){
@@ -857,6 +861,7 @@ Int_t EventContainer::ReadEvent()
     ///////////////////////////////////////////
     // Taus
     //////////////////////////////////////////
+    //std::cout<< " now we fill taus "<< std::endl;
     Bool_t atau = kFALSE;
     for(Int_t io = 0;io < _eventTree -> Tau_pt->size(); io++) {
       
@@ -902,6 +907,7 @@ Int_t EventContainer::ReadEvent()
     Double_t ejoverlap = GetConfig() -> GetValue("ObjectID.Jet.ElectronDeltaRMin", 0.0);
     Bool_t ajet = kFALSE;
     int jet_index = 0;
+    //std::cout<< " now we fill jets "<< std::endl;
     for(Int_t io = 0;io < _eventTree -> Jet_pt->size(); io++) {
       newJet.Clear();
       jeteoverlap = kFALSE;
@@ -946,6 +952,7 @@ Int_t EventContainer::ReadEvent()
     } //jets
 
   sort(jets.begin(), jets.end());
+  //std::cout<< " now we fill gen particles: isSimulation? "<< isSimulation << std::endl;
   if(isSimulation){
     int motherIndex =0;
     int daughtIndex =0;

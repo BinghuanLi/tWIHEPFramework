@@ -341,7 +341,7 @@ int main(int argc, char **argv)
     }
   }
   
-  mystudy.AddCut(new CutJetN(particlesObj,nJets));
+  //mystudy.AddCut(new CutJetN(particlesObj,nJets));
   
   mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
   mystudy.AddCut(new CutTauN(particlesObj, "Loose"));

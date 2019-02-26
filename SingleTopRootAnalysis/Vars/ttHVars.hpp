@@ -29,12 +29,13 @@
 class ttHVars: public VarBase {
   
 public:
-  ttHVars(bool makeHistos = false);
+  ttHVars(bool makeHistos = false, bool useTTHLoose = false);
   
   //void BookBranches(TTree * skimTree);
   void FillBranches(EventContainer * evtObj);
   
 private:
+    bool _useTTHLoose;
     void Clear();
 
     void Cal_event_variables(EventContainer* EvtObj);

@@ -12,7 +12,7 @@
 #include <iostream>
 
 //Test out a couple of variables, one Int_t and one float I guess
-ttHVars::ttHVars(bool makeHistos){
+ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
 
   SetName("ttHVars");
 
@@ -457,7 +457,7 @@ ttHVars::ttHVars(bool makeHistos){
   _floatVars["genWeight_muR0p5"] = 999;
   
   SetDoHists(makeHistos);
-
+  _useTTHLoose = useTTHLoose;
 }
 
 void ttHVars::Clear(){
@@ -1718,16 +1718,30 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
     Jet_numLoose = Jets.size();
     Jet_numbLoose = jet_numbLoose;
     Jet_numbMedium = jet_numbMedium;
-    avg_dr_jet = Jet_numLoose >=1? sum_jet_dr/Jet_numLoose : -999.;
+    avg_dr_jet = Jet_numLoose >=2? sum_jet_dr/((Jet_numLoose-1)*0.5*Jet_numLoose) : -999.;
+    //avg_dr_jet = Jet_numLoose >=1? sum_jet_dr/Jet_numLoose : -999.;
     Hj_tagger_resTop = max(maxHj_resTop,-1.);
     Hj_tagger_hadTop = max(maxHj_hadTop,-1.);
     HighestJetCSV = maxCSV;
     HtJet = SumPt;
-    if(fakeLeptons.size()>=2){
-        Lepton firstLepton = fakeLeptons.at(0);
-        Lepton secondLepton = fakeLeptons.at(1);
+    int lepton_num =0;
+    if(!_useTTHLoose) lepton_num=fakeLeptons.size();
+    else lepton_num=looseLeptons.size();
+    if(lepton_num>=2){
+        Lepton firstLepton; 
+        Lepton secondLepton;
         Lepton thirdLepton;
-        if(fakeLeptons.size()>=3)thirdLepton=fakeLeptons.at(2);
+        if(!_useTTHLoose){
+            firstLepton = fakeLeptons.at(0);
+            secondLepton = fakeLeptons.at(1);
+        }else{
+            firstLepton = looseLeptons.at(0);
+            secondLepton = looseLeptons.at(1);
+        }
+        if(lepton_num>=3){
+            if(!_useTTHLoose)thirdLepton=fakeLeptons.at(2);
+            else thirdLepton=looseLeptons.at(2);
+        }
         double leadLep_closedr =999.;
         double secondLep_closedr =999.;
         double thirdLep_closedr = 999.;
@@ -1754,7 +1768,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         mindr_lep3_jet = thirdLep_closedr;
         dr_leps = firstLepton.DeltaR(secondLepton);
         mT_lep2 = getMTlepmet(secondLepton.Phi(),EvtObj->missingPhi,secondLepton.Pt(),EvtObj->missingEt); 
-        if(EvtObj->isSimulation){
+        if(EvtObj->isSimulation && !_useTTHLoose){
             leadLep_isMatchRightCharge = FakeLep_matchId.at(0) == FakeLep_PdgId.at(0)? 1 : 0;
             leadLep_mcMatchId = FakeLep_matchId.at(0);
             leadLep_isFromTop = FakeLep_isFromTop.at(0);
@@ -1855,7 +1869,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         lep2_passConv = secondLepton.passConversionVeto()  ;
         Dilep_worseIso = std::max(lep1_minIso, lep2_minIso);
         Dilep_worseSip = std::max(lep1_sig3d, lep2_sig3d );
-        if(fakeLeptons.size()>=3){
+        if(lepton_num>=3){
             FakeLep3.SetPtEtaPhiE(thirdLepton.conept(),thirdLepton.Eta(),thirdLepton.Phi(),thirdLepton.E());
             lep3_E = thirdLepton.E();
             lep3_isfakeablesel = thirdLepton.isFake();

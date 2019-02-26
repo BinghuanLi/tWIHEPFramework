@@ -14,7 +14,7 @@ executable = "bin/ttH/ttH_generic.x"
 #executable = "Wt_nVertOnly.x"
 configFile = "config/overall/ttH.MultiLeptons.DiLepton.SR.config"
 #invPostfix = " -MCatNLO -mc -lepSFs -bTagReshape -PileUpWgt -ReCalPU -TriggerSFs"
-invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -ReCalPU -TriggerSFs -lepSFs"
+invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -ReCalPU -TriggerSFs -lepSFs -FakeRate -chargeMis"
 #mcPostfix = " -mcPromptFS -mcPromptGamma -FakeRate -mcPromptFS -chargeMis" 
 mcPostfix = " "
 triggerName = "TTHLep_2L "
@@ -173,7 +173,8 @@ if "wJetsReg" in sys.argv and "ttbarReg" in sys.argv:
     sys.exit()
 if "mva" in sys.argv:
     fileListDirectory = "config/files/ttH_2018/MVA/"
-    mcPostfix = " -isTrainMVA -FakeRate"
+    mcPostfix = " -isTrainMVA "
+    invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -ReCalPU -lepSFs"
     configFile = "config/overall/ttH.MultiLeptons.DiLepTrainMVA.config"
     analysis += "TrainMVA"
     sample = samplesMVA

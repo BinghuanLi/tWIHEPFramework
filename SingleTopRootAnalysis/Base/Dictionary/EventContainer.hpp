@@ -831,7 +831,7 @@ class EventContainer
     //Jet matching
     void Do_Jet_Match(Jet & reco, std::vector<MCJet>& BJets, std::vector<MCJet>& CJets, std::vector<MCJet>& LightJets);
     //Lepton matching
-    void Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCElectrons, std::vector<MCMuon>& MCMuons, std::vector<MCPhoton>& MCPhotons);
+    void Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCElectrons, std::vector<MCMuon>& MCMuons, std::vector<MCPhoton>& MCPhotons, Bool_t isFake);
     
     std::vector<double> FakeLep_isFromB;
     std::vector<double> FakeLep_isFromC;

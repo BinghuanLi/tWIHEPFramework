@@ -890,6 +890,7 @@ void Jet::SystematicPtShift(EventTree * evtr, Int_t iE, TLorentzVector * met, Bo
     SetPx(Px()*ptSF);
     SetPy(Py()*ptSF);
     SetPz(Pz()*ptSF);
+    SetE(E()*ptSF);
   //std::cout << Px() << " " << Py() << " " << Pt() << std::endl << std::endl;
   
   //Propagate to MET

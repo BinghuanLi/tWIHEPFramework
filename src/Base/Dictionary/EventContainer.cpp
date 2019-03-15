@@ -1170,7 +1170,12 @@ Int_t EventContainer::ReadEvent()
     
         //Lep matching 
         for(auto &lep: fakeLeptons){
-            Do_Lepton_Match(lep, MCElectrons, MCMuons,MCPhotons);
+            Do_Lepton_Match(lep, MCElectrons, MCMuons,MCPhotons, true);
+        }
+        
+        //Lep matching 
+        for(auto &lep: looseLeptons){
+            Do_Lepton_Match(lep, MCElectrons, MCMuons,MCPhotons, false);
         }
 
    } 
@@ -1948,7 +1953,7 @@ void EventContainer::Do_Jet_Match(Jet& reco, std::vector<MCJet>& BJets, std::vec
 };
     
 //Lepton matching
-void EventContainer::Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCElectrons, std::vector<MCMuon>& MCMuons, std::vector<MCPhoton>& MCPhotons){
+void EventContainer::Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCElectrons, std::vector<MCMuon>& MCMuons, std::vector<MCPhoton>& MCPhotons, Bool_t isFake){
     MCParticle gen;
     double min_dpho =999.;
     double min_dr =999.;
@@ -2029,15 +2034,17 @@ void EventContainer::Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCE
     reco.SetisFromC(isFromC);
     reco.SetisFromTop(isFromTop);
     reco.SetmatchId(matchId);
-    FakeLep_isFromB.push_back(isFromB); 
-    FakeLep_isFromC.push_back(isFromC); 
-    FakeLep_isFromH.push_back(isFromH); 
-    FakeLep_isFromTop.push_back(isFromTop); 
-    FakeLep_matchId.push_back(matchId); 
-    FakeLep_matchIndex.push_back(matchIndex); 
-    FakeLep_PdgId.push_back(reco.pdgId()); 
-    FakeLep_pt.push_back(reco.Pt()); 
-    FakeLep_eta.push_back(reco.Eta()); 
-    FakeLep_phi.push_back(reco.Phi()); 
-    FakeLep_energy.push_back(reco.E()); 
+    if(isFake){
+        FakeLep_isFromB.push_back(isFromB); 
+        FakeLep_isFromC.push_back(isFromC); 
+        FakeLep_isFromH.push_back(isFromH); 
+        FakeLep_isFromTop.push_back(isFromTop); 
+        FakeLep_matchId.push_back(matchId); 
+        FakeLep_matchIndex.push_back(matchIndex); 
+        FakeLep_PdgId.push_back(reco.pdgId()); 
+        FakeLep_pt.push_back(reco.Pt()); 
+        FakeLep_eta.push_back(reco.Eta()); 
+        FakeLep_phi.push_back(reco.Phi()); 
+        FakeLep_energy.push_back(reco.E()); 
+    }
 };

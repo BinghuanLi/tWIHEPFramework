@@ -48,7 +48,7 @@ Cut.Tau.Loose.Number.Max:  999
 
 # ############## Jet Cuts ##############################
 # Jet multiplicity cuts
-Cut.Jet.Number.Min:  4
+Cut.Jet.Number.Min:  0
 Cut.Jet.Number.Max:  999 
 Cut.Jet.Pt.1.Min:  25
 Cut.Jet.Pt.1.Max: 999

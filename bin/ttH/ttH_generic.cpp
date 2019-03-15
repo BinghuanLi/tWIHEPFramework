@@ -339,14 +339,31 @@ int main(int argc, char **argv)
     }
     mystudy.AddCut(new CutTauN(particlesObj, "Loose"));
   }else{
+    /*
+    mystudy.AddCut(new CutLeptonN(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
+    mystudy.AddCut(new CutLeptonSameSign(particlesObj,"TTHFake"));
+    mystudy.AddCut(new CutLeptonCharge(particlesObj,"TTHFake"));
+    mystudy.AddCut(new CutLeptonPt1(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
+    mystudy.AddCut(new CutLeptonPt2(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
+    */
     mystudy.AddCut(new CutLeptonN(particlesObj, "TTHLoose"));     //require that lepton to be isolated, central, high pt
     mystudy.AddCut(new CutLeptonSameSign(particlesObj,"TTHLoose"));
     mystudy.AddCut(new CutLeptonCharge(particlesObj,"TTHLoose"));
     mystudy.AddCut(new CutLeptonPt1(particlesObj, "TTHLoose"));     //require that lepton to be isolated, central, high pt
     mystudy.AddCut(new CutLeptonPt2(particlesObj, "TTHLoose"));     //require that lepton to be isolated, central, high pt
+    /*
+        mystudy.AddCut(new CutTriggerSelection(particlesObj, whichtrig));
+        mystudy.AddCut(new CutMassL(particlesObj));
+        mystudy.AddCut(new CutLeptonTight(particlesObj,"TTHFake"));
+        mystudy.AddCut(new CutLeptonN(particlesObj, "TTHTight"));     //require that lepton to be isolated, central, high pt
+        mystudy.AddCut(new CutZveto(particlesObj, "fake_dilep"));//fake_dilep ;presel_ele;presel_SFOSlep
+        mystudy.AddCut(new CutMetLD(particlesObj, (isTriLepton||isQuaLepton)));
+        mystudy.AddCut(new CutTauN(particlesObj, "Loose"));
+        mystudy.AddCut(new CutLeptonTightCharge(particlesObj,"TTHFake"));
+    */
   }
   
-  //mystudy.AddCut(new CutJetN(particlesObj,nJets));
+  mystudy.AddCut(new CutJetN(particlesObj,nJets));
   mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
   
   //mystudy.AddCut(new CutLeptonN(particlesObj, leptonTypeToSelect));     //require that lepton to be isolated, central, high pt
@@ -419,7 +436,7 @@ int main(int argc, char **argv)
   mystudy.AddVars(new HadTopVars());
  
   mystudy.AddVars(new ResTopVars());
-  mystudy.AddVars(new ttHVars(false, true));
+  mystudy.AddVars(new ttHVars(false, true)); // fill histo, use TTHLoose
   
   mystudy.AddVars(new HjTagger());
   

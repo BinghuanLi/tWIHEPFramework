@@ -61,6 +61,7 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["massL"] = 800.;
   _floatVars["massL_SFOS"] = 500.;
   _floatVars["mass_diele"] = 500.;
+  _floatVars["mass_dilep"] = 500.;
   
   _floatVars["metLD"] = 4.;
   _floatVars["mht"] = 500.;
@@ -174,6 +175,7 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["n_fakeablesel_ele"] = 999.;
   _floatVars["n_mvasel_ele"] = 999.;
   _floatVars["n_presel_tau"] = 999.;
+  _floatVars["n_fakeablesel_tau"] = 999.;
   _floatVars["n_presel_jet"] = 999.;
   _floatVars["mu1_charge"] = 999.;
   _floatVars["mu1_jetNDauChargedMVASel"] = 999.;
@@ -979,6 +981,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
     _floatVars["massL"] = evtObj->massL;
     _floatVars["massL_SFOS"] = evtObj->massL_SFOS;
     _floatVars["mass_diele"] = evtObj->mass_diele;
+    _floatVars["mass_dilep"] = evtObj->mass_dilep;
   
     _floatVars["metLD"] = evtObj->metLD;
     _floatVars["mht"] = evtObj->mht;
@@ -1356,6 +1359,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["n_fakeablesel_ele"] = n_fakeablesel_ele;
   _floatVars["n_mvasel_ele"] = n_mvasel_ele;
   _floatVars["n_presel_tau"] = n_presel_tau;
+  _floatVars["n_fakeablesel_tau"] = evtObj-> taus.size();
   _floatVars["n_presel_jet"] = n_presel_jet;
   _floatVars["mu1_charge"] = mu1_charge;
   _floatVars["mu1_jetNDauChargedMVASel"] = mu1_jetNDauChargedMVASel;
@@ -1795,6 +1799,12 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
                 thirdLep_mcPromptGamma = FakeLep_matchId.at(2) == 22 ? 1 : 0;
                 thirdLep_mcPromptFS = (thirdLepton.gen_isPrompt() ==1 || thirdLepton.gen_isPromptTau()==1)? 1 : 0;
             }
+        }
+        if(EvtObj->isSimulation && _useTTHLoose){
+            leadLep_mcPromptFS = (firstLepton.gen_isPrompt() ==1 || firstLepton.gen_isPromptTau()==1)? 1 : 0;
+            leadLep_isMatchRightCharge = firstLepton.matchId() == firstLepton.pdgId()? 1 : 0;
+            secondLep_mcPromptFS = (secondLepton.gen_isPrompt() ==1 || secondLepton.gen_isPromptTau()==1)? 1 : 0;
+            secondLep_isMatchRightCharge = secondLepton.matchId() == secondLepton.pdgId()? 1 : 0;
         }
         leadLep_jetdr= leadLep_closedr; 
         secondLep_jetdr= secondLep_closedr;

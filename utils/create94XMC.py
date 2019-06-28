@@ -11,8 +11,10 @@ treeName = "OutTree_"
 DirOfSamples = "/publicfs/cms/data/TopQuark/cms13TeV/Fall2017_V1/mc/"
 
 datasets = [
+# this are ctcvcp samples 
+"TTH_ctcvcp","THQ_ctcvcp","THW_ctcvcp"
 # this are MVA samples 
-"ttHnobb","ttW_ext_Jets","ttWJets","ttZ_ext_Jets","ttZ_Jets","TT_PSwgt_To2L2Nu","TT_PSwgt_ToSemiLep","TT_PSwgt_ToHadron","TTTo2L2Nu","TTToSemiLep","TTToHadron"
+#"ttHnobb","ttW_ext_Jets","ttWJets","ttZ_ext_Jets","ttZ_Jets","TT_PSwgt_To2L2Nu","TT_PSwgt_ToSemiLep","TT_PSwgt_ToHadron","TTTo2L2Nu","TTToSemiLep","TTToHadron"
 ]
 #datasets=[
 #"ttH_powheg_ToNonbb", "TTW_PSwgt_ToLNu", "DY_M50", "WWTo2L2Nu", "ZZTo4L", "TTTo2L2Nu", "TTToSemiLep", "TTToHadron", "ST_tW_top", "ST_tW_antitop", "STt_top", "STt_antitop", "STs",  "WW_DS_To2L2Nu", 
@@ -27,6 +29,7 @@ datasetID = {
 "THQ":100035,"THW":100036,"VHToNobb":100037,"tWll":100038,"WpWpJJ":100039,
 "GGHToZZ4L":100040, "GGH_ext_ToZZ4L":100041, "TTWH":100042, "WZG":100043, "TTTW":100044, "TGJets_Lep":100045, "W1JetsToLNu":100046, "W2JetsToLNu":100047, "W3JetsToLNu":100048, "W4JetsToLNu":100049, "DY1JetsToLL_M50":100050, "DY1Jets_ext_ToLL_M50":100051, "DY2JetsToLL_M50":100052, "DY2Jets_ext_ToLL_M50":100053, "DY3JetsToLL_M50":100054, "DY3Jets_ext_ToLL_M50":100055, "DY4JetsToLL_M50":100056, "DYJetsToLL_M4to50_HT70to100":100057, "DYJets_ext_ToLL_M4to50_HT70to100":100058, "DYJetsToLL_M4to50_HT100to200":100059, "DYJets_ext_ToLL_M4to50_HT100to200":100060, "DYJetsToLL_M4to50_HT200to400":100061, "DYJets_ext_ToLL_M4to50_HT200to400":100062, "DYJetsToLL_M4to50_HT400to600":100063, "DYJets_ext_ToLL_M4to50_HT400to600":100064,"DYJetsToLL_M4to50_HT600toInf":100065,
 "ttHnobb":100100,"ttW_ext_Jets":100101,"ttWJets":100102,"ttZ_ext_Jets":100103,"ttZ_Jets":100104,
+"TTH_ctcvcp":100300,"THQ_ctcvcp":100301,"THW_ctcvcp":100302
 }
 nFilesDataset = {
 "WW_DS_To2L2Nu":23, "TTTo2L2Nu":164, "TTZToLL_M1to10":17, "TTToHadron":762, "WW_DoubleScatter":35, "tZq":291, "ST_tW_top":183, "DY_M50":371, "WZZ":18, "DY_M10to50":508, "ZZZ":17, "WZTo3LNu":212, "WWTo2L2Nu":50, "TTHnobb":282, "STt_antitop":116, "TTZToLLNuNu_M10":198, "TTToSemiLep":742, "TTW_PSwgt_ToLNu":121, "ZZTo4L":204, "TTWW":11, "TTGJets":138, "ST_tW_antitop":155, "WJets":382, "TTWToLNu":108, "ttH_powheg_ToNonbb":218, "TTTT_Tune":29, "TT_PSwgt_To2L2Nu":1227, "ZZ_ext_To4L":1489, "TT_PSwgt_ToHadron":2492, "TT_PSwgt_ToSemiLep":2028, "DY_ext_M50":2746, "STt_top":186, "WWW":21, "WWZ":14, "STs":217,
@@ -35,6 +38,7 @@ nFilesDataset = {
 "GGHToZZ4L":47, "GGH_ext_ToZZ4L":42, "TTWH":17, "WZG":43, "TTTW":15, "TGJets_Lep":141, "W1JetsToLNu":476, "W2JetsToLNu":308, "W3JetsToLNu":270, "W4JetsToLNu":252, "DY1JetsToLL_M50":488, "DY1Jets_ext_ToLL_M50":496, "DY2JetsToLL_M50":206, "DY2Jets_ext_ToLL_M50":193, "DY3JetsToLL_M50":126, "DY3Jets_ext_ToLL_M50":47, "DY4JetsToLL_M50":141, "DYJetsToLL_M4to50_HT70to100":183, "DYJets_ext_ToLL_M4to50_HT70to100":192, "DYJetsToLL_M4to50_HT100to200":246, "DYJets_ext_ToLL_M4to50_HT100to200":37, "DYJetsToLL_M4to50_HT200to400":62, "DYJets_ext_ToLL_M4to50_HT200to400":39, "DYJetsToLL_M4to50_HT400to600":55, "DYJets_ext_ToLL_M4to50_HT400to600":41,"DYJetsToLL_M4to50_HT600toInf":88,
 
 "ttHnobb":156,"ttW_ext_Jets":276,"ttWJets":132,"ttZ_ext_Jets":198,"ttZ_Jets":197,
+"TTH_ctcvcp":226, "THQ_ctcvcp":245, "THW_ctcvcp":171,
 }
 datasetDirs = {
 "TTHnobb":["ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/Fall17V1_TTHnobb/180505_043712/0000/"],
@@ -108,6 +112,10 @@ datasetDirs = {
 "ttW_ext_Jets":['ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/Fall17V1_ttW_ext_Jets/181102_143713/0000/'],
 "ttZ_ext_Jets":['ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/Fall17V1_ttZ_ext_Tune/181102_143449/0000/'],
 "ttZ_Jets":['ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/Fall17V1_ttZ_Tune/181102_143400/0000/'],
+# ctcvcp
+"TTH_ctcvcp":['TTH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/Fall17V1_TTH_ctcvcp/190626_071451/0000/'],
+"THQ_ctcvcp":['THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/Fall17V1_THQ_ctcvcp/190626_070931/0000/'],
+"THW_ctcvcp":['THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/Fall17V1_THW_ctcvcp/190626_071209/0000/'],
 
 }
 #datasetDirs = {"TTHnobb":["/publicfs/cms/data/TopQuark/cms13TeV/FullMorV2/mc/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/FullMorV2_ttHnobb/170530_161519/0000/"],

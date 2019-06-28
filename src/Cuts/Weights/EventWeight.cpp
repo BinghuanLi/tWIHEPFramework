@@ -430,13 +430,19 @@ Bool_t EventWeight::Apply()
   TString sName = EventContainerObj -> GetSourceName();
   float LHEWeight(1.0);
   float rwgt(1.0);
-  if(sName.Contains("THW")){
+  if(sName.Contains("THW") && !sName.Contains("ctcvcp")){
        rwgt = (tree->EVENT_genWeights -> operator[](1091));
        LHEWeight = rwgt/5458.47479968;
-    }else if(sName.Contains("THQ")){
+  }
+  else if(sName.Contains("THQ") && !sName.Contains("ctcvcp")){
        rwgt = (tree->EVENT_genWeights -> operator[](893));
        LHEWeight = rwgt/8837.23781460;
     }
+  if(sName.Contains("ctcvcp")){
+       rwgt = (tree->EVENT_rWeights -> operator[](11));
+       LHEWeight = rwgt;
+    }
+  //std::cout<<" rwgt : " << rwgt << " LHEWeight : " << LHEWeight<<std::endl;
   //std::cout<<" rwgt : " << rwgt << " LHEWeight : " << LHEWeight<<std::endl;
  
   wgt *= LHEWeight;

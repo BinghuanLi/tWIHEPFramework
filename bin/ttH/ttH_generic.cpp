@@ -436,7 +436,7 @@ int main(int argc, char **argv)
   mystudy.AddVars(new HadTopVars());
  
   mystudy.AddVars(new ResTopVars());
-  mystudy.AddVars(new ttHVars(false, true)); // fill histo, use TTHLoose
+  mystudy.AddVars(new ttHVars(false, false)); // fill histo, use TTHLoose
   
   mystudy.AddVars(new HjTagger());
   

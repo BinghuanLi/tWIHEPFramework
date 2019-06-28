@@ -335,3 +335,17 @@ Weight.Source.100065: 1.852
 Events.Source.100065: 1725735
 PileUp.Source.100065: DYJetsToLL_M4to50_HT600toInf
 
+# 100300 - TTH_ctcvcp
+Weight.Source.100300: 0.5071
+Events.Source.100300: 1421.20549
+PileUp.Source.100300: TTH_ctcvcp
+
+# 100301 - THQ_ctcvcp
+Weight.Source.100301: 0.07096
+Events.Source.100301: 166.7915143
+PileUp.Source.100301: THQ_ctcvcp
+
+# 100302 - THW_ctcvcp
+Weight.Source.100302: 0.01561
+Events.Source.100302: 191.5797176
+PileUp.Source.100302: THW_ctcvcp

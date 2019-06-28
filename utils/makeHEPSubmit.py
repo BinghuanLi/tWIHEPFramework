@@ -57,9 +57,12 @@ samplesMC=[
 "TTHnobb", "TTWToLNu", "TTZToLLNuNu_M10", "TTZToLL_M1to10", "TTWW", "DY_M10to50", "DY_ext_M50", "WJets", "WZTo3LNu", "ZZ_ext_To4L", "TT_PSwgt_To2L2Nu", "TT_PSwgt_ToSemiLep", "TT_PSwgt_ToHadron", "TTGJets", "tZq", "WW_DoubleScatter","WWW", "WWZ", "WZZ", "ZZZ", "TTTT_Tune",
 "THQ","THW","VHToNobb","tWll","WpWpJJ",
 "GGH_ext_ToZZ4L", "TTWH", "WZG", "TTTW", "TGJets_Lep", "W1JetsToLNu", "W2JetsToLNu", "W3JetsToLNu", "W4JetsToLNu", "DY1JetsToLL_M50","DY2JetsToLL_M50", "DY3JetsToLL_M50", "DY4JetsToLL_M50", "DYJetsToLL_M4to50_HT70to100","DYJetsToLL_M4to50_HT100to200", "DYJetsToLL_M4to50_HT200to400", "DYJetsToLL_M4to50_HT400to600", "DYJetsToLL_M4to50_HT600toInf"
+"TTH_ctcvcp","THQ_ctcvcp","THW_ctcvcp",
 ]
 samplesMVA = [
-"ttHnobb","ttW_ext_Jets","ttWJets","ttZ_ext_Jets","ttZ_Jets","TT_PSwgt_To2L2Nu","TT_PSwgt_ToSemiLep","TT_PSwgt_ToHadron","TTTo2L2Nu","TTToSemiLep","TTToHadron"
+#"ttW_ext_Jets","ttWJets","ttZ_ext_Jets","ttZ_Jets","TT_PSwgt_To2L2Nu","TT_PSwgt_ToSemiLep","TT_PSwgt_ToHadron","TTTo2L2Nu","TTToSemiLep","TTToHadron",
+"ttHnobb",
+"TTH_ctcvcp","THQ_ctcvcp","THW_ctcvcp"
 ]
 samplesClos = [
 "TT_PSwgt_To2L2Nu", "TTTo2L2Nu", "TT_PSwgt_ToSemiLep", "TTToSemiLep", "TT_PSwgt_ToHadron", "TTToHadron"
@@ -175,9 +178,13 @@ if "mva" in sys.argv:
     fileListDirectory = "config/files/ttH_2018/MVA/"
     mcPostfix = " -isTrainMVA "
     invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -ReCalPU -lepSFs"
-    configFile = "config/overall/ttH.MultiLeptons.DiLepTrainMVA.config"
     analysis += "TrainMVA"
     sample = samplesMVA
+    configFile = "config/overall/ttH.MultiLeptons.DiLepTrainMVA.config"
+    if "jesUp" in sys.argv:
+        configFile = "config/overall/ttH.MultiLeptons.DiLepTrainMVAJESUp.config"
+    if "jesDown" in sys.argv:
+        configFile = "config/overall/ttH.MultiLeptons.DiLepTrainMVAJESDown.config"
 elif "Hjtagger" in sys.argv:
     fileListDirectory = "config/files/ttH_2018/MVA/"
     configFile = "config/overall/ttH.MultiLeptons.DiLepton.TrainHj.config"
@@ -425,6 +432,7 @@ def prepareCshJob(sample,shFile,frameworkDir,workpath,samplePost=""):
         print >> subFile, "#!/bin/bash"
         print >> subFile, "/bin/hostname"
         print >> subFile, "source /cvmfs/sft.cern.ch/lcg/views/LCG_93/x86_64-slc6-gcc62-opt/setup.sh"
+        #print >> subFile, "source /cvmfs/sft.cern.ch/lcg/views/LCG_94/x86_64-slc6-gcc7-opt/setup.sh" 
         print >> subFile, "gcc -v"
         print >> subFile, "pwd"
     #print >> subFile, "cd /publicfs/cms/data/TopQuark/cms13TeV/software/root/bin/"

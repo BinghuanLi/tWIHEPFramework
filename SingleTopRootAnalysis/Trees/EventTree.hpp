@@ -49,6 +49,7 @@ public :
    Int_t           EVENT_lumiBlock;
    Double_t        EVENT_genWeight;
    std::vector<double>  *EVENT_genWeights;
+   std::vector<double>  *EVENT_rWeights;
    Double_t        EVENT_genHT;
    Double_t        EVENT_genPt;
    Double_t        EVENT_rhopog;
@@ -703,6 +704,7 @@ public :
    TBranch        *b_EVENT_lumiBlock;   //!
    TBranch        *b_EVENT_genWeight;   //!
    TBranch        *b_EVENT_genWeights;   //!
+   TBranch        *b_EVENT_rWeights;   //!
    TBranch        *b_EVENT_genHT;   //!
    TBranch        *b_EVENT_genPt;   //!
    TBranch        *b_EVENT_rhopog;   //!
@@ -1402,6 +1404,7 @@ void EventTree::Init(TTree *tree)
    Gen_BmotherIndices = 0;
    Gen_BdaughtIndices = 0;
    EVENT_genWeights = 0;
+   EVENT_rWeights = 0;
    pvertex_ndof = 0;
    pvertex_dxy = 0;
    pvertex_x = 0;
@@ -1948,6 +1951,7 @@ void EventTree::Init(TTree *tree)
    fChain->SetBranchAddress("EVENT_lumiBlock", &EVENT_lumiBlock, &b_EVENT_lumiBlock);
    fChain->SetBranchAddress("EVENT_genWeight", &EVENT_genWeight, &b_EVENT_genWeight);
    fChain->SetBranchAddress("EVENT_genWeights", &EVENT_genWeights, &b_EVENT_genWeights);
+   fChain->SetBranchAddress("EVENT_rWeights", &EVENT_rWeights, &b_EVENT_rWeights);
    fChain->SetBranchAddress("EVENT_genHT", &EVENT_genHT, &b_EVENT_genHT);
    fChain->SetBranchAddress("EVENT_genPt", &EVENT_genPt, &b_EVENT_genPt);
    fChain->SetBranchAddress("EVENT_rhopog", &EVENT_rhopog, &b_EVENT_rhopog);

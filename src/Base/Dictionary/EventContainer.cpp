@@ -295,6 +295,7 @@ void EventContainer::Initialize( EventTree* eventTree, TruthTree* truthTree)
   taus.clear();
   jets.clear();
   alljets.clear();
+  forwardjets.clear();
   taggedJets.clear();
   unTaggedJets.clear();
   bLabeledJets.clear();
@@ -558,6 +559,7 @@ Int_t EventContainer::ReadEvent()
 
   jets.clear();
   alljets.clear();
+  forwardjets.clear();
   taggedJets.clear();
   unTaggedJets.clear();
   bLabeledJets.clear();
@@ -921,18 +923,24 @@ Int_t EventContainer::ReadEvent()
       missingEt = TMath::Sqrt(pow(missingEx,2) + pow(missingEy,2));//so MET gets JES adjustment toogEx=top_met.MET_ExMiss();
       /////////////////////////////////////
       
-      alljets.push_back(newJet);
       if(eventNumber==_debugEvt && _sync == 41){
         std::cout << eventNumber << " " << newJet.Pt() << " " << newJet.Eta() << " " << newJet.Phi() << " "<< newJet.E() << " " << newJet.bDiscriminator() << " "<< newJet.qg()<<" "<< newJet.lepdrmin() << " " << newJet.lepdrmax() <<" "<< newJet.HjDisc() << " "<< missingEt <<" "<< missingPhi << std::endl;
       } 
 
       if(useObj) {
+          alljets.push_back(newJet);
+          if(newJet.isNormalJet()){
+            // normal jet
             newJet.Setindex(jet_index);
             jet_index ++;
 	        jets.push_back(newJet);
             
 	        if(newJet.IsTagged()) taggedJets.push_back(newJet);
 	        else unTaggedJets.push_back(newJet);
+          }else{
+                // forward jet
+                if(newJet.isForwardJet())forwardjets.push_back(newJet);
+          }
    
         //NOTE: PdgId of +/-1 is used for light quark jets when charge information is available and 
 	//uncharged particles that are not labeled as b, c, or tau are given an ID of 0
@@ -952,6 +960,7 @@ Int_t EventContainer::ReadEvent()
     } //jets
 
   sort(jets.begin(), jets.end());
+  sort(forwardjets.begin(), forwardjets.end());
   //std::cout<< " now we fill gen particles: isSimulation? "<< isSimulation << std::endl;
   if(isSimulation){
     int motherIndex =0;

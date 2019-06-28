@@ -55,6 +55,7 @@ private:
     std::vector<Lepton> looseMuons;
     std::vector<Lepton> looseElectrons;
     std::vector<Jet> Jets;
+    std::vector<Jet> fwdJets;
     std::vector<Tau> Taus;
     
     std::vector<double> FakeLep_isFromB;
@@ -176,6 +177,8 @@ private:
   int n_mvasel_ele;
   int n_presel_tau;
   int n_presel_jet;
+  int n_presel_jetFwd;
+  int nLightJet;
   int mu1_charge;
   int mu1_jetNDauChargedMVASel;
   int mu2_charge;
@@ -336,6 +339,22 @@ private:
   float jet8_phi;
   float jet8_E;
   float jet8_CSV;
+  float jetFwd1_pt;
+  float jetFwd1_eta;
+  float jetFwd1_phi;
+  float jetFwd1_E;
+  float jetFwd2_pt;
+  float jetFwd2_eta;
+  float jetFwd2_phi;
+  float jetFwd2_E;
+  float jetFwd3_pt;
+  float jetFwd3_eta;
+  float jetFwd3_phi;
+  float jetFwd3_E;
+  float jetFwd4_pt;
+  float jetFwd4_eta;
+  float jetFwd4_phi;
+  float jetFwd4_E;
   float PFMET;
   float PFMETphi;
   float MHT;

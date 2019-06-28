@@ -40,6 +40,7 @@
 #include "SingleTopRootAnalysis/Cuts/Other/CutHiggsDecay.hpp"
 #include "SingleTopRootAnalysis/Cuts/Other/CutEventList.hpp"
 #include "SingleTopRootAnalysis/Cuts/Jet/CutJetN.hpp"
+#include "SingleTopRootAnalysis/Cuts/TaggedJet/CutLightJetN.hpp"
 //#include "SingleTopRootAnalysis/Cuts/TaggedJet/CutTaggedJetN.hpp"
 #include "SingleTopRootAnalysis/Cuts/TaggedJet/CutBTaggedJetN.hpp"
 //#include "SingleTopRootAnalysis/Cuts/Jet/CutJetPt1.hpp"
@@ -365,6 +366,7 @@ int main(int argc, char **argv)
   
   mystudy.AddCut(new CutJetN(particlesObj,nJets));
   mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
+  mystudy.AddCut(new CutLightJetN(particlesObj));
   
   //mystudy.AddCut(new CutLeptonN(particlesObj, leptonTypeToSelect));     //require that lepton to be isolated, central, high pt
   /*

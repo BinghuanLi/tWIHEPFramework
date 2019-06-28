@@ -177,6 +177,8 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["n_presel_tau"] = 999.;
   _floatVars["n_fakeablesel_tau"] = 999.;
   _floatVars["n_presel_jet"] = 999.;
+  _floatVars["n_presel_jetFwd"] = 999.;
+  _floatVars["nLightJet"] = 999.;
   _floatVars["mu1_charge"] = 999.;
   _floatVars["mu1_jetNDauChargedMVASel"] = 999.;
   _floatVars["mu2_charge"] = 999.;
@@ -337,6 +339,30 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["jet8_phi"] = 999.;
   _floatVars["jet8_E"] = 999.;
   _floatVars["jet8_CSV"] = 999.;
+  _floatVars["jetFwd1_pt"] = 999.;
+  _floatVars["jetFwd1_eta"] = 999.;
+  _floatVars["jetFwd1_phi"] = 999.;
+  _floatVars["jetFwd1_E"] = 999.;
+  _floatVars["jetFwd2_pt"] = 999.;
+  _floatVars["jetFwd2_eta"] = 999.;
+  _floatVars["jetFwd2_phi"] = 999.;
+  _floatVars["jetFwd2_E"] = 999.;
+  _floatVars["jetFwd3_pt"] = 999.;
+  _floatVars["jetFwd3_eta"] = 999.;
+  _floatVars["jetFwd3_phi"] = 999.;
+  _floatVars["jetFwd3_E"] = 999.;
+  _floatVars["jetFwd4_pt"] = 999.;
+  _floatVars["jetFwd4_eta"] = 999.;
+  _floatVars["jetFwd4_phi"] = 999.;
+  _floatVars["jetFwd4_E"] = 999.;
+  _floatVars["PFMET"] = 999.;
+  _floatVars["PFMETphi"] = 999.;
+  _floatVars["MHT"] = 999.;
+  _floatVars["lep1_conePt"] = 999.;
+  _floatVars["lep2_conePt"] = 999.;
+  _floatVars["mindr_lep1_jet"] = 999.;
+  _floatVars["mindr_lep2_jet"] = 999.;
+  _floatVars["mT_lep1"] = 999.;
   _floatVars["PFMET"] = 999.;
   _floatVars["PFMETphi"] = 999.;
   _floatVars["MHT"] = 999.;
@@ -470,6 +496,7 @@ void ttHVars::Clear(){
     fakeLeptons.clear();
     tightLeptons.clear();
     Jets.clear();
+    fwdJets.clear();
     FakeLep_isFromB.clear();
     FakeLep_isFromC.clear();
     FakeLep_isFromH.clear();
@@ -584,6 +611,8 @@ void ttHVars::Clear(){
     n_mvasel_ele = -9999;
     n_presel_tau = -9999;
     n_presel_jet = -9999;
+    n_presel_jetFwd = -9999;
+    nLightJet = -9999;
     mu1_charge = -9999;
     mu1_jetNDauChargedMVASel = -9999;
     mu2_charge = -9999;
@@ -744,6 +773,30 @@ void ttHVars::Clear(){
     jet8_phi = -9999;
     jet8_E = -9999;
     jet8_CSV = -9999;
+    jetFwd1_pt = -9999;
+    jetFwd1_eta = -9999;
+    jetFwd1_phi = -9999;
+    jetFwd1_E = -9999;
+    jetFwd2_pt = -9999;
+    jetFwd2_eta = -9999;
+    jetFwd2_phi = -9999;
+    jetFwd2_E = -9999;
+    jetFwd3_pt = -9999;
+    jetFwd3_eta = -9999;
+    jetFwd3_phi = -9999;
+    jetFwd3_E = -9999;
+    jetFwd4_pt = -9999;
+    jetFwd4_eta = -9999;
+    jetFwd4_phi = -9999;
+    jetFwd4_E = -9999;
+    PFMET = -9999;
+    PFMETphi = -9999;
+    MHT = -9999;
+    metLD = -9999;
+    lep1_conePt = -9999;
+    lep2_conePt = -9999;
+    mindr_lep1_jet = -9999;
+    mindr_lep2_jet = -9999;
     PFMET = -9999;
     PFMETphi = -9999;
     MHT = -9999;
@@ -902,6 +955,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
 
     
     Jets.assign(evtObj -> jets.begin(), evtObj -> jets.end());
+    fwdJets.assign(evtObj -> forwardjets.begin(), evtObj -> forwardjets.end());
     
     FakeLep_isFromB.assign(evtObj -> FakeLep_isFromB.begin(), evtObj -> FakeLep_isFromB.end());
     FakeLep_isFromC.assign(evtObj -> FakeLep_isFromC.begin(), evtObj -> FakeLep_isFromC.end());
@@ -929,6 +983,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
    Tau FirstTau, SecondTau; 
    Jet FirstJet, SecondJet, ThirdJet, FourthJet; 
    Jet FifthJet, SixthJet, SeventhJet, EighthJet; 
+   Jet FirstFwdJet, SecondFwdJet, ThirdFwdJet, FourthFwdJet; 
    if(looseMuons.size()>=1){
         FirstMuon = looseMuons.at(0);
         if(looseMuons.size()>=2) SecondMuon = looseMuons.at(1);
@@ -951,6 +1006,12 @@ void ttHVars::FillBranches(EventContainer * evtObj){
         if(Jets.size()>=7) SeventhJet = Jets.at(6);
         if(Jets.size()>=8) EighthJet = Jets.at(7);
    }
+   if(fwdJets.size()>=1){
+        FirstFwdJet = fwdJets.at(0);
+        if(fwdJets.size()>=2) SecondFwdJet = fwdJets.at(1);
+        if(fwdJets.size()>=3) ThirdFwdJet = fwdJets.at(2);
+        if(fwdJets.size()>=4) FourthFwdJet = fwdJets.at(3);
+   } 
    
     // Fill the variables in event container
 
@@ -1086,6 +1147,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
     n_mvasel_ele = n_tightEle;
     n_presel_tau = Taus.size();
     n_presel_jet = Jets.size();
+    n_presel_jetFwd = fwdJets.size();
     if(looseMuons.size()>=1){
         mu1_pt = FirstMuon.Pt();
         mu1_conept = FirstMuon.conept();
@@ -1302,6 +1364,30 @@ void ttHVars::FillBranches(EventContainer * evtObj){
         jet8_E = EighthJet.E();
         jet8_CSV = EighthJet.bDiscriminator();
     }
+    if(fwdJets.size()>=1){
+        jetFwd1_pt = FirstFwdJet.Pt();
+        jetFwd1_eta = FirstFwdJet.Eta();
+        jetFwd1_phi = FirstFwdJet.Phi();
+        jetFwd1_E = FirstFwdJet.E();
+    }
+    if(fwdJets.size()>=2){
+        jetFwd2_pt = SecondFwdJet.Pt();
+        jetFwd2_eta = SecondFwdJet.Eta();
+        jetFwd2_phi = SecondFwdJet.Phi();
+        jetFwd2_E = SecondFwdJet.E();
+    }
+    if(fwdJets.size()>=3){
+        jetFwd3_pt = ThirdFwdJet.Pt();
+        jetFwd3_eta = ThirdFwdJet.Eta();
+        jetFwd3_phi = ThirdFwdJet.Phi();
+        jetFwd3_E = ThirdFwdJet.E();
+    }
+    if(fwdJets.size()>=4){
+        jetFwd4_pt = FourthFwdJet.Pt();
+        jetFwd4_eta = FourthFwdJet.Eta();
+        jetFwd4_phi = FourthFwdJet.Phi();
+        jetFwd4_E = FourthFwdJet.E();
+    }
     PFMET = evtObj->missingEt;
     PFMETphi = evtObj->missingPhi;
     MHT = evtObj->mht;
@@ -1316,6 +1402,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
     HTT = evtObj->ResTop_BDT;
     nBJetLoose = Jet_numbLoose;
     nBJetMedium = Jet_numbMedium;
+    nLightJet = n_presel_jet - nBJetLoose + n_presel_jetFwd;
     mvaOutput_2lss_ttV = ttvBDT_2lss;
     mvaOutput_2lss_ttbar = ttbarBDT_2lss;
 
@@ -1361,6 +1448,8 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["n_presel_tau"] = n_presel_tau;
   _floatVars["n_fakeablesel_tau"] = evtObj-> taus.size();
   _floatVars["n_presel_jet"] = n_presel_jet;
+  _floatVars["n_presel_jetFwd"] = n_presel_jetFwd;
+  _floatVars["nLightJet"] = nLightJet;
   _floatVars["mu1_charge"] = mu1_charge;
   _floatVars["mu1_jetNDauChargedMVASel"] = mu1_jetNDauChargedMVASel;
   _floatVars["mu2_charge"] = mu2_charge;
@@ -1521,6 +1610,30 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["jet8_phi"] = jet8_phi;
   _floatVars["jet8_E"] = jet8_E;
   _floatVars["jet8_CSV"] = jet8_CSV;
+  _floatVars["jetFwd1_pt"] = jetFwd1_pt;
+  _floatVars["jetFwd1_eta"] = jetFwd1_eta;
+  _floatVars["jetFwd1_phi"] = jetFwd1_phi;
+  _floatVars["jetFwd1_E"] = jetFwd1_E;
+  _floatVars["jetFwd2_pt"] = jetFwd2_pt;
+  _floatVars["jetFwd2_eta"] = jetFwd2_eta;
+  _floatVars["jetFwd2_phi"] = jetFwd2_phi;
+  _floatVars["jetFwd2_E"] = jetFwd2_E;
+  _floatVars["jetFwd3_pt"] = jetFwd3_pt;
+  _floatVars["jetFwd3_eta"] = jetFwd3_eta;
+  _floatVars["jetFwd3_phi"] = jetFwd3_phi;
+  _floatVars["jetFwd3_E"] = jetFwd3_E;
+  _floatVars["jetFwd4_pt"] = jetFwd4_pt;
+  _floatVars["jetFwd4_eta"] = jetFwd4_eta;
+  _floatVars["jetFwd4_phi"] = jetFwd4_phi;
+  _floatVars["jetFwd4_E"] = jetFwd4_E;
+  _floatVars["PFMET"] = PFMET;
+  _floatVars["PFMETphi"] = PFMETphi;
+  _floatVars["MHT"] = MHT;
+  _floatVars["lep1_conePt"] = lep1_conePt;
+  _floatVars["lep2_conePt"] = lep2_conePt;
+  _floatVars["mindr_lep1_jet"] = mindr_lep1_jet;
+  _floatVars["mindr_lep2_jet"] = mindr_lep2_jet;
+  _floatVars["mT_lep1"] = mT_lep1;
   _floatVars["PFMET"] = PFMET;
   _floatVars["PFMETphi"] = PFMETphi;
   _floatVars["MHT"] = MHT;

@@ -307,7 +307,6 @@ int main(int argc, char **argv)
   //mystudy.AddCut(new HistogrammingMET(particlesObj));
   //mystudy.AddCut(new CutElectronTighterPt(particlesObj, "Tight")); 
   
-  /*
   mystudy.AddCut(new CutMetFilter(particlesObj));
   if(!isTrainMVA){
     mystudy.AddCut(new CutLeptonN(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
@@ -342,7 +341,7 @@ int main(int argc, char **argv)
  
   }
   mystudy.AddCut(new CutJetN(particlesObj,nJets));
-  */
+  
   /*
   mystudy.AddCut(new CutLightJetN(particlesObj));
   mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
@@ -409,7 +408,7 @@ int main(int argc, char **argv)
   //  mystudy.AddCut(new CutZveto(particlesObj, "Tight"));
   //}
 
-  //mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, whichtrig));
+  mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, whichtrig));
   
   //Add in any variables to the skim tree that you want here
   
@@ -418,7 +417,7 @@ int main(int argc, char **argv)
   //if (whichtrig) mystudy.AddVars(new BDTVars(true));
   //mystudy.AddVars(new BDTVars(true));
 
-  //mystudy.AddVars(new HadTopVars());
+  mystudy.AddVars(new HadTopVars());
  
   
   //mystudy.AddVars(new ResTopVars());
@@ -428,7 +427,7 @@ int main(int argc, char **argv)
   
   //mystudy.AddVars(new DNNVars());
   
-  //mystudy.AddVars(new WeightVars());
+  mystudy.AddVars(new WeightVars());
  
   TFile *_skimBDTFile;
   TString NNname = mystudy.GetHistogramFileName() + "skimBDT.root" ;

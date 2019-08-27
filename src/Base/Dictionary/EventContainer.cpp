@@ -2041,7 +2041,7 @@ void EventContainer::Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCE
     for(auto MCEle: MCElectrons){
         if(MCEle.Status()!=1 || fabs(MCEle.PdgId())!= fabs(reco.pdgId()) || MCEle.Pt()<1.0)continue;
         double dr = reco.DeltaR(MCEle);
-        double dptrel = fabs((reco.unCorrPt()-MCEle.Pt())/reco.unCorrPt());
+        double dptrel = fabs((reco.unCorrPt()-MCEle.Pt())/MCEle.Pt());
         if(dr < 0.3 && dptrel < 0.5){
             double dpho = dr + 0.2*dptrel;
             if(dr < min_dr){
@@ -2054,7 +2054,7 @@ void EventContainer::Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCE
     for(auto MCMu: MCMuons){
         if(MCMu.Status()!=1 || fabs(MCMu.PdgId())!= fabs(reco.pdgId()) || MCMu.Pt()<1.0)continue;
         double dr = reco.DeltaR(MCMu);
-        double dptrel = fabs((reco.unCorrPt()-MCMu.Pt())/reco.unCorrPt());
+        double dptrel = fabs((reco.unCorrPt()-MCMu.Pt())/MCMu.Pt());
         if(dr < 0.3 && dptrel < 0.5){
             double dpho = dr + 0.2*dptrel;
             if(dr < min_dr){
@@ -2069,7 +2069,7 @@ void EventContainer::Do_Lepton_Match(Lepton & reco, std::vector<MCElectron>& MCE
         for(auto MCPhoton: MCPhotons){
             if(MCPhoton.Status()!=1 || MCPhoton.Pt()<1.0)continue;
             double dr = reco.DeltaR(MCPhoton);
-            double dptrel = fabs((reco.unCorrPt()-MCPhoton.Pt())/reco.unCorrPt());
+            double dptrel = fabs((reco.unCorrPt()-MCPhoton.Pt())/MCPhoton.Pt());
             if(dr < 0.3 && dptrel < 0.5){
                 double dpho = dr + 0.2*dptrel;
                 if(dr < min_dr){

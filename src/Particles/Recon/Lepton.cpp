@@ -1253,20 +1253,18 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
 
   if(
      pdgid==13 && conept() > _ConePtCuts[leptonType]
-     && (
-      (BDT() > _BDTCuts[leptonType] && jetdeepflavour() < _MWPBTagCut) ||
-      (BDT() < _BDTCuts[leptonType] && jetdeepflavour() < smoothBFlav(0.9*lepPt*(1+jetrelIso()), 20., 45., _dataEra) 
-       && jetrelIso() < _jetrelIsoCuts[leptonType] )
+     && jetdeepflavour() < _MWPBTagCut && 
+      (BDT() > _BDTCuts[leptonType] || (jetdeepflavour() < smoothBFlav(0.9*lepPt*(1+jetrelIso()), 20., 45., _dataEra)
+       && jetrelIso() < _jetrelIsoCuts[leptonType])
       )
      )passFake = kTRUE;
    
   if(
      pdgid==11 && conept() > _ConePtCuts[leptonType]
-     && passCuts && (
-      (BDT() > _BDTCuts[leptonType] && jetdeepflavour() < _MWPBTagCut ) ||
-      (BDT() < _BDTCuts[leptonType] 
-       && jetrelIso() < _jetrelIsoCuts[leptonType] && ntMVAeleID() > 0.5 )
-       && expectedMissingInnerHits() == 0
+     && passCuts &&  jetdeepflavour() < _MWPBTagCut 
+     && expectedMissingInnerHits() == 0
+     &&( BDT()  >  _BDTCuts[leptonType] || 
+        ( jetrelIso() < _jetrelIsoCuts[leptonType] && ntMVAeleID() > 0.5 )
       )
      )passFake = kTRUE;
   

@@ -103,29 +103,6 @@ void HadTopVars::FillBranches(EventContainer * evtObj){
   _floatVars["hadTop_mass_b"] = hadTop_mass_b;
 
   evtObj->HadTop_BDT = hadTop_BDT;
-  if(evtObj -> _sync == 51){                                                                      
-    std::cout << " nEvent "<< evtObj->eventNumber << std::endl;
-    std::cout << " hadTop_BDT "<< hadTop_BDT << std::endl;
-    std::cout << " hadTop_pt "<< hadTop_pt << std::endl;
-    std::cout << " bjet_hadTop_index "<< bjet_hadTop_index << std::endl;
-    std::cout << " wjet1_hadTop_index "<< wjet1_hadTop_index << std::endl;
-    std::cout << " wjet2_hadTop_index "<< wjet2_hadTop_index << std::endl;
-    std::cout << " hadTop_btagDisc_b "<< hadTop_btagDisc_b << std::endl;
-    std::cout << " hadTop_btagDisc_Wj1 "<< hadTop_btagDisc_Wj1 << std::endl;
-    std::cout << " hadTop_btagDisc_Wj2 "<< hadTop_btagDisc_Wj2 << std::endl;
-    std::cout << " hadTop_qg_Wj1 "<< hadTop_qg_Wj1 << std::endl;
-    std::cout << " hadTop_qg_Wj2 "<< hadTop_qg_Wj2 << std::endl;
-    std::cout << " hadTop_m_Wj1Wj2_div_m_bWj1Wj2 "<< hadTop_m_Wj1Wj2_div_m_bWj1Wj2 << std::endl;
-    std::cout << " hadTop_pT_Wj1Wj2 "<< hadTop_pT_Wj1Wj2 << std::endl;
-    std::cout << " hadTop_dR_Wj1Wj2 "<< hadTop_dR_Wj1Wj2 << std::endl;
-    std::cout << " hadTop_m_bWj1Wj2 "<< hadTop_m_bWj1Wj2 << std::endl;
-    std::cout << " hadTop_dR_bW "<< hadTop_dR_bW << std::endl;
-    std::cout << " hadTop_m_bWj1 "<< hadTop_m_bWj1 << std::endl;
-    std::cout << " hadTop_m_bWj2 "<< hadTop_m_bWj2 << std::endl;
-    std::cout << " hadTop_mass_Wj1 "<< hadTop_mass_Wj1 << std::endl;
-    std::cout << " hadTop_pT_Wj2 "<< hadTop_pT_Wj2 << std::endl;
-    std::cout << " hadTop_mass_b "<< hadTop_mass_b << std::endl;
-  }                          
 
   Int_t jet_index=-1;
   for(uint jet_en=0; jet_en< evtObj->jets.size();jet_en++){
@@ -183,8 +160,37 @@ void HadTopVars::Reco_hadTop(EventContainer *EvtObj){
         EvtObj->var_pT_b = bjet.Pt();
         EvtObj->var_mass_b = bjet.M();
      
-        float xgbOutput = EvtObj->resTop_reader->EvaluateMVA("BDT");
+        float xgbOutput = EvtObj->hadTop_reader->EvaluateMVA("BDTG method");
         float score = 1/(1+sqrt((1-xgbOutput)/(1+xgbOutput)));   
+    
+        if(EvtObj -> _sync == 51 && EvtObj->eventNumber == 166766){                                                                      
+          std::cout << " nEvent "<< EvtObj->eventNumber << std::endl;
+          std::cout << " xgbOutput "<< xgbOutput << std::endl;
+          std::cout << " hadTop_BDT "<< score << std::endl;
+          std::cout << " hadTop_pt "<< (w1jet + w2jet +bjet).Pt() << std::endl;
+          std::cout << " bjet_hadTop_index "<< bjet.index()  << std::endl;
+          std::cout << " wjet1_hadTop_index "<< w1jet.index() << std::endl;
+          std::cout << " wjet2_hadTop_index "<< w2jet.index() << std::endl;
+          std::cout << " hadTop_btagDisc_b "<< EvtObj->var_btagDisc_b << std::endl;
+          std::cout << " hadTop_btagDisc_Wj1 "<< EvtObj->var_btagDisc_Wj1 << std::endl;
+          std::cout << " hadTop_btagDisc_Wj2 "<< EvtObj->var_btagDisc_Wj2 << std::endl;
+          std::cout << " hadTop_qg_Wj1 "<< EvtObj->var_qg_Wj1 << std::endl;
+          std::cout << " hadTop_qg_Wj2 "<< EvtObj->var_qg_Wj2 << std::endl;
+          std::cout << " hadTop_m_Wj1Wj2_div_m_bWj1Wj2 "<< EvtObj->var_m_Wj1Wj2_div_m_bWj1Wj2 << std::endl;
+          std::cout << " hadTop_pT_Wj1Wj2 "<< EvtObj->var_pT_Wj1Wj2 << std::endl;
+          std::cout << " hadTop_dR_Wj1Wj2 "<< EvtObj->var_dR_Wj1Wj2 << std::endl;
+          std::cout << " hadTop_m_bWj1Wj2 "<< EvtObj->var_m_bWj1Wj2 << std::endl;
+          std::cout << " hadTop_dR_bW "<< EvtObj->var_dR_bW << std::endl;
+          std::cout << " hadTop_m_bWj1 "<< EvtObj->var_m_bWj1 << std::endl;
+          std::cout << " hadTop_m_bWj2 "<< EvtObj->var_m_bWj2 << std::endl;
+          std::cout << " hadTop_mass_Wj1 "<< EvtObj->var_mass_Wj1 << std::endl;
+          std::cout << " hadTop_pT_Wj2 "<< EvtObj->var_pT_Wj2 << std::endl;
+          std::cout << " hadTop_mass_Wj2 "<< EvtObj->var_mass_Wj2 << std::endl;
+          std::cout << " hadTop_pT_b "<< EvtObj->var_pT_b << std::endl;
+          std::cout << " hadTop_mass_b "<< EvtObj->var_mass_b << std::endl;
+        }                          
+    
+    
         if(score > hadTop_BDT){
             hadTop_BDT = score;
             hadTop_pt = (w1jet + w2jet +bjet).Pt();

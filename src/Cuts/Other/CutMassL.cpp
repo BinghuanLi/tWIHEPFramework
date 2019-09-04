@@ -151,7 +151,7 @@ Bool_t CutMassL::Apply()
 
   Bool_t passesMassLCut = kTRUE;
 
-  Float_t MassL = EventContainerObj->massL;
+  Float_t MassL = EventContainerObj->massl;
 
   _hMassLBefore->Fill(MassL);
 

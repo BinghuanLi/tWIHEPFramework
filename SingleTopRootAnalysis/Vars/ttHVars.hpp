@@ -39,6 +39,7 @@ private:
     void Clear();
 
     void Cal_event_variables(EventContainer* EvtObj);
+    double min_Deta(Jet fwdJet, std::vector<Jet> selJets);
     double getMTlepmet(double phi1, double phi2, double pt1, double pt2);
     double get_Dilep_ttbarMVA(EventContainer* EvtObj);
     double get_Dilep_ttvMVA(EventContainer* EvtObj);
@@ -65,6 +66,10 @@ private:
     bool IstHlikeTriLepFake(EventContainer* EvtObj);
     bool IstHlikeQuaLepSR(EventContainer* EvtObj);
     bool IstHlikeQuaLepFake(EventContainer* EvtObj);
+   
+    //cp angles
+    double getAngleOfPlanes(TVector3 plane1_vectA, TVector3 plane1_vectB, TVector3 plane2_vectA, TVector3 plane2_vectB);
+    double get_boostedAngle(TLorentzVector Particle1_CMS, TLorentzVector Particle2_CMS, TLorentzVector plane1_vectA, TLorentzVector plane1_vectB, TLorentzVector plane2_vectA, TLorentzVector plane2_vectB);
     
     //utils
     double deltaPhi(double phi1, double phi2);
@@ -125,11 +130,13 @@ private:
     Double_t maxeta;
     Double_t Mt_metleadlep;
     Double_t SubCat2l;
+    Double_t massLT;
     Double_t massll;
     Double_t Sum2lCharge;
     float Dilep_bestMVA;
     float Dilep_worseMVA;
     float Dilep_pdgId;
+    float nElectron;
     float Dilep_htllv;
     Double_t Dilep_mtWmin;
     float Dilep_nTight;
@@ -190,6 +197,7 @@ private:
   int ele2_ismvasel;
   int ele2_isChargeConsistent;
   int ele2_passesConversionVeto;
+  
   /*
   bool mu1_mediumID;
   bool mu1_isfakeablesel;
@@ -418,6 +426,8 @@ private:
   float jet8_DeepCSV;
   float jet8_DeepJet;
   float jet8_QGdiscr;
+  float min_Deta_mostfwdJet_jet;
+  float min_Deta_leadfwdJet_jet;
   float jetFwd1_pt;
   float jetFwd1_eta;
   float jetFwd1_phi;
@@ -454,6 +464,8 @@ private:
   float mT_lep2;
   float mbb;
   float mbb_loose;
+  float angle_bbpp_loose2b;
+  float angle_bbpp_highest2b;
   float Hj_tagger;
   float HTT;
   int nBJetLoose;

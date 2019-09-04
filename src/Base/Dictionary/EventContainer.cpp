@@ -390,20 +390,21 @@ void EventContainer::Initialize( EventTree* eventTree, TruthTree* truthTree)
   Trig_2Mu =0;
   Trig_2Mu1Ele =0;
   Trig_3Mu =0;
-  metLD = -999.;
-  mht = -999.;
-  mhtT = -999.;
-  mht_met = -999.;
-  mhtT_met = -999.;
-  massL = -999.;
-  HiggsDecay = -999.;
-  Gen_type1PF_Met = -999.;
-  Gen_type1PF_px = -999.;
-  Gen_type1PF_py = -999.;
-  massL_SFOS = -999.;
-  mass_diele = -999.;
-  mass_dilep = -999.;
-  HadTop_BDT = -999.;
+  metLD = -9.;
+  mht = -9.;
+  mhtT = -9.;
+  mht_met = -9.;
+  mhtT_met = -9.;
+  massL = -9.;
+  massl = -9.;
+  HiggsDecay = -9.;
+  Gen_type1PF_Met = -9.;
+  Gen_type1PF_px = -9.;
+  Gen_type1PF_py = -9.;
+  massL_SFOS = -9.;
+  mass_diele = -9.;
+  mass_dilep = -9.;
+  HadTop_BDT = -9.;
   sync_runs.clear();
   sync_lumis.clear();
   sync_nEvts.clear();
@@ -614,20 +615,21 @@ Int_t EventContainer::ReadEvent()
     Jet25_phi.clear();
     Jet25_energy.clear();
 
-  metLD = -999.;
-  mht = -999.;
-  mhtT = -999.;
-  mht_met = -999.;
-  mhtT_met = -999.;
-  massL = -999.;
-  HiggsDecay = -999.;
-  Gen_type1PF_Met = -999.;
-  Gen_type1PF_px = -999.;
-  Gen_type1PF_py = -999.;
-  massL_SFOS = -999.;
-  mass_diele = -999.;
-  mass_dilep = -999.;
-  HadTop_BDT = -999.;
+  metLD = -9.;
+  mht = -9.;
+  mhtT = -9.;
+  mht_met = -9.;
+  mhtT_met = -9.;
+  massL = -9.;
+  massl = -9.;
+  HiggsDecay = -9.;
+  Gen_type1PF_Met = -9.;
+  Gen_type1PF_px = -9.;
+  Gen_type1PF_py = -9.;
+  massL_SFOS = -9.;
+  mass_diele = -9.;
+  mass_dilep = -9.;
+  HadTop_BDT = -9.;
   ////////////////////////////////////////////////////
   // Fill objects
   ////////////////////////////////////////////////////
@@ -1876,6 +1878,7 @@ void EventContainer::set_ttHDiLepMVA()
  * **************************************************************/
 void EventContainer::Cal_dilep_mass(){
     double diloosemass = 999;
+    double difakemass = 999;
     double lSFOSmass = 999;
     double dielemass = 999;
     double dilepmass = 999;
@@ -1899,9 +1902,10 @@ void EventContainer::Cal_dilep_mass(){
                 dielemass = (Lep0+Lep1).M(); 
         }
     }
-    massL = diloosemass;
+    massl = diloosemass;
     massL_SFOS = lSFOSmass;
     mass_diele = dielemass;
+    if (fakeLeptons.size()<2)return;
     if (fakeLeptons.size()>=2){
         Lepton fakelep0 = fakeLeptons.at(0);
         Lepton fakelep1 = fakeLeptons.at(1);
@@ -1912,14 +1916,15 @@ void EventContainer::Cal_dilep_mass(){
         if(fabs(fakelep0.pdgId())==11 && fabs(fakelep1.pdgId())==11) dilepmass = (FakeLep0+FakeLep1).M();
     }
     mass_dilep = dilepmass;
-    /*
     for(uint lep_en =0; lep_en < fakeLeptons.size(); lep_en++){
-        if(fabs(fakeLeptons.at(lep_en).pdgId())==11)FakeLep0.SetPtEtaPhiE(fakeLeptons.at(lep_en).Pt(), fakeLeptons.at(lep_en).Eta(), fakeLeptons.at(lep_en).Phi(), fakeLeptons.at(lep_en).E());
+        FakeLep0.SetPtEtaPhiE(fakeLeptons.at(lep_en).Pt(), fakeLeptons.at(lep_en).Eta(), fakeLeptons.at(lep_en).Phi(), fakeLeptons.at(lep_en).E());
         for(uint l_en =lep_en+1; l_en < fakeLeptons.size(); l_en++){
-           if(fabs(fakeLeptons.at(l_en).pdgId())==11)FakeLep1.SetPtEtaPhiE(fakeLeptons.at(l_en).Pt(), fakeLeptons.at(l_en).Eta(), fakeLeptons.at(l_en).Phi(), fakeLeptons.at(l_en).E());
-           if(fabs(mass_diele-91.2)>fabs((FakeLep0+FakeLep1).M()-91.2) && FakeLep1.Pt()>0 && FakeLep0.Pt()>0)dielemass = (FakeLep0+FakeLep1).M();
+           FakeLep1.SetPtEtaPhiE(fakeLeptons.at(l_en).Pt(), fakeLeptons.at(l_en).Eta(), fakeLeptons.at(l_en).Phi(), fakeLeptons.at(l_en).E());
+           if(difakemass> (FakeLep0+FakeLep1).M()) difakemass = (FakeLep0+FakeLep1).M();
         }
     }
+    massL = difakemass;
+    /*
     mass_diele = dielemass;
     if (fakeLeptons.size()>=2){
         Lepton fakelep0 = fakeLeptons.at(0);

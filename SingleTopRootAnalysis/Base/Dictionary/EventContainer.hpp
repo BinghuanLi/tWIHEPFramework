@@ -829,7 +829,8 @@ class EventContainer
     Double_t metLD;
     Double_t mass_diele;
     Double_t mass_dilep;
-    Double_t massL;
+    Double_t massL; // defined using fakeable leptons
+    Double_t massl; // defined using preselected leptons
     Double_t mht;
     Double_t mhtT;
     Double_t mht_met;

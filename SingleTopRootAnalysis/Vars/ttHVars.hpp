@@ -10,6 +10,8 @@
 #ifndef ttHVars_h
 #define ttHVars_h
 
+#include "SingleTopRootAnalysis/Base/Dictionary/mT2_2particle.hpp"
+#include "SingleTopRootAnalysis/Base/Dictionary/mT2_3particle.hpp"
 #include "SingleTopRootAnalysis/Base/Dictionary/VarBase.hpp"
 #include "SingleTopRootAnalysis/Base/Dictionary/EventContainer.hpp" 
 #include "SingleTopRootAnalysis/Particles/Recon/Lepton.hpp"
@@ -36,6 +38,7 @@ public:
   
 private:
     bool _useTTHLoose;
+    const double wBosonMass = 80.379;
     void Clear();
 
     void Cal_event_variables(EventContainer* EvtObj);
@@ -464,6 +467,9 @@ private:
   float mT_lep2;
   float mbb;
   float mbb_loose;
+  float mT2_top_3particle;
+  float mT2_top_2particle;
+  float mT2_W;
   float angle_bbpp_loose2b;
   float angle_bbpp_highest2b;
   float Hj_tagger;

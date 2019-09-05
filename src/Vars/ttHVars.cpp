@@ -15,7 +15,6 @@
 ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
 
   SetName("ttHVars");
-
   /*
   _doubleVecs["Jet25_isFromH"] = {-0.1, 1.9 }; 
   _doubleVecs["Jet25_isFromTop"] = {-0.1, 1.9 }; 
@@ -432,6 +431,9 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["mT_lep2"] = 999.;
   _floatVars["mbb"] = 999.;
   _floatVars["mbb_loose"] = 999.;
+  _floatVars["mT2_top_3particle"] = 999.;
+  _floatVars["mT2_top_2particle"] = 999.;
+  _floatVars["mT2_W"] = 999.;
   _floatVars["angle_bbpp_loose2b"] = 999.;
   _floatVars["angle_bbpp_highest2b"] = 999.;
   _floatVars["Hj_tagger"] = 999.;
@@ -944,6 +946,9 @@ void ttHVars::Clear(){
     mT_lep2 = -9;
     mbb = -9;
     mbb_loose = -9;
+    mT2_top_3particle = -9;
+    mT2_top_2particle = -9;
+    mT2_W = -9;
     angle_bbpp_loose2b = -9;
     angle_bbpp_highest2b = -9;
     Hj_tagger = -9;
@@ -1901,6 +1906,9 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["mT_lep2"] = mT_lep2;
   _floatVars["mbb"] = mbb;
   _floatVars["mbb_loose"] = mbb_loose;
+  _floatVars["mT2_top_3particle"] = mT2_top_3particle;
+  _floatVars["mT2_top_2particle"] = mT2_top_2particle;
+  _floatVars["mT2_W"] = mT2_W;
   _floatVars["angle_bbpp_loose2b"] = angle_bbpp_loose2b;
   _floatVars["angle_bbpp_highest2b"] = angle_bbpp_highest2b;
   _floatVars["Hj_tagger"] = Hj_tagger;
@@ -2356,7 +2364,51 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         // if there exist 2 loose b 
         if(fabs(loosebJet2.Pt())>0.0001) angle_bbpp_loose2b =get_boostedAngle(FakeLep1, FakeLep2, p1_CMS, p2_CMS, loosebJet1, loosebJet2); 
         if(Jets.size()>1)angle_bbpp_highest2b = get_boostedAngle( FakeLep1, FakeLep2, p1_CMS, p2_CMS, bJet1, bJet2);
+        // calculate mT2 vars
+        // https://github.com/HEP-KBFI/tth-htt/blob/MVA_studies/bin/analyze_2lss.cc#L1696-L1748 
+        if(Jets.size()>1){
+            mT2_2particle mT2Algo_2particle;
+            mT2Algo_2particle(
+                FakeLep1.Px(), FakeLep1.Py(), FakeLep1.M(),
+                FakeLep2.Px(), FakeLep2.Py(), FakeLep2.M(),
+                EvtObj->missingEx, EvtObj->missingEy, 0.);
+            mT2_W = mT2Algo_2particle.get_min_mT2();
             
+            double cSumPx = FakeLep1.Px() + FakeLep2.Px() + EvtObj->missingEx;
+            double cSumPy = FakeLep1.Py() + FakeLep2.Py() + EvtObj->missingEy;
+            mT2Algo_2particle(
+                Jets.at(0).Px(), Jets.at(0).Py(), Jets.at(0).M(),
+                Jets.at(1).Px(), Jets.at(1).Py(), Jets.at(1).M(),
+                cSumPx, cSumPy, wBosonMass);
+            mT2_top_2particle = mT2Algo_2particle.get_min_mT2();
+            
+            mT2_3particle mT2Algo_3particle;
+            mT2Algo_3particle(
+                Jets.at(0).Px(), Jets.at(0).Py(), Jets.at(0).M(),
+                Jets.at(1).Px(), Jets.at(1).Py(), Jets.at(1).M(),
+                FakeLep1.Px(), FakeLep1.Py(), FakeLep1.M(),
+                FakeLep2.Px(), FakeLep2.Py(), FakeLep2.M(),
+                EvtObj->missingEx, EvtObj->missingEy, 0.);
+            double mT2_top_3particle_permutation1 = mT2Algo_3particle.get_min_mT2();
+            mT2Algo_3particle(
+                Jets.at(0).Px(), Jets.at(0).Py(), Jets.at(0).M(),
+                Jets.at(1).Px(), Jets.at(1).Py(), Jets.at(1).M(),
+                FakeLep2.Px(), FakeLep2.Py(), FakeLep2.M(),
+                FakeLep1.Px(), FakeLep1.Py(), FakeLep1.M(),
+                EvtObj->missingEx, EvtObj->missingEy, 0.);
+            double mT2_top_3particle_permutation2 = mT2Algo_3particle.get_min_mT2();
+
+            if ( mT2_top_3particle_permutation1 <= mT2_top_3particle_permutation2 ) {
+                mT2_top_3particle = mT2_top_3particle_permutation1;
+            } else {
+                mT2_top_3particle = mT2_top_3particle_permutation2;
+            }
+            
+            //if(EvtObj->eventNumber == 999999 ){
+            //    std::cout<< EvtObj->eventNumber << " : mT2_W, " << mT2_W << std::endl;
+            //}
+        }
+
         if(lepton_num>=3){
             FakeLep3.SetPtEtaPhiE(thirdLepton.conept(),thirdLepton.Eta(),thirdLepton.Phi(),thirdLepton.E());
             lep3_E = thirdLepton.E();

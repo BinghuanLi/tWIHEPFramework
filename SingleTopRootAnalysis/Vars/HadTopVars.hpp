@@ -38,6 +38,7 @@ private:
     std::vector<double> Jet25_isToptag;
     Float_t hadTop_BDT;
     Float_t hadTop_pt;
+    Float_t hadTop_eta;
     
     Int_t bjet_hadTop_index;
     Int_t wjet1_hadTop_index;

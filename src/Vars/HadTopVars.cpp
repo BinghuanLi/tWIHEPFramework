@@ -19,9 +19,10 @@ HadTopVars::HadTopVars(bool makeHistos){
   
   _floatVars["hadTop_BDT"] = -1.;
   _floatVars["hadTop_pt"] = -1.;
-  _floatVars["bjet_resTop_index"] = -1.;
-  _floatVars["wjet1_resTop_index"] = -1.;
-  _floatVars["wjet2_resTop_index"] = -1.;
+  _floatVars["hadTop_eta"] = -1.;
+  _floatVars["bjet_hadTop_index"] = -1.;
+  _floatVars["wjet1_hadTop_index"] = -1.;
+  _floatVars["wjet2_hadTop_index"] = -1.;
   _floatVars["hadTop_btagDisc_b"] = -1.;
   _floatVars["hadTop_btagDisc_Wj1"] = -1.;
   _floatVars["hadTop_btagDisc_Wj2"] = -1.;
@@ -49,8 +50,9 @@ HadTopVars::HadTopVars(bool makeHistos){
 
 void HadTopVars::Clear(){
   Jet25_isToptag.clear();
-  hadTop_BDT= -999;
-  hadTop_pt= -999;
+  hadTop_BDT= -9;
+  hadTop_pt= -9;
+  hadTop_eta= -9;
   bjet_hadTop_index=-999;
   wjet1_hadTop_index=-999;
   wjet2_hadTop_index=-999;
@@ -83,6 +85,7 @@ void HadTopVars::FillBranches(EventContainer * evtObj){
   
   _floatVars["hadTop_BDT"] = hadTop_BDT;
   _floatVars["hadTop_pt"] = hadTop_pt;
+  _floatVars["hadTop_eta"] = hadTop_eta;
   _floatVars["bjet_hadTop_index"] = bjet_hadTop_index;
   _floatVars["wjet1_hadTop_index"] = wjet1_hadTop_index;
   _floatVars["wjet2_hadTop_index"] = wjet2_hadTop_index;
@@ -107,6 +110,7 @@ void HadTopVars::FillBranches(EventContainer * evtObj){
     std::cout << " nEvent "<< evtObj->eventNumber << std::endl;
     std::cout << " hadTop_BDT "<< hadTop_BDT << std::endl;
     std::cout << " hadTop_pt "<< hadTop_pt << std::endl;
+    std::cout << " hadTop_eta "<< hadTop_eta << std::endl;
     std::cout << " bjet_hadTop_index "<< bjet_hadTop_index << std::endl;
     std::cout << " wjet1_hadTop_index "<< wjet1_hadTop_index << std::endl;
     std::cout << " wjet2_hadTop_index "<< wjet2_hadTop_index << std::endl;
@@ -188,6 +192,7 @@ void HadTopVars::Reco_hadTop(EventContainer *EvtObj){
         if(score > hadTop_BDT){
             hadTop_BDT = score;
             hadTop_pt = (w1jet + w2jet +bjet).Pt();
+            hadTop_eta = (w1jet + w2jet +bjet).Eta();
 
             bjet_hadTop_index = bjet.index();
             wjet1_hadTop_index = w1jet.index();

@@ -85,6 +85,7 @@
 #include "SingleTopRootAnalysis/Vars/HadTopVars.hpp"
 #include "SingleTopRootAnalysis/Vars/ResTopVars.hpp"
 #include "SingleTopRootAnalysis/Vars/ttHVars.hpp"
+#include "SingleTopRootAnalysis/Vars/TruthVars.hpp"
 #include "SingleTopRootAnalysis/Vars/HjTagger.hpp"
 #include "SingleTopRootAnalysis/Vars/WeightVars.hpp"
 #include "SingleTopRootAnalysis/Vars/DNNVars.hpp"
@@ -365,8 +366,8 @@ int main(int argc, char **argv)
   }
   
   mystudy.AddCut(new CutJetN(particlesObj,nJets));
-  mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
-  mystudy.AddCut(new CutLightJetN(particlesObj));
+  //mystudy.AddCut(new CutBTaggedJetN(particlesObj,nbJets, nbMediumJets));
+  //mystudy.AddCut(new CutLightJetN(particlesObj));
   
   //mystudy.AddCut(new CutLeptonN(particlesObj, leptonTypeToSelect));     //require that lepton to be isolated, central, high pt
   /*
@@ -438,7 +439,12 @@ int main(int argc, char **argv)
   mystudy.AddVars(new HadTopVars());
  
   mystudy.AddVars(new ResTopVars());
-  mystudy.AddVars(new ttHVars(false, false)); // fill histo, use TTHLoose
+  if(!isTrainMVA){
+    mystudy.AddVars(new ttHVars(false, false)); // fill histo, use TTHLoose
+  }else{
+    mystudy.AddVars(new ttHVars(false, true)); // fill histo, use TTHLoose
+  }
+  mystudy.AddVars(new TruthVars());
   
   mystudy.AddVars(new HjTagger());
   

@@ -62,19 +62,15 @@ PileUp.Source.100022: TTToSemiLeptonic_PSweights
 
 # 100300 - TTH_ctcvcp
 Weight.Source.100300: 0.5071
-Events.Source.100300: 0.0001705719503
-CTCVCP.Source.100300: 8332000
-SMrwgt.Source.100300: 1421.20549
+Events.Source.100300: 1421.20549
 PileUp.Source.100300: TTH_ctcvcp
 
 # 100301 - THQ_ctcvcp
 Weight.Source.100301: 0.07096
-Events.Source.100301: 1.764383144e-05
-CTCVCP.Source.100301: 9453248
-SMrwgt.Source.100301: 166.7915143
+Events.Source.100301: 166.7915143
 PileUp.Source.100301: THQ_ctcvcp
 
 # 100302 - THW_ctcvcp
 Weight.Source.100302: 0.01561
-Events.Source.100302: 4.094315962e-05
-CTCVCP.Source.100302: 4679163
+Events.Source.100302: 191.5797176
+PileUp.Source.100302: THW_ctcvcp

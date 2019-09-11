@@ -44,9 +44,10 @@ CutLeptonTight::CutLeptonTight(EventContainer *EventContainerObj, TString lepton
   if( 
       leptonTypePassed.CompareTo("TTHTight") 
       && leptonTypePassed.CompareTo("TTHFake")
+      && leptonTypePassed.CompareTo("TTHLoose")
        ){
     std::cout << "ERROR " << "<CutLeptonTight::CutLeptonTight()> " 
-	      << "Must pass TTHFake, TTHTight to constructor" << std::endl;
+	      << "Must pass TTHLoose, TTHFake, TTHTight to constructor" << std::endl;
     exit(8);
   } //if
   leptonType = leptonTypePassed;
@@ -222,7 +223,10 @@ Bool_t CutLeptonTight::Apply()
 
 
   //Assign collections to the above defined vectors
-  if("TTHFake" == leptonType) {
+  if("TTHLoose" == leptonType) {
+    leptonVector.assign(EventContainerObj -> looseLeptons.begin(), EventContainerObj -> looseLeptons.end());
+  }
+  else if("TTHFake" == leptonType) {
     leptonVector.assign(EventContainerObj -> fakeLeptons.begin(), EventContainerObj -> fakeLeptons.end());
   }
   else if("TTHTight" == leptonType) {
@@ -230,7 +234,7 @@ Bool_t CutLeptonTight::Apply()
   }
   else{
     std::cout << "ERROR " << "<CutLeptonTight::Apply()> "
-	      << "leptonType must be TTHTight, TTHFake" << std::endl;
+	      << "leptonType must be TTHTight, TTHFake,TTHLoose" << std::endl;
     exit(8);
   } //else                                                                                                          
 

@@ -404,6 +404,7 @@ void EventContainer::Initialize( EventTree* eventTree, TruthTree* truthTree)
   massL_SFOS = -9.;
   mass_diele = -9.;
   mass_dilep = -9.;
+  mass_dillep = -9.;
   HadTop_BDT = -9.;
   sync_runs.clear();
   sync_lumis.clear();
@@ -629,6 +630,7 @@ Int_t EventContainer::ReadEvent()
   massL_SFOS = -9.;
   mass_diele = -9.;
   mass_dilep = -9.;
+  mass_dillep = -9.;
   HadTop_BDT = -9.;
   ////////////////////////////////////////////////////
   // Fill objects
@@ -1882,11 +1884,18 @@ void EventContainer::Cal_dilep_mass(){
     double lSFOSmass = 999;
     double dielemass = 999;
     double dilepmass = 999;
+    double dillepmass = 999;
     if (looseLeptons.size()<2)return;
     TLorentzVector Lep0(0,0,0,0); 
     TLorentzVector Lep1(0,0,0,0);
     TLorentzVector FakeLep0(0,0,0,0); 
     TLorentzVector FakeLep1(0,0,0,0);
+    Lepton looselep0 = looseLeptons.at(0);
+    Lepton looselep1 = looseLeptons.at(1);
+    Lep0.SetPtEtaPhiE(looselep0.Pt(),looselep0.Eta(),looselep0.Phi(),looselep0.E());
+    Lep1.SetPtEtaPhiE(looselep1.Pt(),looselep1.Eta(),looselep1.Phi(),looselep1.E());
+    if(fabs(looselep0.pdgId())==11 && fabs(looselep1.pdgId())==11) dillepmass = (Lep0+Lep1).M();
+    mass_dillep = dillepmass;
     // dilep mass
     for(uint lep_en =0; lep_en < looseLeptons.size(); lep_en++){
         Lep0.SetPtEtaPhiE(looseLeptons.at(lep_en).Pt(), looseLeptons.at(lep_en).Eta(), looseLeptons.at(lep_en).Phi(), looseLeptons.at(lep_en).E());
@@ -1909,8 +1918,6 @@ void EventContainer::Cal_dilep_mass(){
     if (fakeLeptons.size()>=2){
         Lepton fakelep0 = fakeLeptons.at(0);
         Lepton fakelep1 = fakeLeptons.at(1);
-        //FakeLep0.SetPtEtaPhiE(fakelep0.conept(),fakelep0.Eta(),fakelep0.Phi(),fakelep0.E());
-        //FakeLep1.SetPtEtaPhiE(fakelep1.conept(),fakelep1.Eta(),fakelep1.Phi(),fakelep1.E());
         FakeLep0.SetPtEtaPhiE(fakelep0.Pt(),fakelep0.Eta(),fakelep0.Phi(),fakelep0.E());
         FakeLep1.SetPtEtaPhiE(fakelep1.Pt(),fakelep1.Eta(),fakelep1.Phi(),fakelep1.E());
         if(fabs(fakelep0.pdgId())==11 && fabs(fakelep1.pdgId())==11) dilepmass = (FakeLep0+FakeLep1).M();

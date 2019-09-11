@@ -1,0 +1,365 @@
+#A short script that takes input from the user to create a set of file lists to run on condor. the inputs are:
+# Number of files per job - how many files to put in each file list
+# Name of dataset
+# Total number of files in dataset
+# Dataset's designated number according to the configuration file in configs
+
+import sys,os
+
+treeName = "OutTree_"
+
+datasets = [
+# 2016
+"Legacy16V1_TTHnobb", "Legacy16V1_ttHnobb", "Legacy16V1_THQ_TuneCP5_ctcvcp", "Legacy16V1_THQ_Tune8M1_ctcvcp", "Legacy16V1_THQ", "Legacy16V1_THW_TuneCP5_ctcvcp", "Legacy16V1_THW_Tune8M1_ctcvcp", "Legacy16V1_THW", "Legacy16V1_TTWJets", "Legacy16V1_TTWW", 
+"Legacy16V1_TTZ_M1to10", "Legacy16V1_TTZ_M10_ext1", "Legacy16V1_TTZ_M10_ext2", "Legacy16V1_ST_sCh_lepDecay", "Legacy16V1_ST_sCh_lepDecay_PS", "Legacy16V1_ST_tCh_top", "Legacy16V1_ST_tCh_antitop", "Legacy16V1_ST_tCh_antitop_PS", "Legacy16V1_ST_tW_top", "Legacy16V1_ST_tW_antitop", 
+"Legacy16V1_tWll", "Legacy16V1_TTTo2L_PS", "Legacy16V1_TTToSemiLep_PS", "Legacy16V1_TTToHad_PS", "Legacy16V1_TTGJets_v1", "Legacy16V1_TTGJets_ext", "Legacy16V1_TGJetsLep", "Legacy16V1_WGToLNuG_ext1", "Legacy16V1_WGToLNuG_ext2", "Legacy16V1_WGToLNuG_ext3", 
+"Legacy16V1_ZGToLLG", "Legacy16V1_DYJets_M10to50", "Legacy16V1_DYJets_M50", "Legacy16V1_WZG", "Legacy16V1_WWTo2LNu", "Legacy16V1_WZTo3LNu", "Legacy16V1_ZZTo4L", "Legacy16V1_WJets_v1", "Legacy16V1_WJets_ext", "Legacy16V1_WW_DS", 
+"Legacy16V1_WWW", "Legacy16V1_WWZ", "Legacy16V1_WZZ", "Legacy16V1_ZZZ", "Legacy16V1_TTTT", "Legacy16V1_tZq_ext", "Legacy16V1_tZq_PS", "Legacy16V1_WpWpJJ", "Legacy16V1_GGHToTauTau", "Legacy16V1_VBFHToTauTau", 
+"Legacy16V1_VHToNonbb", "Legacy16V1_ZHTobb", "Legacy16V1_ZHToTauTau", "Legacy16V1_ttZ", "Legacy16V1_ttW", "Legacy16V1_TTJets_DiLep_v1", "Legacy16V1_TTJets_DiLep_ext", "Legacy16V1_TTJets_TToSingleLep_v1", "Legacy16V1_TTJets_TToSingleLep_ext", "Legacy16V1_TTJets_TbarToSingleLep_v1", 
+"Legacy16V1_TTJets_TbarToSingleLep_ext","Legacy16V1_TTH_ctcvcp", "Legacy16V1_ggHToTauTau_v3", "Legacy16V1_ggHToZZTo4L", "Legacy16V1_ggHToWWToLNuQQ", "Legacy16V1_ggHToWWTo2L2Nu", "Legacy16V1_ggHToMuMu", "Legacy16V1_ggHToBB_v2", "Legacy16V1_ggHToBB_ext1", "Legacy16V1_ggHToGG", 
+"Legacy16V1_VBFHToZZTo4L","Legacy16V1_VBFHToWWToLNuQQ", "Legacy16V1_VBFHToWWTo2L2Nu", "Legacy16V1_VBFHToMuMu", "Legacy16V1_VBFHToBB_v1", "Legacy16V1_VBFHToBB_ext1", "Legacy16V1_VBFHToGG_ext1", "Legacy16V1_VBFHToGG_ext2",
+# 2017
+"Legacy17V1_TTHnobb_v1", "Legacy17V1_TTHnobb_ext", "Legacy17V1_ttHnobb", "Legacy17V1_THQ_ctcvcp", "Legacy17V1_THW_ctcvcp", "Legacy17V1_TTWJets", "Legacy17V1_TTW_PS", "Legacy17V1_TTWW", "Legacy17V1_TTZ_M1to10", "Legacy17V1_TTZ_M10",
+"Legacy17V1_TTZ_M10_PS", "Legacy17V1_ST_sCh_lepDecay", "Legacy17V1_ST_sCh_lepDecay_PS", "Legacy17V1_ST_tCh_top", "Legacy17V1_ST_tCh_top_PS", "Legacy17V1_ST_tCh_antitop", "Legacy17V1_ST_tCh_antitop_PS", "Legacy17V1_ST_tW_top", "Legacy17V1_ST_tW_top_PS", "Legacy17V1_ST_tW_antitop",
+"Legacy17V1_ST_tW_antitop_PS", "Legacy17V1_tWll", "Legacy17V1_TTTo2L", "Legacy17V1_TTTo2L_PS", "Legacy17V1_TTToSemiLep", "Legacy17V1_TTToSemiLep_PS", "Legacy17V1_TTToHad", "Legacy17V1_TTToHad_PS", "Legacy17V1_TTGJets_v1", "Legacy17V1_TTGJets_ext", 
+"Legacy17V1_TGJetsLep", "Legacy17V1_WGToLNuG_Tune", "Legacy17V1_ZGToLLG_01J", "Legacy17V1_W1JetsToLNu", "Legacy17V1_W2JetsToLNu", "Legacy17V1_W3JetsToLNu", "Legacy17V1_W4JetsToLNu", "Legacy17V1_DYJets_M10to50_v1", "Legacy17V1_DYJets_M10to50_ext", "Legacy17V1_DYJets_M50_v1",
+"Legacy17V1_DYJets_M50_ext", "Legacy17V1_WZG", "Legacy17V1_WWTo2LNu_v1", "Legacy17V1_WWTo2LNu_ext", "Legacy17V1_WZTo3LNu", "Legacy17V1_ZZTo4L_v1", "Legacy17V1_ZZTo4L_ext1", "Legacy17V1_ZZTo4L_ext2", "Legacy17V1_WJets_v1", "Legacy17V1_WJets_ext",
+"Legacy17V1_WW_DS", "Legacy17V1_WWW", "Legacy17V1_WWZ", "Legacy17V1_WZZ", "Legacy17V1_ZZZ", "Legacy17V1_TTTT", "Legacy17V1_TTTT_PS", "Legacy17V1_tZq", "Legacy17V1_WpWpJJ", "Legacy17V1_GGHToTauTau_v1",
+"Legacy17V1_GGHToTauTau_ext", "Legacy17V1_VBFHToTauTau", "Legacy17V1_VHToNonbb", "Legacy17V1_ZHTobb", "Legacy17V1_ZHToTauTau", "Legacy17V1_ttZ_v1", "Legacy17V1_ttZ_ext", "Legacy17V1_ttW_v1", "Legacy17V1_ttW_ext", "Legacy17V1_TTJets_DiLep", 
+"Legacy17V1_TTJets_TToSingleLep", "Legacy17V1_TTJets_TbarToSingleLep",
+"Legacy17V1_TTH_ctcvcp", "Legacy17V1_ggHToZZTo4L_ext1", "Legacy17V1_ggHToZZTo4L_ext3", "Legacy17V1_ggHToZZTo4L_ext4", "Legacy17V1_ggHToZZTo2L2Q", "Legacy17V1_ggHToWWToLNuQQ", "Legacy17V1_ggHToWWTo2L2Nu", "Legacy17V1_ggHToMuMu_v1", "Legacy17V1_ggHToMuMu_ext1", "Legacy17V1_ggHToBB",
+"Legacy17V1_ggHToGG", "Legacy17V1_VBFHToZZTo4L_ext2", "Legacy17V1_VBFHToZZTo4L_ext1", "Legacy17V1_VBFHToZZTo4L_v1", "Legacy17V1_VBFHToWWToLNuQQ", "Legacy17V1_VBFHToWWTo2L2Nu", "Legacy17V1_VBFHToMuMu", "Legacy17V1_VBFHToBB", "Legacy17V1_VBFHToGG",
+# 2018
+"Legacy18V1_TTHnobb", "Legacy18V1_TTH_ctcvcp", "Legacy18V1_THQ_ctcvcp", "Legacy18V1_THW_ctcvcp", "Legacy18V1_TTWJets", "Legacy18V1_TTWW_v1", "Legacy18V1_TTWW_ext1", "Legacy18V1_TTZ_M1to10", "Legacy18V1_TTZ_M10", "Legacy18V1_ST_sCh_lepDecay",
+"Legacy18V1_ST_tCh_top", "Legacy18V1_ST_tCh_antitop", "Legacy18V1_ST_tW_top", "Legacy18V1_ST_tW_antitop", "Legacy18V1_tWll", "Legacy18V1_TTTo2L", "Legacy18V1_TTToSemiLep", "Legacy18V1_TTToHad", "Legacy18V1_TTGJets", "Legacy18V1_TGJetsLep",
+"Legacy18V1_WGToLNuG_Tune", "Legacy18V1_ZGToLLG_01J", "Legacy18V1_W1JetsToLNu", "Legacy18V1_W2JetsToLNu", "Legacy18V1_W3JetsToLNu", "Legacy18V1_W4JetsToLNu", "Legacy18V1_DYJets_M10to50", "Legacy18V1_DYJets_M50_v1", "Legacy18V1_DYJets_M50_ext", "Legacy18V1_WZG",
+"Legacy18V1_WWTo2LNu", "Legacy18V1_WZTo3LNu", "Legacy18V1_ZZTo4L_v1", "Legacy18V1_ZZTo4L_ext", "Legacy18V1_WJets", "Legacy18V1_WW_DS", "Legacy18V1_WWW", "Legacy18V1_WWZ", "Legacy18V1_WZZ", "Legacy18V1_ZZZ",
+"Legacy18V1_TTTT", "Legacy18V1_tZq", "Legacy18V1_WpWpJJ", "Legacy18V1_GGHToTauTau", "Legacy18V1_VBFHToTauTau", "Legacy18V1_VHToNonbb", "Legacy18V1_ZHTobb_v2", "Legacy18V1_ZHTobb_ext", "Legacy18V1_ZHToTauTau", "Legacy18V1_ttW_Tune",
+"Legacy18V1_ttZ_Tune", "Legacy18V1_TTJets_mad", "Legacy18V1_TTJets_amc", "Legacy18V1_TTJets_TbarToSingleLep", "Legacy18V1_TTJets_TToSingleLep", "Legacy18V1_TTJets_DiLep",
+"Legacy18V1_ttHToNonbb", "Legacy18V1_ggHToZZTo4L", "Legacy18V1_ggHToZZTo2L2Q", "Legacy18V1_ggHToWWToLNuQQ", "Legacy18V1_ggHToWWTo2L2Nu", "Legacy18V1_ggHToMuMu_v2", "Legacy18V1_ggHToMuMu_ext1", "Legacy18V1_ggHToBB", "Legacy18V1_ggHToGG", "Legacy18V1_VBFHToZZTo4L",
+"Legacy18V1_VBFHToWWToLNuQQ", "Legacy18V1_VBFHToWWTo2L2Nu", "Legacy18V1_VBFHToMuMu", "Legacy18V1_VBFHToBB", "Legacy18V1_VBFHToGG",
+]
+
+datasetID = {
+# 2016
+"Legacy16V1_TTHnobb":100000, "Legacy16V1_ttHnobb":100001, "Legacy16V1_THQ_TuneCP5_ctcvcp":100002, "Legacy16V1_THQ_Tune8M1_ctcvcp":100003, "Legacy16V1_THQ":100004, "Legacy16V1_THW_TuneCP5_ctcvcp":100005, "Legacy16V1_THW_Tune8M1_ctcvcp":100006, "Legacy16V1_THW":100007, "Legacy16V1_TTWJets":100008, "Legacy16V1_TTWW":100009, 
+"Legacy16V1_TTZ_M1to10":100010, "Legacy16V1_TTZ_M10_ext1":100011, "Legacy16V1_TTZ_M10_ext2":100012, "Legacy16V1_ST_sCh_lepDecay":100013, "Legacy16V1_ST_sCh_lepDecay_PS":100014, "Legacy16V1_ST_tCh_top":100015, "Legacy16V1_ST_tCh_antitop":100016, "Legacy16V1_ST_tCh_antitop_PS":100017, "Legacy16V1_ST_tW_top":100018, "Legacy16V1_ST_tW_antitop":100019, 
+"Legacy16V1_tWll":100020, "Legacy16V1_TTTo2L_PS":100021, "Legacy16V1_TTToSemiLep_PS":100022, "Legacy16V1_TTToHad_PS":100023, "Legacy16V1_TTGJets_v1":100024, "Legacy16V1_TTGJets_ext":100025, "Legacy16V1_TGJetsLep":100026, "Legacy16V1_WGToLNuG_ext1":100027, "Legacy16V1_WGToLNuG_ext2":100028, "Legacy16V1_WGToLNuG_ext3":100029, 
+"Legacy16V1_ZGToLLG":100030, "Legacy16V1_DYJets_M10to50":100031, "Legacy16V1_DYJets_M50":100032, "Legacy16V1_WZG":100033, "Legacy16V1_WWTo2LNu":100034, "Legacy16V1_WZTo3LNu":100035, "Legacy16V1_ZZTo4L":100036, "Legacy16V1_WJets_v1":100037, "Legacy16V1_WJets_ext":100038, "Legacy16V1_WW_DS":100039, 
+"Legacy16V1_WWW":100040, "Legacy16V1_WWZ":100041, "Legacy16V1_WZZ":100042, "Legacy16V1_ZZZ":100043, "Legacy16V1_TTTT":100044, "Legacy16V1_tZq_ext":100045, "Legacy16V1_tZq_PS":100046, "Legacy16V1_WpWpJJ":100047, "Legacy16V1_GGHToTauTau":100048, "Legacy16V1_VBFHToTauTau":100049, 
+"Legacy16V1_VHToNonbb":100050, "Legacy16V1_ZHTobb":100051, "Legacy16V1_ZHToTauTau":100052, "Legacy16V1_ttZ":100053, "Legacy16V1_ttW":100054, "Legacy16V1_TTJets_DiLep_v1":100055, "Legacy16V1_TTJets_DiLep_ext":100056, "Legacy16V1_TTJets_TToSingleLep_v1":100057, "Legacy16V1_TTJets_TToSingleLep_ext":100058, "Legacy16V1_TTJets_TbarToSingleLep_v1":100059, 
+"Legacy16V1_TTJets_TbarToSingleLep_ext":100060,"Legacy16V1_TTH_ctcvcp":100061, "Legacy16V1_ggHToTauTau_v3":100062, "Legacy16V1_ggHToZZTo4L":100063, "Legacy16V1_ggHToWWToLNuQQ":100064, "Legacy16V1_ggHToWWTo2L2Nu":100065, "Legacy16V1_ggHToMuMu":100066, "Legacy16V1_ggHToBB_v2":100067, "Legacy16V1_ggHToBB_ext1":100068, "Legacy16V1_ggHToGG":100069, 
+"Legacy16V1_VBFHToZZTo4L":100070,"Legacy16V1_VBFHToWWToLNuQQ":100071, "Legacy16V1_VBFHToWWTo2L2Nu":100072, "Legacy16V1_VBFHToMuMu":100073, "Legacy16V1_VBFHToBB_v1":100074, "Legacy16V1_VBFHToBB_ext1":100075, "Legacy16V1_VBFHToGG_ext1":100076, "Legacy16V1_VBFHToGG_ext2":100077,
+# 2017
+"Legacy17V1_TTHnobb_v1":100000, "Legacy17V1_TTHnobb_ext":100001, "Legacy17V1_ttHnobb":100002, "Legacy17V1_THQ_ctcvcp":100003, "Legacy17V1_THW_ctcvcp":100004, "Legacy17V1_TTWJets":100005, "Legacy17V1_TTW_PS":100006, "Legacy17V1_TTWW":100007, "Legacy17V1_TTZ_M1to10":100008, "Legacy17V1_TTZ_M10":100009,
+"Legacy17V1_TTZ_M10_PS":100010, "Legacy17V1_ST_sCh_lepDecay":100011, "Legacy17V1_ST_sCh_lepDecay_PS":100012, "Legacy17V1_ST_tCh_top":100013, "Legacy17V1_ST_tCh_top_PS":100014, "Legacy17V1_ST_tCh_antitop":100015, "Legacy17V1_ST_tCh_antitop_PS":100016, "Legacy17V1_ST_tW_top":100017, "Legacy17V1_ST_tW_top_PS":100018, "Legacy17V1_ST_tW_antitop":100019,
+"Legacy17V1_ST_tW_antitop_PS":100020, "Legacy17V1_tWll":100021, "Legacy17V1_TTTo2L":100022, "Legacy17V1_TTTo2L_PS":100023, "Legacy17V1_TTToSemiLep":100024, "Legacy17V1_TTToSemiLep_PS":100025, "Legacy17V1_TTToHad":100026, "Legacy17V1_TTToHad_PS":100027, "Legacy17V1_TTGJets_v1":100028, "Legacy17V1_TTGJets_ext":100029, 
+"Legacy17V1_TGJetsLep":100030, "Legacy17V1_WGToLNuG_Tune":100031, "Legacy17V1_ZGToLLG_01J":100032, "Legacy17V1_W1JetsToLNu":100033, "Legacy17V1_W2JetsToLNu":100034, "Legacy17V1_W3JetsToLNu":100035, "Legacy17V1_W4JetsToLNu":100036, "Legacy17V1_DYJets_M10to50_v1":100037, "Legacy17V1_DYJets_M10to50_ext":100038, "Legacy17V1_DYJets_M50_v1":100039,
+"Legacy17V1_DYJets_M50_ext":100040, "Legacy17V1_WZG":100041, "Legacy17V1_WWTo2LNu_v1":100042, "Legacy17V1_WWTo2LNu_ext":100043, "Legacy17V1_WZTo3LNu":100044, "Legacy17V1_ZZTo4L_v1":100045, "Legacy17V1_ZZTo4L_ext1":100046, "Legacy17V1_ZZTo4L_ext2":100047, "Legacy17V1_WJets_v1":100048, "Legacy17V1_WJets_ext":100049,
+"Legacy17V1_WW_DS":100050, "Legacy17V1_WWW":100051, "Legacy17V1_WWZ":100052, "Legacy17V1_WZZ":100053, "Legacy17V1_ZZZ":100054, "Legacy17V1_TTTT":100055, "Legacy17V1_TTTT_PS":100056, "Legacy17V1_tZq":100057, "Legacy17V1_WpWpJJ":100058, "Legacy17V1_GGHToTauTau_v1":100059,
+"Legacy17V1_GGHToTauTau_ext":100060, "Legacy17V1_VBFHToTauTau":100061, "Legacy17V1_VHToNonbb":100062, "Legacy17V1_ZHTobb":100063, "Legacy17V1_ZHToTauTau":100064, "Legacy17V1_ttZ_v1":100065, "Legacy17V1_ttZ_ext":100066, "Legacy17V1_ttW_v1":100067, "Legacy17V1_ttW_ext":100068, "Legacy17V1_TTJets_DiLep":100069, 
+"Legacy17V1_TTJets_TToSingleLep":100070, "Legacy17V1_TTJets_TbarToSingleLep":100071,
+"Legacy17V1_TTH_ctcvcp":100072, "Legacy17V1_ggHToZZTo4L_ext1":100073, "Legacy17V1_ggHToZZTo4L_ext3":100074, "Legacy17V1_ggHToZZTo4L_ext4":100075, "Legacy17V1_ggHToZZTo2L2Q":100076, "Legacy17V1_ggHToWWToLNuQQ":100077, "Legacy17V1_ggHToWWTo2L2Nu":100078, "Legacy17V1_ggHToMuMu_v1":100079, "Legacy17V1_ggHToMuMu_ext1":100080, "Legacy17V1_ggHToBB":100081,
+"Legacy17V1_ggHToGG":100082, "Legacy17V1_VBFHToZZTo4L_ext2":100083, "Legacy17V1_VBFHToZZTo4L_ext1":100084, "Legacy17V1_VBFHToZZTo4L_v1":100085, "Legacy17V1_VBFHToWWToLNuQQ":100086, "Legacy17V1_VBFHToWWTo2L2Nu":100087, "Legacy17V1_VBFHToMuMu":100088, "Legacy17V1_VBFHToBB":100089, "Legacy17V1_VBFHToGG":100090,
+# 2018
+"Legacy18V1_TTHnobb":100000, "Legacy18V1_TTH_ctcvcp":100001, "Legacy18V1_THQ_ctcvcp":100002, "Legacy18V1_THW_ctcvcp":100003, "Legacy18V1_TTWJets":100004, "Legacy18V1_TTWW_v1":100005, "Legacy18V1_TTWW_ext1":100006, "Legacy18V1_TTZ_M1to10":100007, "Legacy18V1_TTZ_M10":100008, "Legacy18V1_ST_sCh_lepDecay":100009,
+"Legacy18V1_ST_tCh_top":100010, "Legacy18V1_ST_tCh_antitop":100011, "Legacy18V1_ST_tW_top":100012, "Legacy18V1_ST_tW_antitop":100013, "Legacy18V1_tWll":100014, "Legacy18V1_TTTo2L":100015, "Legacy18V1_TTToSemiLep":100016, "Legacy18V1_TTToHad":100017, "Legacy18V1_TTGJets":100018, "Legacy18V1_TGJetsLep":100019,
+"Legacy18V1_WGToLNuG_Tune":100020, "Legacy18V1_ZGToLLG_01J":100021, "Legacy18V1_W1JetsToLNu":100022, "Legacy18V1_W2JetsToLNu":100023, "Legacy18V1_W3JetsToLNu":100024, "Legacy18V1_W4JetsToLNu":100025, "Legacy18V1_DYJets_M10to50":100026, "Legacy18V1_DYJets_M50_v1":100027, "Legacy18V1_DYJets_M50_ext":100028, "Legacy18V1_WZG":100029,
+"Legacy18V1_WWTo2LNu":100030, "Legacy18V1_WZTo3LNu":100031, "Legacy18V1_ZZTo4L_v1":100032, "Legacy18V1_ZZTo4L_ext":100033, "Legacy18V1_WJets":100034, "Legacy18V1_WW_DS":100035, "Legacy18V1_WWW":100036, "Legacy18V1_WWZ":100037, "Legacy18V1_WZZ":100038, "Legacy18V1_ZZZ":100039,
+"Legacy18V1_TTTT":100040, "Legacy18V1_tZq":100041, "Legacy18V1_WpWpJJ":100042, "Legacy18V1_GGHToTauTau":100043, "Legacy18V1_VBFHToTauTau":100044, "Legacy18V1_VHToNonbb":100045, "Legacy18V1_ZHTobb_v2":100046, "Legacy18V1_ZHTobb_ext":100047, "Legacy18V1_ZHToTauTau":100048, "Legacy18V1_ttW_Tune":100049,
+"Legacy18V1_ttZ_Tune":100050, "Legacy18V1_TTJets_mad":100051, "Legacy18V1_TTJets_amc":100052, "Legacy18V1_TTJets_TbarToSingleLep":100053, "Legacy18V1_TTJets_TToSingleLep":100054, "Legacy18V1_TTJets_DiLep":100055,
+"Legacy18V1_ttHToNonbb":100056, "Legacy18V1_ggHToZZTo4L":100057, "Legacy18V1_ggHToZZTo2L2Q":100058, "Legacy18V1_ggHToWWToLNuQQ":100059, "Legacy18V1_ggHToWWTo2L2Nu":100060, "Legacy18V1_ggHToMuMu_v2":100061, "Legacy18V1_ggHToMuMu_ext1":100062, "Legacy18V1_ggHToBB":100063, "Legacy18V1_ggHToGG":100064, "Legacy18V1_VBFHToZZTo4L":100065,
+"Legacy18V1_VBFHToWWToLNuQQ":100066, "Legacy18V1_VBFHToWWTo2L2Nu":100067, "Legacy18V1_VBFHToMuMu":100068, "Legacy18V1_VBFHToBB":100069, "Legacy18V1_VBFHToGG":100070,
+    }
+
+datasetDirs = {
+# 2016
+"Legacy16V1_DYJets_M10to50":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/DYJetsToLL_M-10to50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_DYJets_M10to50/190716_110037/0000"],
+"Legacy16V1_DYJets_M50":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Legacy16V1_DYJets_M50/190716_110255/0000"],
+"Legacy16V1_GGHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/GluGluHToTauTau_M125_13TeV_powheg_pythia8/Legacy16V1_GGHToTauTau/190716_114012/0000"],
+"Legacy16V1_ST_sCh_lepDecay":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_s-channel_4f_leptonDecays_13TeV-amcatnlo-pythia8_TuneCUETP8M1/Legacy16V1_ST_sCh_lepDecay/190716_101838/0000"],
+"Legacy16V1_ST_sCh_lepDecay_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_s-channel_4f_leptonDecays_13TeV_PSweights-amcatnlo-pythia8/Legacy16V1_ST_sCh_lepDecay_PS/190716_102058/0000"],
+"Legacy16V1_ST_tCh_antitop":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_t-channel_antitop_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/Legacy16V1_ST_tCh_antitop/190716_102546/0000"],
+"Legacy16V1_ST_tCh_antitop_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_t-channel_antitop_4f_inclusiveDecays_13TeV_PSweights-powhegV2-madspin/Legacy16V1_ST_tCh_antitop_PS/190716_102807/0000"],
+"Legacy16V1_ST_tCh_top":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/ST_t-channel_top_4f_inclusiveDecays_13TeV-powhegV2-madspin-pythia8_TuneCUETP8M1/Legacy16V1_ST_tCh_top/190902_215845/0000"],
+"Legacy16V1_ST_tW_antitop":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_tW_antitop_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/Legacy16V1_ST_tW_antitop/190716_103250/0000"],
+"Legacy16V1_ST_tW_top":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/Legacy16V1_ST_tW_top/190716_103032/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_tW_top_5f_inclusiveDecays_13TeV-powheg-pythia8_TuneCUETP8M1/Legacy16V1_ST_tW_top/190822_091302/0000"],
+"Legacy16V1_TGJetsLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TGJets_leptonDecays_13TeV_amcatnlo_madspin_pythia8/Legacy16V1_TGJetsLep/190822_092052/0000"],
+"Legacy16V1_THQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/THQ_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/Legacy16V1_THQ/190716_095748/0000"],
+"Legacy16V1_THQ_Tune8M1_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/THQ_ctcvcp_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/Legacy16V1_THQ_Tune8M1_ctcvcp/190902_225838/0000"],
+"Legacy16V1_THQ_TuneCP5_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/THQ_ctcvcp_HIncl_M125_TuneCP5_13TeV-madgraph-pythia8/Legacy16V1_THQ_TuneCP5_ctcvcp/190716_095308/0000"],
+"Legacy16V1_THW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/THW_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/Legacy16V1_THW/190822_090516/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/THW_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/Legacy16V1_THW/190716_100445/0000"],
+"Legacy16V1_THW_Tune8M1_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/THW_ctcvcp_Hincl_13TeV-madgraph-pythia8_TuneCUETP8M1/Legacy16V1_THW_Tune8M1_ctcvcp/190902_230043/0000"],
+"Legacy16V1_THW_TuneCP5_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/THW_ctcvcp_HIncl_M125_TuneCP5_13TeV-madgraph-pythia8/Legacy16V1_THW_TuneCP5_ctcvcp/190716_100005/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/THW_ctcvcp_HIncl_M125_TuneCP5_13TeV-madgraph-pythia8/Legacy16V1_THW_TuneCP5_ctcvcp/190823_083642/0000"],
+"Legacy16V1_TTGJets_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Legacy16V1_TTGJets_ext/190903_121355/0000"],
+"Legacy16V1_TTGJets_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Legacy16V1_TTGJets_v1/190716_104425/0000"],
+"Legacy16V1_TTHnobb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/Legacy16V1_TTHnobb/190716_094821/0000"],
+"Legacy16V1_TTH_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/ttH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/Legacy16V1_TTH_ctcvcp/190831_145247/0000",],
+"Legacy16V1_TTJets_DiLep_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_DiLep_ext/190822_094027/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_DiLep_ext/190716_115909/0000"],
+"Legacy16V1_TTJets_DiLep_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_DiLep_v1/190716_115642/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_DiLept_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_DiLep_v1/190822_093806/0000"],
+"Legacy16V1_TTJets_TToSingleLep_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_TToSingleLep_ext/190822_094243/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_TToSingleLep_ext/190717_040854/0000"],
+"Legacy16V1_TTJets_TToSingleLep_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_TToSingleLep_v1/190717_040636/0000"],
+"Legacy16V1_TTJets_TbarToSingleLep_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_TbarToSingleLep_ext/190902_220452/0000"],
+"Legacy16V1_TTJets_TbarToSingleLep_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTJets_SingleLeptFromTbar_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTJets_TbarToSingleLep_v1/190717_041116/0000"],
+"Legacy16V1_TTTT":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTTT_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_TTTT/190823_084646/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTTT_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_TTTT/190716_113044/0000"],
+"Legacy16V1_TTTo2L_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy16V1_TTTo2L_PS/190716_103728/0000"],
+"Legacy16V1_TTToHad_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy16V1_TTToHad_PS/190902_220043/0000"],
+"Legacy16V1_TTToSemiLep_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy16V1_TTToSemiLep_PS/190716_103948/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy16V1_TTToSemiLep_PS/190716_103948/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy16V1_TTToSemiLep_PS/190823_084123/0000"],
+"Legacy16V1_TTWJets":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/Legacy16V1_TTWJets/190716_100703/0000"],
+"Legacy16V1_TTWW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTWW_TuneCUETP8M2T4_13TeV-madgraph-pythia8/Legacy16V1_TTWW/190716_100921/0000"],
+"Legacy16V1_TTZ_M10_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_TTZ_M10_ext1/190716_101403/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_TTZ_M10_ext1/190822_090747/0000"],
+"Legacy16V1_TTZ_M10_ext2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_TTZ_M10_ext2/190716_101622/0000"],
+"Legacy16V1_TTZ_M1to10":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/TTZToLL_M-1to10_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_TTZ_M1to10/190716_101141/0000"],
+"Legacy16V1_VBFHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/VBFHToTauTau_M125_13TeV_powheg_pythia8/Legacy16V1_VBFHToTauTau/190716_114233/0000"],
+"Legacy16V1_VHToNonbb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/Legacy16V1_VHToNonbb/190716_114456/0000"],
+"Legacy16V1_WGToLNuG_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Legacy16V1_WGToLNuG_ext1/190716_105124/0000"],
+"Legacy16V1_WGToLNuG_ext2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Legacy16V1_WGToLNuG_ext2/190716_105342/0000"],
+"Legacy16V1_WGToLNuG_ext3":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Legacy16V1_WGToLNuG_ext3/190716_105603/0000"],
+"Legacy16V1_WJets_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_WJets_v1/190716_111428/0000"],
+"Legacy16V1_WWTo2LNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WWTo2L2Nu_13TeV-powheg/Legacy16V1_WWTo2LNu/190716_110730/0000"],
+"Legacy16V1_WWW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WWW_4F_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_WWW/190716_112130/0000"],
+"Legacy16V1_WWZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_WWZ/190716_112348/0000"],
+"Legacy16V1_WW_DS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/Legacy16V1_WW_DS/190716_111903/0000"],
+"Legacy16V1_WZG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WZG_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_WZG/190716_110514/0000"],
+"Legacy16V1_WZTo3LNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WZTo3LNu_TuneCUETP8M1_13TeV-powheg-pythia8/Legacy16V1_WZTo3LNu/190716_110951/0000"],
+"Legacy16V1_WZZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_WZZ/190716_112607/0000"],
+"Legacy16V1_WpWpJJ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/WpWpJJ_EWK-QCD_TuneCUETP8M1_13TeV-madgraph-pythia8/Legacy16V1_WpWpJJ/190716_113748/0000"],
+"Legacy16V1_ZGToLLG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Legacy16V1_ZGToLLG/190716_105821/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8/Legacy16V1_ZGToLLG/190822_092325/0000"],
+"Legacy16V1_ZHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ZHToTauTau_M125_13TeV_powheg_pythia8/Legacy16V1_ZHToTauTau/190806_041151/0000"],
+"Legacy16V1_ZHTobb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/Legacy16V1_ZHTobb/190716_114716/0000"],
+"Legacy16V1_ZZTo4L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ZZTo4L_13TeV_powheg_pythia8/Legacy16V1_ZZTo4L/190716_111210/0000"],
+"Legacy16V1_ZZZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ZZZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8/Legacy16V1_ZZZ/190716_112825/0000"],
+"Legacy16V1_tWll":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ST_tWll_5f_LO_13TeV-MadGraph-pythia8/Legacy16V1_tWll/190716_103509/0000"],
+"Legacy16V1_tZq_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/tZq_ll_4f_PSweights_13TeV-amcatnlo-pythia8/Legacy16V1_tZq_PS/190716_113526/0000"],
+"Legacy16V1_tZq_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/tZq_ll_4f_13TeV-amcatnlo-pythia8/Legacy16V1_tZq_ext/190716_113306/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/tZq_ll_4f_13TeV-amcatnlo-pythia8/Legacy16V1_tZq_ext/190822_093032/0000"],
+"Legacy16V1_ttHnobb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/ttHJetToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8_mWCutfix/Legacy16V1_ttHnobb/190902_215439/0000"],
+"Legacy16V1_ttW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ttWJets_13TeV_madgraphMLM/Legacy16V1_ttW/190716_115421/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ttWJets_13TeV_madgraphMLM/Legacy16V1_ttW/190822_093538/0000"],
+"Legacy16V1_ttZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ttZJets_13TeV_madgraphMLM-pythia8/Legacy16V1_ttZ/190716_115202/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2016/mc/ttZJets_13TeV_madgraphMLM-pythia8/Legacy16V1_ttZ/190822_093309/0000"],
+"Legacy16V1_VBFHToBB_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/Legacy16V1_VBFHToBB_ext1/190831_152709/0000"],
+"Legacy16V1_VBFHToBB_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/Legacy16V1_VBFHToBB_v1/190831_152501/0000"],
+"Legacy16V1_VBFHToGG_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToGG_M125_13TeV_amcatnlo_pythia8/Legacy16V1_VBFHToGG_ext1/190831_152916/0000"],
+"Legacy16V1_VBFHToGG_ext2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToGG_M125_13TeV_amcatnlo_pythia8/Legacy16V1_VBFHToGG_ext2/190831_153122/0000"],
+"Legacy16V1_VBFHToMuMu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy16V1_VBFHToMuMu/190831_152252/0000"],
+"Legacy16V1_VBFHToWWTo2L2Nu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToWWTo2L2Nu_M125_13TeV_powheg_JHUgenv628_pythia8/Legacy16V1_VBFHToWWTo2L2Nu/190831_152036/0000"],
+"Legacy16V1_VBFHToWWToLNuQQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8/Legacy16V1_VBFHToWWToLNuQQ/190831_151831/0000"],
+"Legacy16V1_VBFHToZZTo4L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/Legacy16V1_VBFHToZZTo4L/190831_151626/0000"],
+"Legacy16V1_WJets_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/WJetsToLNu_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/Legacy16V1_WJets_ext/190902_220251/0000"],
+"Legacy16V1_ggHToBB_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/Legacy16V1_ggHToBB_ext1/190831_151214/0000"],
+"Legacy16V1_ggHToBB_v2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/Legacy16V1_ggHToBB_v2/190831_151010/0000"],
+"Legacy16V1_ggHToGG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Legacy16V1_ggHToGG/190831_151419/0000"],
+"Legacy16V1_ggHToMuMu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy16V1_ggHToMuMu/190831_150802/0000"],
+"Legacy16V1_ggHToTauTau_v3":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToTauTau_M125_13TeV_powheg_pythia8/Legacy16V1_ggHToTauTau_v3/190831_145439/0000"],
+"Legacy16V1_ggHToWWTo2L2Nu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToWWTo2L2Nu_M125_13TeV_powheg_JHUgen_pythia8/Legacy16V1_ggHToWWTo2L2Nu/190831_150550/0000"],
+"Legacy16V1_ggHToWWToLNuQQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToWWToLNuQQ_M125_13TeV_powheg_JHUGenV628_pythia8/Legacy16V1_ggHToWWToLNuQQ/190831_150345/0000"],
+"Legacy16V1_ggHToZZTo4L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2016/mc/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUgenV6_pythia8/Legacy16V1_ggHToZZTo4L/190831_150135/0000"],
+
+# 2017
+"Legacy17V1_DYJets_M10to50_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_DYJets_M10to50_ext/190701_095137/0000"],
+"Legacy17V1_DYJets_M10to50_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_DYJets_M10to50_v1/190713_134317/0000"],
+"Legacy17V1_DYJets_M50_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy17V1_DYJets_M50_ext/190713_134529/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy17V1_DYJets_M50_ext/190713_134529/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy17V1_DYJets_M50_ext/190713_134529/0000"],
+"Legacy17V1_DYJets_M50_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy17V1_DYJets_M50_v1/190701_095345/0000"],
+"Legacy17V1_GGHToTauTau_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/GluGluHToTauTau_M125_13TeV_powheg_pythia8/Legacy17V1_GGHToTauTau_ext/190701_115251/0000"],
+"Legacy17V1_GGHToTauTau_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/GluGluHToTauTau_M125_13TeV_powheg_pythia8/Legacy17V1_GGHToTauTau_v1/190701_115044/0000"],
+"Legacy17V1_ST_sCh_lepDecay":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_ST_sCh_lepDecay/190701_085040/0000"],
+"Legacy17V1_ST_sCh_lepDecay_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_s-channel_4f_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/Legacy17V1_ST_sCh_lepDecay_PS/190701_085253/0000"],
+"Legacy17V1_ST_tCh_antitop":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_antitop_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8/Legacy17V1_ST_tCh_antitop/190701_085912/0000"],
+"Legacy17V1_ST_tCh_antitop_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tCh_antitop_PS/190701_090126/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tCh_antitop_PS/190701_090126/0000"],
+"Legacy17V1_ST_tCh_top":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_top_4f_inclusiveDecays_TuneCP5_13TeV-powhegV2-madspin-pythia8/Legacy17V1_ST_tCh_top/190701_085500/0000"],
+"Legacy17V1_ST_tCh_top_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tCh_top_PS/190701_085706/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tCh_top_PS/190701_085706/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tCh_top_PS/190701_085706/0000"],
+"Legacy17V1_ST_tW_antitop":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_ST_tW_antitop/190701_090759/0000"],
+"Legacy17V1_ST_tW_antitop_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tW_antitop_PS/190701_091010/0000"],
+"Legacy17V1_ST_tW_top":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_ST_tW_top/190701_090332/0000"],
+"Legacy17V1_ST_tW_top_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_tW_top_5f_inclusiveDecays_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_ST_tW_top_PS/190701_090543/0000"],
+"Legacy17V1_TGJetsLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TGJets_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/Legacy17V1_TGJetsLep/190701_093420/0000"],
+"Legacy17V1_THQ_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/Legacy17V1_THQ_ctcvcp/190701_083325/0000"],
+"Legacy17V1_THW_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/Legacy17V1_THW_ctcvcp/190701_083530/0000"],
+"Legacy17V1_TTGJets_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Legacy17V1_TTGJets_ext/190701_093209/0000"],
+"Legacy17V1_TTGJets_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Legacy17V1_TTGJets_v1/190701_092958/0000"],
+"Legacy17V1_TTHnobb_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_TTHnobb_ext/190701_082906/0000"],
+"Legacy17V1_TTHnobb_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_TTHnobb_v1/190701_082656/0000"],
+"Legacy17V1_TTJets_DiLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_TTJets_DiLep/190701_121237/0000"],
+"Legacy17V1_TTJets_TToSingleLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_TTJets_TToSingleLep/190701_121454/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_TTJets_TToSingleLep/190701_121454/0000"],
+"Legacy17V1_TTJets_TbarToSingleLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_TTJets_TbarToSingleLep/190701_121706/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_TTJets_TbarToSingleLep/190701_121706/0000"],
+"Legacy17V1_TTTT":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_TTTT/190701_114206/0000"],
+"Legacy17V1_TTTT_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTTT_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/Legacy17V1_TTTT_PS/190701_114415/0000"],
+"Legacy17V1_TTTo2L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_TTTo2L/190701_091430/0000"],
+"Legacy17V1_TTTo2L_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTTo2L_PS/190701_091721/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTTo2L_PS/190701_091721/0000"],
+"Legacy17V1_TTToHad":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_TTToHad/190713_133850/0000"],
+"Legacy17V1_TTToHad_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTToHad_PS/190713_134104/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTToHad_PS/190713_134104/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTToHad_PS/190713_134104/0000"],
+"Legacy17V1_TTToSemiLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_TTToSemiLep/190701_092010/0000"],
+"Legacy17V1_TTToSemiLep_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTToSemiLep_PS/190713_133638/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTToSemiLep_PS/190713_133638/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_TTToSemiLep_PS/190713_133638/0000"],
+"Legacy17V1_TTWJets":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Legacy17V1_TTWJets/190701_083739/0000"],
+"Legacy17V1_TTWW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTWW_TuneCP5_13TeV-madgraph-pythia8/Legacy17V1_TTWW/190701_084152/0000"],
+"Legacy17V1_TTW_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/Legacy17V1_TTW_PS/190701_083945/0000"],
+"Legacy17V1_TTZ_M10":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_TTZ_M10/190701_084621/0000"],
+"Legacy17V1_TTZ_M10_PS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTZToLLNuNu_M-10_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/Legacy17V1_TTZ_M10_PS/190701_084830/0000"],
+"Legacy17V1_TTZ_M1to10":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_TTZ_M1to10/190701_084406/0000"],
+"Legacy17V1_VBFHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/VBFHToTauTau_M125_13TeV_powheg_pythia8/Legacy17V1_VBFHToTauTau/190701_115458/0000"],
+"Legacy17V1_VHToNonbb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/Legacy17V1_VHToNonbb/190701_115706/0000"],
+"Legacy17V1_W1JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_W1JetsToLNu/190701_094104/0000"],
+"Legacy17V1_W2JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_W2JetsToLNu/190701_094309/0000"],
+"Legacy17V1_W3JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_W3JetsToLNu/190701_094514/0000"],
+"Legacy17V1_W4JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_W4JetsToLNu/190701_094724/0000"],
+"Legacy17V1_WGToLNuG_Tune":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_WGToLNuG_Tune/190701_093639/0000"],
+"Legacy17V1_WJets_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_WJets_ext/190701_112843/0000"],
+"Legacy17V1_WJets_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy17V1_WJets_v1/190701_112619/0000"],
+"Legacy17V1_WWTo2LNu_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WWTo2L2Nu_NNPDF31_TuneCP5_PSweights_13TeV-powheg-pythia8/Legacy17V1_WWTo2LNu_ext/190701_100214/0000"],
+"Legacy17V1_WWTo2LNu_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/Legacy17V1_WWTo2LNu_v1/190701_100006/0000"],
+"Legacy17V1_WWW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_WWW/190701_113305/0000"],
+"Legacy17V1_WWZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WWZ_4F_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_WWZ/190701_113527/0000"],
+"Legacy17V1_WW_DS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/Legacy17V1_WW_DS/190701_113055/0000"],
+"Legacy17V1_WZG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WZG_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_WZG/190701_095801/0000"],
+"Legacy17V1_WZTo3LNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WZTo3LNu_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy17V1_WZTo3LNu/190701_100422/0000"],
+"Legacy17V1_WZZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WZZ_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_WZZ/190701_113743/0000"],
+"Legacy17V1_WpWpJJ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8/Legacy17V1_WpWpJJ/190701_114835/0000"],
+"Legacy17V1_ZGToLLG_01J":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy17V1_ZGToLLG_01J/190701_093854/0000"],
+"Legacy17V1_ZHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZHToTauTau_M125_13TeV_powheg_pythia8/Legacy17V1_ZHToTauTau/190701_120127/0000"],
+"Legacy17V1_ZHTobb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/Legacy17V1_ZHTobb/190701_115917/0000"],
+"Legacy17V1_ZZTo4L_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZZTo4L_13TeV_powheg_pythia8/Legacy17V1_ZZTo4L_ext1/190713_134743/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZZTo4L_13TeV_powheg_pythia8/Legacy17V1_ZZTo4L_ext1/190713_134743/0000"],
+"Legacy17V1_ZZTo4L_ext2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZZTo4L_13TeV_powheg_pythia8/Legacy17V1_ZZTo4L_ext2/190701_112404/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZZTo4L_13TeV_powheg_pythia8/Legacy17V1_ZZTo4L_ext2/190701_112404/0000"],
+"Legacy17V1_ZZTo4L_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZZTo4L_13TeV_powheg_pythia8/Legacy17V1_ZZTo4L_v1/190701_100631/0000"],
+"Legacy17V1_ZZZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/Legacy17V1_ZZZ/190701_113956/0000"],
+"Legacy17V1_tWll":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-pythia8/Legacy17V1_tWll/190701_091221/0000"],
+"Legacy17V1_tZq":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/tZq_ll_4f_ckm_NLO_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/Legacy17V1_tZq/190701_114626/0000"],
+"Legacy17V1_ttHnobb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/Legacy17V1_ttHnobb/190701_083111/0000"],
+"Legacy17V1_ttW_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/Legacy17V1_ttW_ext/190713_134954/0000"],
+"Legacy17V1_ttW_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/Legacy17V1_ttW_v1/190701_120758/0000"],
+"Legacy17V1_ttZ_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/Legacy17V1_ttZ_ext/190701_120549/0000"],
+"Legacy17V1_ttZ_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2017/mc/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/Legacy17V1_ttZ_v1/190701_120339/0000"],
+"Legacy17V1_TTH_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/TTH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/Legacy17V1_TTH_ctcvcp/190831_153436/0000"],
+"Legacy17V1_VBFHToBB":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/Legacy17V1_VBFHToBB/190831_161031/0000"],
+"Legacy17V1_VBFHToGG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBFHToGG_M125_13TeV_amcatnlo_pythia8/Legacy17V1_VBFHToGG/190831_161232/0000"],
+"Legacy17V1_VBFHToMuMu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy17V1_VBFHToMuMu/190831_160822/0000"],
+"Legacy17V1_VBFHToWWTo2L2Nu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/Legacy17V1_VBFHToWWTo2L2Nu/190831_160611/0000"],
+"Legacy17V1_VBFHToWWToLNuQQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBFHToWWToLNuQQ_M125_NNPDF31_TuneCP5_PSweights_13TeV_powheg_JHUGen710_pythia8/Legacy17V1_VBFHToWWToLNuQQ/190831_160400/0000"],
+"Legacy17V1_VBFHToZZTo4L_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_VBFHToZZTo4L_ext1/190831_155934/0000"],
+"Legacy17V1_VBFHToZZTo4L_ext2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_VBFHToZZTo4L_ext2/190831_155728/0000"],
+"Legacy17V1_VBFHToZZTo4L_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_VBFHToZZTo4L_v1/190831_160151/0000"],
+"Legacy17V1_ggHToBB":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/Legacy17V1_ggHToBB/190831_155307/0000"],
+"Legacy17V1_ggHToGG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Legacy17V1_ggHToGG/190831_155515/0000"],
+"Legacy17V1_ggHToMuMu_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy17V1_ggHToMuMu_ext1/190831_155113/0000"],
+"Legacy17V1_ggHToMuMu_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy17V1_ggHToMuMu_v1/190831_154915/0000"],
+"Legacy17V1_ggHToWWTo2L2Nu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/Legacy17V1_ggHToWWTo2L2Nu/190831_154712/0000"],
+"Legacy17V1_ggHToWWToLNuQQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToWWToLNuQQ_M125_NNPDF31_TuneCP5_PSweights_13TeV_powheg_JHUGen710_pythia8/Legacy17V1_ggHToWWToLNuQQ/190831_154513/0000"],
+"Legacy17V1_ggHToZZTo2L2Q":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToZZTo2L2Q_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_ggHToZZTo2L2Q/190831_154315/0000"],
+"Legacy17V1_ggHToZZTo4L_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_ggHToZZTo4L_ext1/190831_153640/0000"],
+"Legacy17V1_ggHToZZTo4L_ext3":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_ggHToZZTo4L_ext3/190831_153858/0000"],
+"Legacy17V1_ggHToZZTo4L_ext4":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2017/mc/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy17V1_ggHToZZTo4L_ext4/190831_154110/0000"],
+# 2018
+"Legacy18V1_DYJets_M10to50":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/DYJetsToLL_M-10to50_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_DYJets_M10to50/190709_183416/0000"],
+"Legacy18V1_DYJets_M50_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_DYJets_M50_ext/190709_193749/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_DYJets_M50_ext/190709_193749/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_DYJets_M50_ext/190709_193749/0000"],
+"Legacy18V1_DYJets_M50_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_DYJets_M50_v1/190709_192006/0000"],
+"Legacy18V1_GGHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/GluGluHToTauTau_M125_13TeV_powheg_pythia8/Legacy18V1_GGHToTauTau/190710_091916/0000"],
+"Legacy18V1_ST_sCh_lepDecay":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-madgraph-pythia8/Legacy18V1_ST_sCh_lepDecay/190709_154508/0000"],
+"Legacy18V1_ST_tCh_antitop":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/Legacy18V1_ST_tCh_antitop/190709_180155/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/Legacy18V1_ST_tCh_antitop/190709_180155/0000"],
+"Legacy18V1_ST_tCh_top":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/Legacy18V1_ST_tCh_top/190709_175947/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/Legacy18V1_ST_tCh_top/190709_175947/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/Legacy18V1_ST_tCh_top/190709_175947/0000"],
+"Legacy18V1_ST_tW_antitop":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_ST_tW_antitop/190709_180612/0000"],
+"Legacy18V1_ST_tW_top":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_ST_tW_top/190709_180401/0000"],
+"Legacy18V1_TGJetsLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TGJets_leptonDecays_TuneCP5_13TeV-madgraph-pythia8/Legacy18V1_TGJetsLep/190709_181915/0000"],
+"Legacy18V1_THQ_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/Legacy18V1_THQ_ctcvcp/190709_152933/0000"],
+"Legacy18V1_THW_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/Legacy18V1_THW_ctcvcp/190709_153148/0000"],
+"Legacy18V1_TTGJets":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Legacy18V1_TTGJets/190709_181704/0000"],
+"Legacy18V1_TTH_ctcvcp":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTH_4f_ctcvcp_TuneCP5_13TeV_madgraph_pythia8/Legacy18V1_TTH_ctcvcp/190709_152717/0000"],
+"Legacy18V1_TTHnobb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_TTHnobb/190709_152459/0000"],
+"Legacy18V1_TTJets_DiLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_DiLept_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_TTJets_DiLep/190710_102415/0000"],
+"Legacy18V1_TTJets_TToSingleLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_TTJets_TToSingleLep/190710_102204/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_SingleLeptFromT_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_TTJets_TToSingleLep/190710_102204/0000"],
+"Legacy18V1_TTJets_TbarToSingleLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_TTJets_TbarToSingleLep/190710_101951/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_SingleLeptFromTbar_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_TTJets_TbarToSingleLep/190710_101951/0000"],
+"Legacy18V1_TTJets_amc":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_TTJets_amc/190710_101739/0002","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_TTJets_amc/190710_101739/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_TTJets_amc/190710_101739/0000","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_TTJets_amc/190710_101739/0003"],
+"Legacy18V1_TTJets_mad":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTJets_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_TTJets_mad/190710_101510/0000"],
+"Legacy18V1_TTTT":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_TTTT/190710_091227/0000"],
+"Legacy18V1_TTTo2L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_TTTo2L/190709_181029/0000"],
+"Legacy18V1_TTToHad":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_TTToHad/190812_192221/0000"],
+"Legacy18V1_TTToSemiLep":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_TTToSemiLep/190709_181242/0000"],
+"Legacy18V1_TTWJets":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Legacy18V1_TTWJets/190709_153402/0000"],
+"Legacy18V1_TTWW_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTWW_TuneCP5_13TeV-madgraph-pythia8/Legacy18V1_TTWW_ext1/190709_153829/0000"],
+"Legacy18V1_TTWW_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTWW_TuneCP5_13TeV-madgraph-pythia8/Legacy18V1_TTWW_v1/190812_191806/0000"],
+"Legacy18V1_TTZ_M10":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_TTZ_M10/190709_154254/0000"],
+"Legacy18V1_TTZ_M1to10":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_TTZ_M1to10/190812_192013/0000"],
+"Legacy18V1_VBFHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/VBFHToTauTau_M125_13TeV_powheg_pythia8/Legacy18V1_VBFHToTauTau/190710_095856/0000"],
+"Legacy18V1_VHToNonbb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/Legacy18V1_VHToNonbb/190710_100121/0000"],
+"Legacy18V1_W1JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/W1JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_W1JetsToLNu/190709_182544/0000"],
+"Legacy18V1_W2JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/W2JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_W2JetsToLNu/190709_182752/0000"],
+"Legacy18V1_W3JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_W3JetsToLNu/190709_182959/0000"],
+"Legacy18V1_W4JetsToLNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_W4JetsToLNu/190709_183209/0000"],
+"Legacy18V1_WGToLNuG_Tune":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_WGToLNuG_Tune/190709_182126/0000"],
+"Legacy18V1_WJets":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/Legacy18V1_WJets/190710_085841/0000"],
+"Legacy18V1_WWTo2LNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WWTo2L2Nu_NNPDF31_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_WWTo2LNu/190710_073150/0000"],
+"Legacy18V1_WWW":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WWW_4F_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_WWW/190710_090321/0000"],
+"Legacy18V1_WWZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_WWZ/190710_090547/0000"],
+"Legacy18V1_WW_DS":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WWTo2L2Nu_DoubleScattering_13TeV-pythia8/Legacy18V1_WW_DS/190710_090051/0000"],
+"Legacy18V1_WZG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WZG_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_WZG/190812_192432/0000"],
+"Legacy18V1_WZTo3LNu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WZTo3LNu_TuneCP5_13TeV-powheg-pythia8/Legacy18V1_WZTo3LNu/190710_074954/0000"],
+"Legacy18V1_WZZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WZZ_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_WZZ/190710_090812/0000"],
+"Legacy18V1_WpWpJJ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/WpWpJJ_EWK-QCD_TuneCP5_13TeV-madgraph-pythia8/Legacy18V1_WpWpJJ/190710_091703/0000"],
+"Legacy18V1_ZGToLLG_01J":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_ZGToLLG_01J/190709_182336/0000"],
+"Legacy18V1_ZHToTauTau":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZHToTauTau_M125_13TeV_powheg_pythia8/Legacy18V1_ZHToTauTau/190710_100822/0000"],
+"Legacy18V1_ZHTobb_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/Legacy18V1_ZHTobb_ext/190710_100555/0000"],
+"Legacy18V1_ZHTobb_v2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZH_HToBB_ZToLL_M125_13TeV_powheg_pythia8/Legacy18V1_ZHTobb_v2/190710_100332/0000"],
+"Legacy18V1_ZZTo4L_ext":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/Legacy18V1_ZZTo4L_ext/190710_085637/0001","/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/Legacy18V1_ZZTo4L_ext/190710_085637/0000"],
+"Legacy18V1_ZZTo4L_v1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZZTo4L_TuneCP5_13TeV_powheg_pythia8/Legacy18V1_ZZTo4L_v1/190710_085431/0000"],
+"Legacy18V1_ZZZ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/Legacy18V1_ZZZ/190710_095450/0000"],
+"Legacy18V1_tWll":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ST_tWll_5f_LO_TuneCP5_PSweights_13TeV-madgraph-pythia8/Legacy18V1_tWll/190709_180822/0000"],
+"Legacy18V1_tZq":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/tZq_ll_4f_ckm_NLO_TuneCP5_13TeV-madgraph-pythia8/Legacy18V1_tZq/190710_091438/0000"],
+"Legacy18V1_ttW_Tune":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/Legacy18V1_ttW_Tune/190710_101041/0000"],
+"Legacy18V1_ttZ_Tune":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1/2018/mc/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/Legacy18V1_ttZ_Tune/190710_101259/0000"],
+"Legacy18V1_VBFHToBB":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/VBFHToBB_M-125_13TeV_powheg_pythia8_weightfix/Legacy18V1_VBFHToBB/190831_164427/0000"],
+"Legacy18V1_VBFHToGG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/VBFHToGG_M125_13TeV_amcatnlo_pythia8/Legacy18V1_VBFHToGG/190831_164638/0000"],
+"Legacy18V1_VBFHToMuMu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/VBFHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy18V1_VBFHToMuMu/190831_164211/0000"],
+"Legacy18V1_VBFHToWWTo2L2Nu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/VBFHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/Legacy18V1_VBFHToWWTo2L2Nu/190831_163956/0000"],
+"Legacy18V1_VBFHToWWToLNuQQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/VBFHToWWToLNuQQ_M125_13TeV_powheg_JHUGen_pythia8/Legacy18V1_VBFHToWWToLNuQQ/190831_163739/0000"],
+"Legacy18V1_VBFHToZZTo4L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/VBF_HToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy18V1_VBFHToZZTo4L/190831_163529/0000"],
+"Legacy18V1_ggHToBB":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToBB_M125_13TeV_amcatnloFXFX_pythia8/Legacy18V1_ggHToBB/190831_163105/0000"],
+"Legacy18V1_ggHToGG":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8/Legacy18V1_ggHToGG/190831_163320/0000"],
+"Legacy18V1_ggHToMuMu_ext1":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy18V1_ggHToMuMu_ext1/190831_162854/0000"],
+"Legacy18V1_ggHToMuMu_v2":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToMuMu_M-125_TuneCP5_PSweights_13TeV_powheg_pythia8/Legacy18V1_ggHToMuMu_v2/190831_162651/0000"],
+"Legacy18V1_ggHToWWTo2L2Nu":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToWWTo2L2Nu_M125_13TeV_powheg2_JHUGenV714_pythia8/Legacy18V1_ggHToWWTo2L2Nu/190831_162454/0000"],
+"Legacy18V1_ggHToWWToLNuQQ":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToWWToLNuQQ_M125_13TeV_powheg2_JHUGenV714_pythia8/Legacy18V1_ggHToWWToLNuQQ/190831_162257/0000"],
+"Legacy18V1_ggHToZZTo2L2Q":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToZZTo2L2Q_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy18V1_ggHToZZTo2L2Q/190831_162050/0000"],
+"Legacy18V1_ggHToZZTo4L":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/GluGluHToZZTo4L_M125_13TeV_powheg2_JHUGenV7011_pythia8/Legacy18V1_ggHToZZTo4L/190831_161847/0000"],
+"Legacy18V1_ttHToNonbb":["/publicfs/cms/data/TopQuark/cms13TeV/Legacy_V1.1/2018/mc/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/Legacy18V1_ttHToNonbb/190831_161649/0000"],
+}
+
+
+#datasetDirs = {"TTHnobb":["/publicfs/cms/data/TopQuark/cms13TeV/FullMorV2/mc/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/FullMorV2_ttHnobb/170530_161519/0000/"],
+#"TTWToLNuext2":["/publicfs/cms/data/TopQuark/cms13TeV/FullMorV2/mc/TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8/FullMorV2_amcTTWJetsToLNuext2/170531_182459/0000/"]
+#}
+
+import sys, math, mmap, subprocess
+
+namesPerFile = float(raw_input("How many files to run over per job? "))
+if namesPerFile == 0:
+    print "You idiot, we can't divide by 0"
+    sys.exit()
+outputDirectory = raw_input("Output directory: ")
+
+finishCopyScripts = raw_input("File for additional copies: ")
+copyScript = 0
+if finishCopyScripts:
+    copyScript = file(finishCopyScripts,"w")
+    print copyScript.write("#!/bin/bash\n")
+
+for dataset in datasets:
+    
+    fileList = []
+    for datasetDir in datasetDirs[dataset]:
+        dataDir = datasetDir
+        fileList += [os.path.join(dataDir,f) for f in os.listdir(dataDir) if ".root" in f]
+    nJobs = int(math.ceil(len(fileList)/namesPerFile))
+    print ("Dataset: {0}, ID: {1}. Number of jobs created = {2}".format(dataset,datasetID[dataset],nJobs))
+    nFile = 0
+    for i in range(nJobs):
+        currentFile = open(outputDirectory + dataset + str(i) + ".list","w")
+        currentFile.write("Name: " + dataset)
+        currentFile.write("\nNumber: " + str(datasetID[dataset]) + "_1\n")
+        for j in range(int(namesPerFile)):
+            if nFile >= len(fileList): continue
+            currentFile.write(fileList[nFile]+"\n")
+            nFile+=1
+        currentFile.close()
+        
+    continue
+
+        
+
+    
+print "Thank you for using the create jobs program. Have a nice day"

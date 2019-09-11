@@ -334,12 +334,16 @@ int main(int argc, char **argv)
     }
     mystudy.AddCut(new CutTauN(particlesObj, "Loose"));
   }else{
-    mystudy.AddCut(new CutLeptonN(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
-    mystudy.AddCut(new CutLeptonSameSign(particlesObj,"TTHFake"));
-    mystudy.AddCut(new CutLeptonCharge(particlesObj,"TTHFake"));
-    mystudy.AddCut(new CutLeptonPt1(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
-    mystudy.AddCut(new CutLeptonPt2(particlesObj, "TTHFake"));     //require that lepton to be isolated, central, high pt
- 
+    mystudy.AddCut(new CutLeptonN(particlesObj, "TTHLoose"));     //require that lepton to be isolated, central, high pt
+    mystudy.AddCut(new CutLeptonSameSign(particlesObj,"TTHLoose"));
+    mystudy.AddCut(new CutLeptonCharge(particlesObj,"TTHLoose"));
+    mystudy.AddCut(new CutLeptonPt1(particlesObj, "TTHLoose"));     //require that lepton to be isolated, central, high pt
+    mystudy.AddCut(new CutLeptonPt2(particlesObj, "TTHLoose"));     //require that lepton to be isolated, central, high pt
+    mystudy.AddCut(new CutLeptonTight(particlesObj,"TTHLoose"));
+    mystudy.AddCut(new CutTriggerSelection(particlesObj, whichtrig));
+    mystudy.AddCut(new CutMassL(particlesObj));
+    mystudy.AddCut(new CutLeptonTightCharge(particlesObj,"TTHLoose")); 
+    mystudy.AddCut(new CutLeptonN(particlesObj, "TTHTight"));     //require that lepton to be isolated, central, high pt
   }
   mystudy.AddCut(new CutJetN(particlesObj,nJets));
   
@@ -422,7 +426,11 @@ int main(int argc, char **argv)
  
   
   mystudy.AddVars(new ResTopVars());
-  mystudy.AddVars(new ttHVars(false, false)); // fill histo, use TTHLoose
+  if(isTrainMVA){
+    mystudy.AddVars(new ttHVars(false, true)); // fill histo, use TTHLoose
+  }else{
+    mystudy.AddVars(new ttHVars(false, false)); // fill histo, use TTHLoose
+  }
   
   mystudy.AddVars(new TruthVars());
   mystudy.AddVars(new HjTagger());

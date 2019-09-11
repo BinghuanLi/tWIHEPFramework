@@ -187,7 +187,9 @@ Bool_t CutTriggerSelection::Apply()
   }
 
   Int_t SourceNumber = GetEventContainer()->GetSourceNumber();
-  Int_t SampleType = SourceNumber < 200000? 0:(SourceNumber % 10000); //1000/1001 SEle, 2000/2001 SMu, 3000/3001 2Mu, 4000/4001 2EleR, 5000/5001 MuEleR
+  Int_t SampleType = SourceNumber < 200000? 0:(SourceNumber % 10000); 
+  // 2017/2016 : 1000/1001 SEle, 2000/2001 SMu, 3000/3001 2Mu, 4000/4001 2EleR, 5000/5001 MuEleR
+  // 2018 : 2000/2001 SMu, 3000/3001 2Mu, 4000/4001 EleR, 5000/5001 MuEleR
   
   Bool_t passesTrigger = kFALSE;  //Event passes the trigger selection
 
@@ -289,50 +291,83 @@ Bool_t CutTriggerSelection::Apply()
     }
   }
   */
-  if (_whichtrigger >=2 && _whichtrigger <=5 ){
-    DiLeptriggerPath ==(
-        (nEle >= 2 &&  ( ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
-        (nEle >= 1 && nMu >=1 &&  (ContainerObj->Trig_1Mu1Ele==1 || ContainerObj->Trig_1Ele ==1 || ContainerObj->Trig_1Mu ==1 )) ||
-        (nMu >= 2 &&  (ContainerObj->Trig_2Mu==1 || ContainerObj->Trig_1Mu ==1 )));
-    if(SampleType == 4000 || SampleType == 4001){
-        if(ContainerObj->Trig_2Ele==1) DiLeptrigger =1;
-    }else if(SampleType == 3000 || SampleType == 3001){
-        if(ContainerObj->Trig_2Ele!=1 &&  ContainerObj->Trig_2Mu==1)  DiLeptrigger =1;
-    }else if(SampleType == 5000 || SampleType == 5001){
-        if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) DiLeptrigger =1;
-    }else if(SampleType == 1000 || SampleType == 1001){
-        if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele ==1 ) DiLeptrigger =1;
-    }else if(SampleType == 2000 || SampleType == 2001){
-        if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele !=1 && ContainerObj->Trig_1Mu ==1 ) DiLeptrigger =1;
-    }else{
-        DiLeptrigger = ContainerObj->TTHLep_2L;
-    }
-  }
-  if (_whichtrigger ==6  || _whichtrigger==7){
-    TriLeptriggerPath ==(
-        (nEle >= 3 &&  ( ContainerObj->Trig_3Ele==1 || ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
-        (nEle >= 2 && nMu >=1 &&  (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_1Mu2Ele==1 )) ||
-        (nEle >= 1 && nMu >=2 &&  (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_2Mu1Ele==1 )) ||
-        (nMu >= 3 &&  (ContainerObj->TTHLep_2Mu==1 || ContainerObj->Trig_3Mu==1  )));
-    /*
-    TriLeptriggerPath = ( (selectedChannel == 61 && (ContainerObj->TTHLep_2Ele==1 || ContainerObj->Trig_3Ele==1 ))
-     || (selectedChannel == 62 && (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_1Mu2Ele==1 ))
-     || (selectedChannel == 63 && (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_2Mu1Ele==1 ))
-     || (selectedChannel == 64 && (ContainerObj->TTHLep_2Mu==1 || ContainerObj->Trig_3Mu==1 )));
-    */
-    if(SampleType == 4000 || SampleType == 4001){
-        if(ContainerObj->Trig_3Ele==1 || ContainerObj->Trig_1Mu2Ele==1 || ContainerObj->Trig_2Ele==1) TriLeptrigger =1;
-    }else if(SampleType == 3000 || SampleType == 3001){
-        if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && (ContainerObj->Trig_3Mu==1 || ContainerObj->Trig_2Mu1Ele==1 || ContainerObj->Trig_2Mu==1) ) TriLeptrigger =1;
-    }else if(SampleType == 5000 || SampleType == 5001){
-        if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) TriLeptrigger =1;
-    }else if(SampleType == 1000 || SampleType == 1001){
-        if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele ==1 ) TriLeptrigger =1;
-    }else if(SampleType == 2000 || SampleType == 2001){
-        if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele !=1 && ContainerObj->Trig_1Mu ==1 ) TriLeptrigger =1;
-    }else{
-        TriLeptrigger = ContainerObj->TTHLep_3L;
-    }
+  if(ContainerObj->_DataEra==2017 || ContainerObj->_DataEra==2016){
+      if (_whichtrigger >=2 && _whichtrigger <=5 ){
+        DiLeptriggerPath ==(
+            (nEle >= 2 &&  ( ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
+            (nEle >= 1 && nMu >=1 &&  (ContainerObj->Trig_1Mu1Ele==1 || ContainerObj->Trig_1Ele ==1 || ContainerObj->Trig_1Mu ==1 )) ||
+            (nMu >= 2 &&  (ContainerObj->Trig_2Mu==1 || ContainerObj->Trig_1Mu ==1 )));
+        if(SampleType == 4000 || SampleType == 4001){
+            if(ContainerObj->Trig_2Ele==1) DiLeptrigger =1;
+        }else if(SampleType == 3000 || SampleType == 3001){
+            if(ContainerObj->Trig_2Ele!=1 &&  ContainerObj->Trig_2Mu==1)  DiLeptrigger =1;
+        }else if(SampleType == 5000 || SampleType == 5001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) DiLeptrigger =1;
+        }else if(SampleType == 1000 || SampleType == 1001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele ==1 ) DiLeptrigger =1;
+        }else if(SampleType == 2000 || SampleType == 2001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele !=1 && ContainerObj->Trig_1Mu ==1 ) DiLeptrigger =1;
+        }else{
+            DiLeptrigger = ContainerObj->TTHLep_2L;
+        }
+      }
+      if (_whichtrigger ==6  || _whichtrigger==7){
+        TriLeptriggerPath ==(
+            (nEle >= 3 &&  ( ContainerObj->Trig_3Ele==1 || ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
+            (nEle >= 2 && nMu >=1 &&  (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_1Mu2Ele==1 )) ||
+            (nEle >= 1 && nMu >=2 &&  (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_2Mu1Ele==1 )) ||
+            (nMu >= 3 &&  (ContainerObj->TTHLep_2Mu==1 || ContainerObj->Trig_3Mu==1  )));
+        if(SampleType == 4000 || SampleType == 4001){
+            if(ContainerObj->Trig_3Ele==1 || ContainerObj->Trig_1Mu2Ele==1 || ContainerObj->Trig_2Ele==1) TriLeptrigger =1;
+        }else if(SampleType == 3000 || SampleType == 3001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && (ContainerObj->Trig_3Mu==1 || ContainerObj->Trig_2Mu1Ele==1 || ContainerObj->Trig_2Mu==1) ) TriLeptrigger =1;
+        }else if(SampleType == 5000 || SampleType == 5001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) TriLeptrigger =1;
+        }else if(SampleType == 1000 || SampleType == 1001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele ==1 ) TriLeptrigger =1;
+        }else if(SampleType == 2000 || SampleType == 2001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele !=1 && ContainerObj->Trig_1Mu ==1 ) TriLeptrigger =1;
+        }else{
+            TriLeptrigger = ContainerObj->TTHLep_3L;
+        }
+      }
+  }else if(ContainerObj->_DataEra==2018){
+      // 2018 : 2000/2001 SMu, 3000/3001 2Mu, 4000/4001 EleR, 5000/5001 MuEleR
+      if (_whichtrigger >=2 && _whichtrigger <=5 ){
+        DiLeptriggerPath ==(
+            (nEle >= 2 &&  ( ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
+            (nEle >= 1 && nMu >=1 &&  (ContainerObj->Trig_1Mu1Ele==1 || ContainerObj->Trig_1Ele ==1 || ContainerObj->Trig_1Mu ==1 )) ||
+            (nMu >= 2 &&  (ContainerObj->Trig_2Mu==1 || ContainerObj->Trig_1Mu ==1 )));
+        if(SampleType == 4000 || SampleType == 4001){
+            if(ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele==1) DiLeptrigger =1;
+        }else if(SampleType == 3000 || SampleType == 3001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_1Ele!=1 && ContainerObj->Trig_2Mu==1)  DiLeptrigger =1;
+        }else if(SampleType == 5000 || SampleType == 5001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) DiLeptrigger =1;
+        }else if(SampleType == 2000 || SampleType == 2001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Mu ==1 ) DiLeptrigger =1;
+        }else{
+            DiLeptrigger = ContainerObj->TTHLep_2L;
+        }
+      }
+      if (_whichtrigger ==6  || _whichtrigger==7){
+        TriLeptriggerPath ==(
+            (nEle >= 3 &&  ( ContainerObj->Trig_3Ele==1 || ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
+            (nEle >= 2 && nMu >=1 &&  (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_1Mu2Ele==1 )) ||
+            (nEle >= 1 && nMu >=2 &&  (ContainerObj->TTHLep_MuEle==1 || ContainerObj->Trig_2Mu1Ele==1 )) ||
+            (nMu >= 3 &&  (ContainerObj->TTHLep_2Mu==1 || ContainerObj->Trig_3Mu==1  )));
+        if(SampleType == 4000 || SampleType == 4001){
+            if(ContainerObj->Trig_3Ele==1 || ContainerObj->Trig_1Mu2Ele==1 || ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele==1) TriLeptrigger =1;
+        }else if(SampleType == 3000 || SampleType == 3001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_1Ele!=1 && (ContainerObj->Trig_3Mu==1 || ContainerObj->Trig_2Mu1Ele==1 || ContainerObj->Trig_2Mu==1) ) TriLeptrigger =1;
+        }else if(SampleType == 5000 || SampleType == 5001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_1Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) TriLeptrigger =1;
+        }else if(SampleType == 2000 || SampleType == 2001){
+            if(ContainerObj->Trig_3Ele!=1 && ContainerObj->Trig_1Mu2Ele!=1 && ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_1Ele!=1 && ContainerObj->Trig_3Mu!=1 && ContainerObj->Trig_2Mu1Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Mu ==1 ) TriLeptrigger =1;
+        }else{
+            TriLeptrigger = ContainerObj->TTHLep_3L;
+        }
+      }
   }
   if (_whichtrigger == 0) passesTrigger = electronTrigger != 0. and muonTrigger == 0;
   if (_whichtrigger == 1) passesTrigger = electronTrigger == 0. and muonTrigger != 0;

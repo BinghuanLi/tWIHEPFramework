@@ -661,6 +661,7 @@ class EventContainer
   std::vector<Muon>       muons;
   std::vector<Muon>       tightMuons;
   std::vector<Muon>       vetoMuons;
+  std::vector<Muon>       dummyMuons;
   std::vector<Muon>       ptetaMuons;
   std::vector<Muon>       isolatedMuons;
   std::vector<Muon>       unIsolatedMuons;
@@ -668,6 +669,7 @@ class EventContainer
   std::vector<Lepton>       tightLeptons;
   std::vector<Lepton>       fakeLeptons;
   std::vector<Lepton>       looseLeptons;
+  std::vector<Lepton>       loose_noclean_leptons;
   std::vector<Tau>        looseTaus;
   std::vector<Tau>        taus;
   std::vector<Jet>        jets;// selected normal jets
@@ -692,6 +694,7 @@ class EventContainer
   
   std::vector<Electron> * electronsVetoPtr; // used in object cleaning
   std::vector<Muon>     * muonsVetoPtr;  // used in object cleaning
+  std::vector<Muon>     * DummyVetoPtr;  // used in object cleaning
   std::vector<Lepton>     * looseleptonsVetoPtr; // used in object cleaning
   std::vector<Lepton>     * fakeleptonsVetoPtr; // used in object cleaning
   std::vector<Tau>     * tausVetoPtr; // used in object cleaning
@@ -832,6 +835,7 @@ class EventContainer
     Double_t mass_dillep;
     Double_t massL; // defined using fakeable leptons
     Double_t massl; // defined using preselected leptons
+    Double_t massl_noclean; // defined using preselected leptons without clean
     Double_t mht;
     Double_t mhtT;
     Double_t mht_met;

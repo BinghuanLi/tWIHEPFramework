@@ -284,10 +284,12 @@ void EventContainer::Initialize( EventTree* eventTree, TruthTree* truthTree)
   muons.clear();
   tightMuons.clear();
   vetoMuons.clear();
+  dummyMuons.clear();
   ptetaMuons.clear();
   isolatedMuons.clear();
   unIsolatedMuons.clear();
   looseLeptons.clear();
+  loose_noclean_leptons.clear();
   fakeLeptons.clear();
   tightLeptons.clear();
   looseTaus.clear();
@@ -397,6 +399,7 @@ void EventContainer::Initialize( EventTree* eventTree, TruthTree* truthTree)
   mhtT_met = -9.;
   massL = -9.;
   massl = -9.;
+  massl_noclean = -9.;
   HiggsDecay = -9.;
   Gen_type1PF_Met = -9.;
   Gen_type1PF_px = -9.;
@@ -476,6 +479,7 @@ void EventContainer::SetUseUnisolatedLeptons(const Bool_t& useUnisolatedLeptons,
   
   electronsVetoPtr = &vetoElectrons;
   muonsVetoPtr = &vetoMuons;
+  DummyVetoPtr = &dummyMuons;
   looseleptonsVetoPtr = &looseLeptons;
   fakeleptonsVetoPtr = &fakeLeptons;
   tausVetoPtr = &looseTaus;
@@ -556,11 +560,13 @@ Int_t EventContainer::ReadEvent()
   muons.clear();
   tightMuons.clear();
   vetoMuons.clear();
+  dummyMuons.clear();
   ptetaMuons.clear();
   isolatedMuons.clear();
   unIsolatedMuons.clear();
 
   looseLeptons.clear();
+  loose_noclean_leptons.clear();
   fakeLeptons.clear();
   tightLeptons.clear();
   looseTaus.clear();
@@ -623,6 +629,7 @@ Int_t EventContainer::ReadEvent()
   mhtT_met = -9.;
   massL = -9.;
   massl = -9.;
+  massl_noclean = -9.;
   HiggsDecay = -9.;
   Gen_type1PF_Met = -9.;
   Gen_type1PF_px = -9.;
@@ -862,6 +869,14 @@ Int_t EventContainer::ReadEvent()
       if(useObj) {
 	    looseLeptons.push_back(newLepton);
       }
+      
+      newLepton.Clear();
+      useObj = newLepton.Fill(*DummyVetoPtr,*lepJetsPtr ,_eventTree, io,"EleLoose", isSimulation, SourceNumber ,11);// 11 means Electron, DummyVeto
+      if(useObj) {
+	    loose_noclean_leptons.push_back(newLepton);
+      }
+      
+      
       
       newLepton.Clear();
       useObj = newLepton.Fill(*muonsVetoPtr, *lepJetsPtr,_eventTree, io,"EleFake", isSimulation, SourceNumber ,11);// 11 means Electron
@@ -1879,17 +1894,28 @@ void EventContainer::set_ttHDiLepMVA()
  * Output: None                                                *
  * **************************************************************/
 void EventContainer::Cal_dilep_mass(){
+    double mass_noclean = 999;
     double diloosemass = 999;
     double difakemass = 999;
     double lSFOSmass = 999;
     double dielemass = 999;
     double dilepmass = 999;
     double dillepmass = 999;
-    if (looseLeptons.size()<2)return;
     TLorentzVector Lep0(0,0,0,0); 
     TLorentzVector Lep1(0,0,0,0);
     TLorentzVector FakeLep0(0,0,0,0); 
     TLorentzVector FakeLep1(0,0,0,0);
+    if(loose_noclean_leptons.size()<2) return;
+    for(uint lep_en =0; lep_en < loose_noclean_leptons.size(); lep_en++){
+        Lep0.SetPtEtaPhiE(loose_noclean_leptons.at(lep_en).Pt(), loose_noclean_leptons.at(lep_en).Eta(), loose_noclean_leptons.at(lep_en).Phi(), loose_noclean_leptons.at(lep_en).E());
+        for(uint l_en =lep_en+1; l_en < loose_noclean_leptons.size(); l_en++){
+            Lep1.SetPtEtaPhiE(loose_noclean_leptons.at(l_en).Pt(), loose_noclean_leptons.at(l_en).Eta(), loose_noclean_leptons.at(l_en).Phi(), loose_noclean_leptons.at(l_en).E());
+            if(mass_noclean > (Lep0+Lep1).M()) 
+               mass_noclean = (Lep0+Lep1).M();
+        }
+    }
+    massl_noclean = mass_noclean; 
+    if (looseLeptons.size()<2)return;
     Lepton looselep0 = looseLeptons.at(0);
     Lepton looselep1 = looseLeptons.at(1);
     Lep0.SetPtEtaPhiE(looselep0.Pt(),looselep0.Eta(),looselep0.Phi(),looselep0.E());

@@ -156,7 +156,7 @@ for dataset in datasets:
     print ("Dataset: {0}, ID: {1}. Number of jobs created = {2}".format(dataset,datasetID[dataset],nJobs))
     nFile = 0
     for i in range(nJobs):
-        currentFile = open(outputDirectory + dataset + str(i) + ".list","w")
+        currentFile = open(outputDirectory + dataset + "_"+ str(i) + ".list","w")
         currentFile.write("Name: " + dataset)
         currentFile.write("\nNumber: " + str(datasetID[dataset]) + "_1\n")
         for j in range(int(namesPerFile)):

@@ -341,12 +341,12 @@ Weight.Source.100066: 0.8393
 Events.Source.100066: 18197765
 PileUp.Source.100066: Legacy17V1_ttZ_ext
 
-# 100067 - Legacy17V1_ttW_v1
+# 100067 - Legacy17V1_ttW_v1 MVA sample
 Weight.Source.100067: 0.6008
 Events.Source.100067: 15772380
 PileUp.Source.100067: Legacy17V1_ttW_v1
 
-# 100068 - Legacy17V1_ttW_ext
+# 100068 - Legacy17V1_ttW_ext MVA sample
 Weight.Source.100068: 0.6008
 Events.Source.100068: 15772380
 PileUp.Source.100068: Legacy17V1_ttW_ext

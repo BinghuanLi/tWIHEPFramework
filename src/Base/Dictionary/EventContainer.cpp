@@ -665,7 +665,7 @@ Int_t EventContainer::ReadEvent()
     }else{
         isSimulation = kFALSE;
     }
-    if(SourceNumber = 999999){
+    if(SourceNumber == 999999){
         //std::cout<< " set sourceNumber to the value in Ntuple "<< std::endl;
         SetSourceNumber(_eventTree -> SourceNumber);
         SourceNumber = GetSourceNumber();

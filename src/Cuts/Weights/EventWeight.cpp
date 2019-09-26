@@ -412,14 +412,12 @@ Bool_t EventWeight::Apply()
   TString sName = EventContainerObj -> GetSourceName();
   float LHEWeight(1.0);
   float rwgt(1.0);
-  if(sName.Contains("THW")){
+  if(sName.Contains("ctcvcp")){
        //https://github.com/cms-sw/genproductions/blob/8d97961cda6fffccfa09cc245b715ce6f2b43f6f/bin/MadGraph5_aMCatNLO/cards/production/2017/13TeV/Higgs/thq_4f_ckm_LO_ctcvcp_MH/thq_4f_ckm_LO_ctcvcp_MH_reweight_card.dat
        // find the rwgt_12 and normilaze it to the sum of rwgt_i ( i=1,2...50)
        rwgt = (tree->EVENT_rWeights -> operator[](11));
-       LHEWeight = rwgt/5458.47479968;
-    }else if(sName.Contains("THQ")){
-       rwgt = (tree->EVENT_rWeights -> operator[](11));
-       LHEWeight = rwgt/8837.23781460;
+       //LHEWeight = rwgt/8837.23781460; // THQ
+       //LHEWeight = rwgt/5458.47479968; // THW
     }
   //std::cout<<" rwgt : " << rwgt << " LHEWeight : " << LHEWeight<<std::endl;
  

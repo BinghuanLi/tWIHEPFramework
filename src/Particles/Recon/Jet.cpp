@@ -501,6 +501,7 @@ void Jet::SetCuts(TEnv * config)
   _jesDown = 		config -> GetValue("Systs.doJESDown",0);
   _jerUp = 		config -> GetValue("Systs.doJERUp",0);
   _jerDown = 		config -> GetValue("Systs.doJERDown",0);
+  
 }
 
 /***************************************************************
@@ -515,12 +516,13 @@ void Jet::SetCuts(TEnv * config)
 void Jet::set_HjMVAreader(TEnv* config)
 {
     readerjet = new TMVA::Reader("!Color:!Silent");
-    readerjet->AddVariable("Jet25_lepdrmin",&jetvarlepdrmin);
-    readerjet->AddVariable("Jet25_bDiscriminator := max(Jet25_bDiscriminator,0.)",&jetvarpfCombinedInclusiveSecondaryVertexV2BJetTags);
-    readerjet->AddVariable("Jet25_qg := max(Jet25_qg,0.)",&jetvarqg);
-    readerjet->AddVariable("Jet25_lepdrmax",&jetvarlepdrmax);
+    readerjet->AddVariable("Jet25_bDiscriminator",&jetvarpfCombinedInclusiveSecondaryVertexV2BJetTags);
     readerjet->AddVariable("Jet25_pt",&jetvarpt);
+    readerjet->AddVariable("Jet25_lepdrmin",&jetvarlepdrmin);
+    readerjet->AddVariable("Jet25_lepdrmax",&jetvarlepdrmax);
+    readerjet->AddVariable("Jet25_qg",&jetvarqg);
     readerjet->BookMVA("BDTG method", config -> GetValue("Include.HjTaggerMVAFile","null")); 
+    _weightname = config->GetValue("Include.HjTaggerMVAFile","null");
 }
 
 /***************************************************************
@@ -540,7 +542,13 @@ double Jet::get_JetMVA()
     jetvarlepdrmin = lepdrmin();
     jetvarpfCombinedInclusiveSecondaryVertexV2BJetTags = max(bDiscriminator(),0.);
     //jetvarpfCombinedInclusiveSecondaryVertexV2BJetTags = pfCombinedInclusiveSecondaryVertexV2BJetTags();
-    return readerjet->EvaluateMVA("BDTG method");
+    float hj_score = readerjet->EvaluateMVA("BDTG method");
+    if (_weightname.Contains("xgboost")){
+        float xgb_score = 1/(1+sqrt((1-hj_score)/(1+hj_score)));
+        return xgb_score;
+    }else{
+        return hj_score;
+    }
 }
 
 /******************************************************************************         

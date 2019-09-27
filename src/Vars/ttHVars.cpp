@@ -1619,7 +1619,6 @@ void ttHVars::FillBranches(EventContainer * evtObj){
     mT_lep1 = Mt_metleadlep;
     max_lep_eta = maxeta;
     min_dr_lep_jet = -9;
-    Hj_tagger = Hj_tagger_resTop;
     HTT = evtObj->ResTop_BDT;
     nBJetLoose = Jet_numbLoose;
     nBJetMedium = Jet_numbMedium;
@@ -2119,6 +2118,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
     nLepTight = tightLeptons.size();
     double maxCSV = -9;
     double SumPt =0;
+    double maxHj_all = -9;
     double maxHj_resTop = -9;
     double maxHj_hadTop = -9;
     int jet_numbLoose = 0;
@@ -2138,6 +2138,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         if( maxCSV < jet.bDiscriminator()) maxCSV = jet.bDiscriminator();
         if( jet.isResToptag()!=1 && jet.HjDisc() > maxHj_resTop) maxHj_resTop = jet.HjDisc();
         if( jet.isToptag()!=1 && jet.HjDisc() > maxHj_hadTop) maxHj_hadTop = jet.HjDisc();
+        if( jet.HjDisc() > maxHj_all ) maxHj_all = jet.HjDisc();
         for(uint bjet_en=jet_en+1; bjet_en < Jets.size(); bjet_en++){
             Jet bjet = Jets.at(bjet_en);
             sum_jet_dr += bjet.DeltaR(jet);
@@ -2162,6 +2163,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
     //avg_dr_jet = Jet_numLoose >=1? sum_jet_dr/Jet_numLoose : -9.;
     Hj_tagger_resTop = max(maxHj_resTop,-1.);
     Hj_tagger_hadTop = max(maxHj_hadTop,-1.);
+    Hj_tagger = max(maxHj_all, -1.);
     HighestJetCSV = maxCSV;
     HtJet = SumPt;
     int lepton_num =0;

@@ -786,6 +786,12 @@ Int_t EventContainer::ReadEvent()
       } // if useObj
 
       newLepton.Clear();
+      useObj = newLepton.Fill(*DummyVetoPtr,*lepJetsPtr ,_eventTree, io,"MuLoose", isSimulation, SourceNumber ,13);// 11 means Electron, DummyVeto
+      if(useObj) {
+	    loose_noclean_leptons.push_back(newLepton);
+      }
+      
+      newLepton.Clear();
       useObj = newLepton.Fill(*muonsVetoPtr, *lepJetsPtr, _eventTree, io,"MuLoose", isSimulation, SourceNumber ,13);// 13 means Muon
       if(_debugEvt == eventNumber && _sync == 11){
         std::cout << eventNumber <<" conept "<< newLepton.conept() <<" pt " << newLepton.Pt() << " eta " << newLepton.Eta() << " phi " << newLepton.Phi() << " E "<< newLepton.E() << " pdgId "<<newLepton.pdgId()<<" charge "<< newLepton.charge()<< " lepjetchtrks "<< newLepton.lepjetchtrks()<<" miniIsoRel "<< newLepton.miniIsoRel()<< " miniIsoCh "<< newLepton.miniIsoCh()<< " miniIsoPUsub "<< newLepton.miniIsoPUsub() << " ptrel "<< newLepton.ptrel()<< " jetdeepcsv "<< newLepton.jetdeepcsv()<< " PFRelIso04 "<< newLepton.relIsoR04() << " jetptratio "<< newLepton.jetptratioV2() << " IP3Dsig "<< newLepton.IP3Dsig()<< " dxy "<< newLepton.dxy() << " dz " << newLepton.dz() << " sgementCompatibility "<< newLepton.segmentCompatibility() << " lepBDT " << newLepton.BDT() <<" passLooseId " << newLepton.passLooseId()<<" passMediumId "<< newLepton.passMediumId()  << " isFake " << newLepton.isFake() << " isMVASel " << newLepton.isMVASel() << " jetislep "<< newLepton.jetislep() << std::endl;

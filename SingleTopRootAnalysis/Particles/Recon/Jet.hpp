@@ -428,6 +428,7 @@ class Jet: public Particle
   // ttH functions
   // Hj tagger mva
     TMVA::Reader *readerjet;
+    TString _weightname;
     Float_t jetvarqg;
     Float_t jetvarlepdrmax;
     Float_t jetvarlepdrmin;

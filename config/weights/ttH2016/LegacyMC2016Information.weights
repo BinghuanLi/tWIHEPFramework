@@ -193,8 +193,14 @@ PileUp.Source.100036: Legacy16V1_ZZTo4L
 
 # 100037 - Legacy16V1_WJets_v1
 Weight.Source.100037: 61526.7
-Events.Source.100037: 29514020
+Events.Source.100037: 86916455
 PileUp.Source.100037: Legacy16V1_WJets_v1
+
+# 100038 - Legacy16V1_WJets_ext
+Weight.Source.100038: 61526.7
+Events.Source.100038: 86916455
+PileUp.Source.100038: Legacy16V1_WJets_v1
+
 
 # 100039 - Legacy16V1_WW_DS
 Weight.Source.100039: 0.1743

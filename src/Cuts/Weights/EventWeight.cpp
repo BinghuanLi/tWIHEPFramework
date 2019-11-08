@@ -44,7 +44,7 @@ using namespace std;
  * Input:  Particle class                                                     *
  * Output: None                                                               *
  ******************************************************************************/
-EventWeight::EventWeight(EventContainer *EventContainerObj,Double_t TotalMCatNLOEvents,const std::string& MCtype, Bool_t pileup, Bool_t reCalPU, Bool_t bWeight, Bool_t useLeptonSFs, Bool_t usebTagReshape, Bool_t useChargeMis, Bool_t useFakeRate, Bool_t useTriggerSFs, Bool_t usePrefire, Int_t whichTrig, Bool_t verbose):
+EventWeight::EventWeight(EventContainer *EventContainerObj,Double_t TotalMCatNLOEvents,const std::string& MCtype, Bool_t pileup, Bool_t reCalPU, Bool_t bWeight, Bool_t useLeptonSFs, Bool_t usebTagReshape, Bool_t useChargeMis, Bool_t useFakeRate, Bool_t useTriggerSFs, Bool_t usePrefire, Int_t whichTrig, Bool_t isTrainMVA, Bool_t verbose):
   _reCalPU(reCalPU),
   _useLeptonSFs(useLeptonSFs),
   _useChargeMis(useChargeMis),
@@ -53,6 +53,7 @@ EventWeight::EventWeight(EventContainer *EventContainerObj,Double_t TotalMCatNLO
   _useTriggerSFs(useTriggerSFs),
   _usebTagReshape(usebTagReshape),
   _whichTrigger(whichTrig),
+  _isTrainMVA(isTrainMVA),
   _verbose(verbose)
 {
   //pileup is NOT applied by default.  Instead it is applied by the user, and stored in the tree for later application
@@ -1033,9 +1034,17 @@ void EventWeight::setChargeMisHistograms(TString ChargeMisFileName,TString Charg
 std::tuple<Double_t,Double_t,Double_t> EventWeight::getChargeMisWeight(EventContainer* EventContainerObj){
 
   Double_t ChargeMisWeight = 1., ChargeMisWeightUp = 1., ChargeMisWeightDown = 1.;
-  if(EventContainerObj->fakeleptonsVetoPtr->size()<2) return std::make_tuple(ChargeMisWeight,ChargeMisWeightUp,ChargeMisWeightDown);
-  Lepton lep1 =  EventContainerObj->fakeleptonsVetoPtr->at(0);
-  Lepton lep2 =  EventContainerObj->fakeleptonsVetoPtr->at(1);
+  if(!_isTrainMVA && EventContainerObj->fakeleptonsVetoPtr->size()<2) return std::make_tuple(ChargeMisWeight,ChargeMisWeightUp,ChargeMisWeightDown);
+  if(_isTrainMVA && EventContainerObj->looseleptonsVetoPtr->size()<2) return std::make_tuple(ChargeMisWeight,ChargeMisWeightUp,ChargeMisWeightDown);
+  if(! (_whichTrigger <=5 && _whichTrigger >=2) ) return std::make_tuple(ChargeMisWeight,ChargeMisWeightUp,ChargeMisWeightDown);
+  Lepton lep1, lep2;
+  if(_isTrainMVA){
+      lep1 =  EventContainerObj->looseleptonsVetoPtr->at(0);
+      lep2 =  EventContainerObj->looseleptonsVetoPtr->at(1);
+  }else{
+      lep1 =  EventContainerObj->fakeleptonsVetoPtr->at(0);
+      lep2 =  EventContainerObj->fakeleptonsVetoPtr->at(1);
+  }
   if(lep1.charge()==lep2.charge()) return std::make_tuple(ChargeMisWeight,ChargeMisWeightUp,ChargeMisWeightDown);
   Double_t ChargeMisWeight1 = 0.;
   Double_t ChargeMisUnc1 = 0.; 
@@ -1080,10 +1089,10 @@ void EventWeight::setFakeRateHistograms(TString FakeRateFileName,TString FakeRat
       _MuonFakeRate[muSystName] = (TH2F*)FakeRateFile->Get(FakeRateMuonHistName)->Clone();
   }else if(muSystName=="QCD"){
       // histograms QCD and TT are used for fake rate closure systematics, I'm not going to put it in config files, because it's ttH exclusive file and I may need to change all(dozens of) config files if I do put it in config files
-      _MuonFakeRate[muSystName] = (TH2F*)FakeRateFile->Get("FR_mva090_mu_QCD")->Clone();
+      _MuonFakeRate[muSystName] = (TH2F*)FakeRateFile->Get("FR_mva085_mu_QCD")->Clone();
   
   }else if(muSystName=="TT"){
-      _MuonFakeRate[muSystName] = (TH2F*)FakeRateFile->Get("FR_mva090_mu_TT")->Clone();
+      _MuonFakeRate[muSystName] = (TH2F*)FakeRateFile->Get("FR_mva085_mu_TT")->Clone();
   }else{
       _MuonFakeRate[muSystName] = (TH2F*)FakeRateFile->Get(FakeRateMuonHistName+"_"+muSystName)->Clone();
   }
@@ -1091,9 +1100,9 @@ void EventWeight::setFakeRateHistograms(TString FakeRateFileName,TString FakeRat
   if(eleSystName=="central"){
     _ElectronFakeRate[eleSystName] = (TH2F*)FakeRateFile->Get(FakeRateElectronHistName)->Clone();
   }else if(eleSystName=="QCD"){
-    _ElectronFakeRate[eleSystName] = (TH2F*)FakeRateFile->Get("FR_mva090_el_QCD_NC")->Clone();
+    _ElectronFakeRate[eleSystName] = (TH2F*)FakeRateFile->Get("FR_mva080_el_QCD_NC")->Clone();
   }else if(eleSystName=="TT"){
-    _ElectronFakeRate[eleSystName] = (TH2F*)FakeRateFile->Get("FR_mva090_el_TT")->Clone();
+    _ElectronFakeRate[eleSystName] = (TH2F*)FakeRateFile->Get("FR_mva080_el_TT")->Clone();
   }else{
      _ElectronFakeRate[eleSystName] = (TH2F*)FakeRateFile->Get(FakeRateElectronHistName+"_"+eleSystName)->Clone();
   } 
@@ -1115,9 +1124,16 @@ Double_t EventWeight::getFakeRateWeight(EventContainer* EventContainerObj, std::
 
   Double_t FakeRateWeight = 1.0;
   if(_whichTrigger <=5 && _whichTrigger >=2 ){//if it is ttH 2l category
-      if(EventContainerObj->fakeleptonsVetoPtr->size()<2) return FakeRateWeight;
-      Lepton lep1 =  EventContainerObj->fakeleptonsVetoPtr->at(0);
-      Lepton lep2 =  EventContainerObj->fakeleptonsVetoPtr->at(1);
+      if(!_isTrainMVA && EventContainerObj->fakeleptonsVetoPtr->size()<2) return FakeRateWeight;
+      if(_isTrainMVA && EventContainerObj->looseleptonsVetoPtr->size()<2) return FakeRateWeight;
+      Lepton lep1, lep2;
+      if(_isTrainMVA){
+          lep1 =  EventContainerObj->looseleptonsVetoPtr->at(0);
+          lep2 =  EventContainerObj->looseleptonsVetoPtr->at(1);
+      }else{
+          lep1 =  EventContainerObj->fakeleptonsVetoPtr->at(0);
+          lep2 =  EventContainerObj->fakeleptonsVetoPtr->at(1);
+      }
       if(lep1.isMVASel()==1 && lep2.isMVASel()==1) return FakeRateWeight;
       int xAxisBin1 = 0, yAxisBin1 = 0, xAxisBin2 = 0, yAxisBin2 = 0;
       Double_t FakeRateWeight1 = 0., FakeRateWeight2 = 0.;

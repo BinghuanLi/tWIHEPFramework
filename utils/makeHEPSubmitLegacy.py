@@ -121,7 +121,7 @@ def SetPars(YEAR, JEC, SampleType, NLEP):
     if SampleType == "isDNN":
         Analysis += "TrainDNN"
         Sample = SamplesAll[sYear][SampleType]
-        InvPostfix += " -isTrainMVA"
+        InvPostfix += " -isTrainMVA -FakeRate"
         if JEC == "nominal" and NLEP==2:
             Analysis +=  "2L"
             TriggerName = "TTHLep_2L"

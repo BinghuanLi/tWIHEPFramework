@@ -44,7 +44,7 @@ class EventWeight : public HistoCut
 public:
 
   // Parameterized Constructor
-  EventWeight(EventContainer *obj, Double_t TotalMCatNLOEvents = 0,const std::string& MCtype="none", Bool_t pileup = false, Bool_t reCalPU = false, Bool_t bWeight = false, Bool_t useLeptonSFs = kFALSE, Bool_t usebTagReshape = kFALSE, Bool_t useChargeMis = false, Bool_t useFakeRate = false, Bool_t useTriggerSFs = false , Bool_t usePrefire = kFALSE, Int_t whichTrig = 5, Bool_t verbose = kFALSE);
+  EventWeight(EventContainer *obj, Double_t TotalMCatNLOEvents = 0,const std::string& MCtype="none", Bool_t pileup = false, Bool_t reCalPU = false, Bool_t bWeight = false, Bool_t useLeptonSFs = kFALSE, Bool_t usebTagReshape = kFALSE, Bool_t useChargeMis = false, Bool_t useFakeRate = false, Bool_t useTriggerSFs = false , Bool_t usePrefire = kFALSE, Int_t whichTrig = 5, Bool_t isTrainMVA= kFALSE, Bool_t verbose = kFALSE);
   
   // Default Destructor
   ~EventWeight();
@@ -154,6 +154,7 @@ private:
 
   //For debugging
   Bool_t _verbose;
+  Bool_t _isTrainMVA;
 
   std::vector<std::string> _bTagSystNames;
   std::map<std::string,float> _bTagSystValues;

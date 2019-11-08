@@ -418,7 +418,7 @@ int main(int argc, char **argv)
   //  mystudy.AddCut(new CutZveto(particlesObj, "Tight"));
   //}
 
-  mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, usePrefire, whichtrig));
+  mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, usePrefire, whichtrig, isTrainMVA));
   
   //Add in any variables to the skim tree that you want here
   

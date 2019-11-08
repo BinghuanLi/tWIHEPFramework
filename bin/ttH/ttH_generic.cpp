@@ -136,6 +136,7 @@ int main(int argc, char **argv)
   Bool_t usebTagReweight = kFALSE;
   Bool_t useChargeMis = kFALSE;
   Bool_t useFakeRate = kFALSE;
+  Bool_t usePrefire = kFALSE;
   Bool_t useTriggerSFs = kFALSE;
   Bool_t useMCPromptFS = kFALSE;
   Bool_t useMCRightCharge = kFALSE;
@@ -188,6 +189,10 @@ int main(int argc, char **argv)
     if (!strcmp(argv[i], "-FakeRate")){
       useFakeRate = kTRUE;
       cout << "Driver: Using FakeRate" << endl;
+    }
+    if (!strcmp(argv[i], "-Prefire")){
+      usePrefire = kTRUE;
+      cout << "Driver: Using Prefire" << endl;
     }
     if (!strcmp(argv[i], "-isTrainMVA")){
       isTrainMVA = kTRUE;
@@ -413,7 +418,7 @@ int main(int argc, char **argv)
   //  mystudy.AddCut(new CutZveto(particlesObj, "Tight"));
   //}
 
-  mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, whichtrig));
+  mystudy.AddCut(new EventWeight(particlesObj,mystudy.GetTotalMCatNLOEvents(), mcStr, doPileup, reCalPileup, dobWeight, useLeptonSFs, usebTagReweight, useChargeMis, useFakeRate, useTriggerSFs, usePrefire, whichtrig));
   
   //Add in any variables to the skim tree that you want here
   

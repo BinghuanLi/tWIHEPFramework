@@ -1310,52 +1310,84 @@ std::tuple<Double_t,Double_t,Double_t> EventWeight::getTriggerWeight(EventContai
   else if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==24)category =2;
   else if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==26)category =3;
   Double_t lep1_conept = EventContainerObj->fakeLeptons.at(0).conept();
-  if(_whichTrigger>=2 && _whichTrigger <=5){
-    // updated trigger SF for 2017 , see link :
-    // https://gitlab.cern.ch/ttH_leptons/doc/blob/master/2017/appendix_1.md#for-lepton-id-scale-factors
-    if(category ==3){//mm
-        if(lep1_conept <35){
-            TriggerWeight = 0.972; 
-            TriggerWeightUp = 0.972 + 0.006;
-            TriggerWeightDown = 0.972 - 0.006;
-        }else{
-            TriggerWeight = 0.994; 
-            TriggerWeightUp = 0.994 + 0.001;
-            TriggerWeightDown = 0.994 - 0.001;
+  Int_t dataEra = EventContainerObj->_DataEra;
+  if(dataEra==2016){
+      if(_whichTrigger>=2 && _whichTrigger <=5){
+        if(category ==3){//mm
+            TriggerWeight = 1.010; 
+            TriggerWeightUp = 1.010 + 0.01;
+            TriggerWeightDown = 1.010 - 0.01;
+        }else if (category ==1){//ee
+            TriggerWeight = 1.020; 
+            TriggerWeightUp = 1.020 + 0.02;
+            TriggerWeightDown = 1.020 - 0.02;
+        }else if (category ==2){//em
+            TriggerWeight = 1.020; 
+            TriggerWeightUp = 1.020 + 0.01;
+            TriggerWeightDown = 1.020 - 0.01;
         }
-    }else if(category==1){//ee
-        if(lep1_conept < 30){
-            TriggerWeight = 0.937; 
-            TriggerWeightUp = 0.937 + 0.027;
-            TriggerWeightDown = 0.937 - 0.027;
-        }else{
-            TriggerWeight = 0.991; 
-            TriggerWeightUp = 0.991 + 0.002;
-            TriggerWeightDown = 0.991 - 0.002;
+      }else if(_whichTrigger==6 || _whichTrigger==7){//4l
+          TriggerWeight = 1.00; 
+          TriggerWeightUp = 1.06;
+          TriggerWeightDown = 0.94;
+      }
+  }else if(dataEra==2017){
+      if(_whichTrigger>=2 && _whichTrigger <=5){
+        // updated trigger SF for 2017 , see link :
+        // https://gitlab.cern.ch/ttH_leptons/doc/blob/master/2017/appendix_1.md#for-lepton-id-scale-factors
+        if(category ==3){//mm
+            if(lep1_conept <35){
+                TriggerWeight = 0.972; 
+                TriggerWeightUp = 0.972 + 0.006;
+                TriggerWeightDown = 0.972 - 0.006;
+            }else{
+                TriggerWeight = 0.994; 
+                TriggerWeightUp = 0.994 + 0.001;
+                TriggerWeightDown = 0.994 - 0.001;
+            }
+        }else if(category==1){//ee
+            if(lep1_conept < 30){
+                TriggerWeight = 0.937; 
+                TriggerWeightUp = 0.937 + 0.027;
+                TriggerWeightDown = 0.937 - 0.027;
+            }else{
+                TriggerWeight = 0.991; 
+                TriggerWeightUp = 0.991 + 0.002;
+                TriggerWeightDown = 0.991 - 0.002;
+            }
+        }else if(category==2){//em
+            if(lep1_conept < 35){
+                TriggerWeight = 0.952; 
+                TriggerWeightUp = 0.952 + 0.008;
+                TriggerWeightDown = 0.952 - 0.008;
+            }else if(lep1_conept <50){
+                TriggerWeight = 0.983; 
+                TriggerWeightUp = 0.983 + 0.003;
+                TriggerWeightDown = 0.983 - 0.003;
+            }else{
+                TriggerWeight = 1.0; 
+                TriggerWeightUp = 1.0 + 0.001;
+                TriggerWeightDown = 1.0 - 0.001;
+            }
         }
-    }else if(category==2){//em
-        if(lep1_conept < 35){
-            TriggerWeight = 0.952; 
-            TriggerWeightUp = 0.952 + 0.008;
-            TriggerWeightDown = 0.952 - 0.008;
-        }else if(lep1_conept <50){
-            TriggerWeight = 0.983; 
-            TriggerWeightUp = 0.983 + 0.003;
-            TriggerWeightDown = 0.983 - 0.003;
-        }else{
-            TriggerWeight = 1.0; 
-            TriggerWeightUp = 1.0 + 0.001;
-            TriggerWeightDown = 1.0 - 0.001;
-        }
-    }
-  }else if(_whichTrigger==6 || _whichTrigger==7){//4l
-      TriggerWeight = 1.00; 
-      TriggerWeightUp = 1.05;
-      TriggerWeightDown = 0.95;
-  }else{
+      }else if(_whichTrigger==6 || _whichTrigger==7){//4l
+          TriggerWeight = 1.00; 
+          TriggerWeightUp = 1.05;
+          TriggerWeightDown = 0.95;
+      }else{
+          TriggerWeight = 1.00; 
+          TriggerWeightUp = 1.03;
+          TriggerWeightDown = 0.97;
+      }
+  }else if (dataEra ==2018){
+      // temporary assigned value
       TriggerWeight = 1.00; 
       TriggerWeightUp = 1.03;
       TriggerWeightDown = 0.97;
+  }else{
+      TriggerWeight = 1.00; 
+      TriggerWeightUp = 1.00;
+      TriggerWeightDown = 1.00;
   }
   return std::make_tuple(TriggerWeight,TriggerWeightUp,TriggerWeightDown);
 }

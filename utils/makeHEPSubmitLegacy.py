@@ -23,7 +23,7 @@ frameworkDir = "/publicfs/cms/data/TopQuark/cms13TeV/Binghuan/tWIHEPFramework/"
 executable = "bin/ttH/ttH_generic.x"
 configFile = "config/overall/ttHRunII/2018/ttH.MultiLeptons.DiLepton.All.config"
 #invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -ReCalPU -TriggerSFs -lepSFs -FakeRate -chargeMis -Prefire"
-invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -Prefire" #-TriggerSFs -lepSFs -FakeRate -chargeMis "
+invPostfix = " -MCatNLO -mc -bTagReshape -PileUpWgt -Prefire -TriggerSFs -FakeRate" # -lepSFs -chargeMis "
 mcPostfix = " "
 triggerName = "TTHLep_2L "
 fileListDirectory = "config/files/ttH_Legacy/SmallJobs/mc/"
@@ -121,7 +121,8 @@ def SetPars(YEAR, JEC, SampleType, NLEP):
     if SampleType == "isDNN":
         Analysis += "TrainDNN"
         Sample = SamplesAll[sYear][SampleType]
-        InvPostfix += " -isTrainMVA -FakeRate"
+        #InvPostfix += " -isTrainMVA -FakeRate"
+        InvPostfix += " -isTrainMVA"  # always use -FakeRate, check the invPostfix 
         if JEC == "nominal" and NLEP==2:
             Analysis +=  "2L"
             TriggerName = "TTHLep_2L"

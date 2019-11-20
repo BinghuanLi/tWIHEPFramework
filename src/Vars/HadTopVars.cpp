@@ -134,7 +134,7 @@ void HadTopVars::Reco_hadTop(EventContainer *EvtObj){
  std::vector<Lepton> selectedLeptons = EvtObj->fakeLeptons;
  std::vector<Jet> Jets = EvtObj->jets;
  int njets = Jets.size();
- std::sort(Jets.begin(),Jets.end(),[](const Jet &a, const Jet &b){return a.pfDeepCSVBJetTags() > b.pfDeepCSVBJetTags();});
+ //std::sort(Jets.begin(),Jets.end(),[](const Jet &a, const Jet &b){return a.pfDeepCSVBJetTags() > b.pfDeepCSVBJetTags();});
   for (int i1=0; i1<njets-2; i1++) {
     for (int i2=i1+1; i2<njets-1; i2++){
       for (int i3=i2+1; i3<njets; i3++){

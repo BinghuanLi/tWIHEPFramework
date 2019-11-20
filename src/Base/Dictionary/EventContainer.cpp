@@ -376,6 +376,7 @@ void EventContainer::Initialize( EventTree* eventTree, TruthTree* truthTree)
   _sync = _config.GetValue("SyncType",0);
   _SaveCut = _config.GetValue("SaveCuts",0);
   _DataEra = _config.GetValue("DataEra",2017);
+  _TrainMVA = _config.GetValue("TrainMVA",0);
   _nLep = _config.GetValue("nLep",2);
   _debugEvt = _config.GetValue("DebugEvent",0);
   TTHLep_2Mu =0;
@@ -751,7 +752,11 @@ Int_t EventContainer::ReadEvent()
     int tau_index =0;
     for(Int_t io = 0;io < _eventTree -> Jet_pt->size(); io++) {
       newJet.Clear();
-      useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *fakeleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, true, isSimulation, _trigID);
+      if(_TrainMVA==1){
+        useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *looseleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, true, isSimulation, _trigID);
+      }else{
+        useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *fakeleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, true, isSimulation, _trigID);
+      }
       if(useObj)lepjets.push_back(newJet);
     }
     ///////////////////////////////////////////
@@ -959,7 +964,12 @@ Int_t EventContainer::ReadEvent()
       ejordr = 999;
       bestjetdr = 999;
       //      missingEt = -888; 
-      useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *fakeleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, false, isSimulation, _trigID);
+      if(_TrainMVA==1){
+        useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *looseleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, false, isSimulation, _trigID);
+      }else{
+        useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *fakeleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, false, isSimulation, _trigID);
+      }
+      //useObj = newJet.Fill(1.0,1.0, mu_index, ele_index, tau_index, *fakeleptonsVetoPtr, *tausVetoPtr , _eventTree, io, &missingEtVec, false, isSimulation, _trigID);
       //      useObj = newJet.Fill(1.0,1.0, _eventTree, io);
       
       missingEt = TMath::Sqrt(pow(missingEx,2) + pow(missingEy,2));//so MET gets JES adjustment toogEx=top_met.MET_ExMiss();
@@ -1920,14 +1930,14 @@ void EventContainer::Cal_dilep_mass(){
                mass_noclean = (Lep0+Lep1).M();
         }
     }
-    massl_noclean = mass_noclean; 
+    massl_noclean = mass_noclean == 999? -9 : mass_noclean; 
     if (looseLeptons.size()<2)return;
     Lepton looselep0 = looseLeptons.at(0);
     Lepton looselep1 = looseLeptons.at(1);
     Lep0.SetPtEtaPhiE(looselep0.Pt(),looselep0.Eta(),looselep0.Phi(),looselep0.E());
     Lep1.SetPtEtaPhiE(looselep1.Pt(),looselep1.Eta(),looselep1.Phi(),looselep1.E());
     if(fabs(looselep0.pdgId())==11 && fabs(looselep1.pdgId())==11) dillepmass = (Lep0+Lep1).M();
-    mass_dillep = dillepmass;
+    mass_dillep = dillepmass ==999? -9 : dillepmass;
     // dilep mass
     for(uint lep_en =0; lep_en < looseLeptons.size(); lep_en++){
         Lep0.SetPtEtaPhiE(looseLeptons.at(lep_en).Pt(), looseLeptons.at(lep_en).Eta(), looseLeptons.at(lep_en).Phi(), looseLeptons.at(lep_en).E());
@@ -1943,9 +1953,9 @@ void EventContainer::Cal_dilep_mass(){
                 dielemass = (Lep0+Lep1).M(); 
         }
     }
-    massl = diloosemass;
-    massL_SFOS = lSFOSmass;
-    mass_diele = dielemass;
+    massl = diloosemass == 999? -9 : diloosemass;
+    massL_SFOS = lSFOSmass == 999 ? -9 : lSFOSmass;
+    mass_diele = dielemass == 999 ? -9 : dielemass;
     if (fakeLeptons.size()<2)return;
     if (fakeLeptons.size()>=2){
         Lepton fakelep0 = fakeLeptons.at(0);
@@ -1954,7 +1964,7 @@ void EventContainer::Cal_dilep_mass(){
         FakeLep1.SetPtEtaPhiE(fakelep1.Pt(),fakelep1.Eta(),fakelep1.Phi(),fakelep1.E());
         if(fabs(fakelep0.pdgId())==11 && fabs(fakelep1.pdgId())==11) dilepmass = (FakeLep0+FakeLep1).M();
     }
-    mass_dilep = dilepmass;
+    mass_dilep = dilepmass == 999? -9 : dilepmass;
     for(uint lep_en =0; lep_en < fakeLeptons.size(); lep_en++){
         FakeLep0.SetPtEtaPhiE(fakeLeptons.at(lep_en).Pt(), fakeLeptons.at(lep_en).Eta(), fakeLeptons.at(lep_en).Phi(), fakeLeptons.at(lep_en).E());
         for(uint l_en =lep_en+1; l_en < fakeLeptons.size(); l_en++){
@@ -1962,7 +1972,7 @@ void EventContainer::Cal_dilep_mass(){
            if(difakemass> (FakeLep0+FakeLep1).M()) difakemass = (FakeLep0+FakeLep1).M();
         }
     }
-    massL = difakemass;
+    massL = difakemass == 999? -9:difakemass;
     /*
     mass_diele = dielemass;
     if (fakeLeptons.size()>=2){

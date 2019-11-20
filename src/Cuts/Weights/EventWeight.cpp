@@ -1306,11 +1306,21 @@ Double_t EventWeight::getFakeRateWeight(EventContainer* EventContainerObj, std::
 std::tuple<Double_t,Double_t,Double_t> EventWeight::getTriggerWeight(EventContainer * EventContainerObj){
   Double_t TriggerWeight = 1.0, TriggerWeightUp = 1.0, TriggerWeightDown = 1.0;
   Int_t category = 0;
-  if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==22)category =1;
-  else if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==24)category =2;
-  else if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==26)category =3;
-  Double_t lep1_conept = EventContainerObj->fakeLeptons.at(0).conept();
   Int_t dataEra = EventContainerObj->_DataEra;
+  Double_t lep1_conept = 0;
+  if(!_isTrainMVA && EventContainerObj->fakeleptonsVetoPtr->size()<2) return std::make_tuple(TriggerWeight,TriggerWeightUp,TriggerWeightDown);
+  if(_isTrainMVA && EventContainerObj->looseleptonsVetoPtr->size()<2) return std::make_tuple(TriggerWeight,TriggerWeightUp,TriggerWeightDown);
+  if(!_isTrainMVA){
+    if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==22)category =1;
+    else if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==24)category =2;
+    else if((fabs(EventContainerObj->fakeLeptons.at(0).pdgId())+fabs(EventContainerObj->fakeLeptons.at(1).pdgId()))==26)category =3;
+    lep1_conept = EventContainerObj->fakeLeptons.at(0).conept();
+  }else{
+    if((fabs(EventContainerObj->looseLeptons.at(0).pdgId())+fabs(EventContainerObj->looseLeptons.at(1).pdgId()))==22)category =1;
+    else if((fabs(EventContainerObj->looseLeptons.at(0).pdgId())+fabs(EventContainerObj->looseLeptons.at(1).pdgId()))==24)category =2;
+    else if((fabs(EventContainerObj->looseLeptons.at(0).pdgId())+fabs(EventContainerObj->looseLeptons.at(1).pdgId()))==26)category =3;
+    lep1_conept = EventContainerObj->looseLeptons.at(0).conept();
+  }
   if(dataEra==2016){
       if(_whichTrigger>=2 && _whichTrigger <=5){
         if(category ==3){//mm

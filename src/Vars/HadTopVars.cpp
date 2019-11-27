@@ -49,28 +49,28 @@ HadTopVars::HadTopVars(bool makeHistos){
 
 void HadTopVars::Clear(){
   Jet25_isToptag.clear();
-  hadTop_BDT= -999;
-  hadTop_pt= -999;
-  bjet_hadTop_index=-999;
-  wjet1_hadTop_index=-999;
-  wjet2_hadTop_index=-999;
-  hadTop_btagDisc_b=-999;
-  hadTop_btagDisc_Wj1=-999;
-  hadTop_btagDisc_Wj2=-999;
-  hadTop_qg_Wj1=-999;
-  hadTop_qg_Wj2=-999;
-  hadTop_m_Wj1Wj2_div_m_bWj1Wj2=-999;
-  hadTop_pT_Wj1Wj2=-999;
-  hadTop_dR_Wj1Wj2=-999;
-  hadTop_m_bWj1Wj2=-999;
-  hadTop_dR_bW=-999;
-  hadTop_m_bWj1=-999;
-  hadTop_m_bWj2=-999;
-  hadTop_mass_Wj1=-999;
-  hadTop_pT_Wj2=-999;
-  hadTop_mass_Wj2=-999;
-  hadTop_pT_b=-999;
-  hadTop_mass_b=-999;
+  hadTop_BDT= -9;
+  hadTop_pt= -9;
+  bjet_hadTop_index=-9;
+  wjet1_hadTop_index=-9;
+  wjet2_hadTop_index=-9;
+  hadTop_btagDisc_b=-9;
+  hadTop_btagDisc_Wj1=-9;
+  hadTop_btagDisc_Wj2=-9;
+  hadTop_qg_Wj1=-9;
+  hadTop_qg_Wj2=-9;
+  hadTop_m_Wj1Wj2_div_m_bWj1Wj2=-9;
+  hadTop_pT_Wj1Wj2=-9;
+  hadTop_dR_Wj1Wj2=-9;
+  hadTop_m_bWj1Wj2=-9;
+  hadTop_dR_bW=-9;
+  hadTop_m_bWj1=-9;
+  hadTop_m_bWj2=-9;
+  hadTop_mass_Wj1=-9;
+  hadTop_pT_Wj2=-9;
+  hadTop_mass_Wj2=-9;
+  hadTop_pT_b=-9;
+  hadTop_mass_b=-9;
     
 }
 
@@ -128,16 +128,17 @@ void HadTopVars::FillBranches(EventContainer * evtObj){
  * Output: None                                                *
  * **************************************************************/
 void HadTopVars::Reco_hadTop(EventContainer *EvtObj){
- Int_t bjet_hadTop_INDEX= -999;
- Int_t wjet1_hadTop_INDEX= -999;
- Int_t wjet2_hadTop_INDEX= -999;
+ Int_t bjet_hadTop_INDEX= -9;
+ Int_t wjet1_hadTop_INDEX= -9;
+ Int_t wjet2_hadTop_INDEX= -9;
  std::vector<Lepton> selectedLeptons = EvtObj->fakeLeptons;
  std::vector<Jet> Jets = EvtObj->jets;
  int njets = Jets.size();
  //std::sort(Jets.begin(),Jets.end(),[](const Jet &a, const Jet &b){return a.pfDeepCSVBJetTags() > b.pfDeepCSVBJetTags();});
-  for (int i1=0; i1<njets-2; i1++) {
-    for (int i2=i1+1; i2<njets-1; i2++){
-      for (int i3=i2+1; i3<njets; i3++){
+  for (int i1=0; i1<njets; i1++) {
+    for (int i2=0; i2<njets; i2++){
+      for (int i3=0; i3<njets; i3++){
+        if(i1==i2 || i1==i3 || i2==i3) continue;
         Jet bjet = Jets.at(i1);
         Jet w1jet = Jets.at(i2);
         Jet w2jet = Jets.at(i3);

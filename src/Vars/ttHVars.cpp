@@ -2214,7 +2214,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         lep3_conePt = thirdLepton.conept();
         mindr_lep3_jet = thirdLep_closedr;
         dr_leps = firstLepton.DeltaR(secondLepton);
-        mT_lep2 = getMTlepmet(secondLepton.Phi(),EvtObj->missingPhi,secondLepton.Pt(),EvtObj->missingEt); 
+        mT_lep2 = getMTlepmet(secondLepton.Phi(),EvtObj->missingPhi,secondLepton.conept(),EvtObj->missingEt); 
         if(EvtObj->isSimulation && !_useTTHLoose){
             leadLep_isMatchRightCharge = FakeLep_matchId.at(0) == FakeLep_PdgId.at(0)? 1 : 0;
             leadLep_mcMatchId = FakeLep_matchId.at(0);
@@ -2285,10 +2285,10 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         if((firstLepton.isMVASel() + secondLepton.isMVASel()) ==2) Dilep_nTight = 2 ;
         else if((firstLepton.isMVASel() + secondLepton.isMVASel()) ==1) Dilep_nTight = 1 ;
         else Dilep_nTight = 0 ;
-        Mt_metleadlep = getMTlepmet(firstLepton.Phi(),EvtObj->missingPhi,firstLepton.Pt(),EvtObj->missingEt); 
+        Mt_metleadlep = getMTlepmet(firstLepton.Phi(),EvtObj->missingPhi,firstLepton.conept(),EvtObj->missingEt); 
         maxeta = max(fabs(firstLepton.Eta()),fabs(secondLepton.Eta()));
         
-        Dilep_mtWmin = std::min(getMTlepmet(secondLepton.Phi(),EvtObj->missingPhi,secondLepton.Pt(),EvtObj->missingEt), Mt_metleadlep); 
+        Dilep_mtWmin = std::min(getMTlepmet(secondLepton.Phi(),EvtObj->missingPhi,secondLepton.conept(),EvtObj->missingEt), Mt_metleadlep); 
         ttbarBDT_2lss = get_Dilep_ttbarMVA(EvtObj);
         ttvBDT_2lss = get_Dilep_ttvMVA(EvtObj);
         Bin2l = get_2DBDTBin(ttbarBDT_2lss, ttvBDT_2lss, EvtObj);
@@ -2451,7 +2451,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
                 else if(Sum3LCharge > 0)SubCat3L =4; // bt+
             }
             mass3L = (FakeLep1 + FakeLep2 + FakeLep3).M();
-            Trilep_mtWmin = std::min(Dilep_mtWmin, getMTlepmet(thirdLepton.Phi(),EvtObj->missingPhi,thirdLepton.Pt(),EvtObj->missingEt));
+            Trilep_mtWmin = std::min(Dilep_mtWmin, getMTlepmet(thirdLepton.Phi(),EvtObj->missingPhi,thirdLepton.conept(),EvtObj->missingEt));
             Trilep_bestMVA = std::max(lep3_BDT,Dilep_bestMVA);
             Trilep_worseMVA = std::min(lep3_BDT,Dilep_bestMVA);
             Trilep_worseIso = std::max(Dilep_worseIso, lep3_minIso);

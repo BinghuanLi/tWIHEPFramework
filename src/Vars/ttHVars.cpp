@@ -2161,9 +2161,9 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
     Jet_numbMedium = jet_numbMedium;
     avg_dr_jet = Jet_numLoose >=2? sum_jet_dr/((Jet_numLoose-1)*Jet_numLoose*0.5) : -9.;
     //avg_dr_jet = Jet_numLoose >=1? sum_jet_dr/Jet_numLoose : -9.;
-    Hj_tagger_resTop = max(maxHj_resTop,-1.);
-    Hj_tagger_hadTop = max(maxHj_hadTop,-1.);
-    Hj_tagger = max(maxHj_all, -1.);
+    Hj_tagger_resTop = max(maxHj_resTop,-9.);
+    Hj_tagger_hadTop = max(maxHj_hadTop,-9.);
+    Hj_tagger = max(maxHj_all, -9.);
     HighestJetCSV = maxCSV;
     HtJet = SumPt;
     int lepton_num =0;

@@ -54,6 +54,10 @@ private:
     bool IsttWctrlFake(EventContainer* EvtObj);
     bool IsTriLepSR(EventContainer* EvtObj);
     bool IsTriLepFake(EventContainer* EvtObj);
+    bool Is3lctrlSR(EventContainer* EvtObj);
+    bool Is3lctrlFake(EventContainer* EvtObj);
+    bool Is4lctrlSR(EventContainer* EvtObj);
+    bool Is4lctrlFake(EventContainer* EvtObj);
     bool IsWZctrlSR(EventContainer* EvtObj);
     bool IsWZctrlFake(EventContainer* EvtObj);
     bool IsttZctrlSR(EventContainer* EvtObj);
@@ -501,6 +505,10 @@ private:
   int isttWctrlFake;
   int isTriLepSR;
   int isTriLepFake;
+  int is3lctrlSR;
+  int is3lctrlFake;
+  int is4lctrlSR;
+  int is4lctrlFake;
   int isWZctrlSR;
   int isWZctrlFake;
   int isttZctrlSR;

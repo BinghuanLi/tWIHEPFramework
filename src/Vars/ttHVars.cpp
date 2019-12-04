@@ -549,6 +549,10 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["isttWctrlFake"] = 999;
   _floatVars["isTriLepSR"] = 999;
   _floatVars["isTriLepFake"] = 999;
+  _floatVars["is3lctrlSR"] = 999;
+  _floatVars["is3lctrlFake"] = 999;
+  _floatVars["is4lctrlSR"] = 999;
+  _floatVars["is4lctrlFake"] = 999;
   _floatVars["isWZctrlSR"] = 999;
   _floatVars["isWZctrlFake"] = 999;
   _floatVars["isttZctrlSR"] = 999;
@@ -1063,6 +1067,10 @@ void ttHVars::Clear(){
     isttWctrlFake = -9;
     isTriLepSR = -9;
     isTriLepFake = -9;
+    is3lctrlSR = -9;
+    is3lctrlFake = -9;
+    is4lctrlSR = -9;
+    is4lctrlFake = -9;
     isWZctrlSR = -9;
     isWZctrlFake = -9;
     isttZctrlSR = -9;
@@ -2031,6 +2039,10 @@ void ttHVars::FillBranches(EventContainer * evtObj){
    isttWctrlFake = IsttWctrlFake(evtObj)? 1:0;
    isTriLepSR = IsTriLepSR(evtObj)? 1:0;
    isTriLepFake = IsTriLepFake(evtObj)? 1:0;
+   is3lctrlSR = Is3lctrlSR(evtObj)? 1:0;
+   is3lctrlFake = Is3lctrlFake(evtObj)? 1:0;
+   is4lctrlSR = Is4lctrlSR(evtObj)? 1:0;
+   is4lctrlFake = Is4lctrlFake(evtObj)? 1:0;
    isWZctrlSR = IsWZctrlSR(evtObj)? 1:0;
    isWZctrlFake = IsWZctrlFake(evtObj)? 1:0;
    isttZctrlSR = IsttZctrlSR(evtObj)? 1:0;
@@ -2056,6 +2068,10 @@ void ttHVars::FillBranches(EventContainer * evtObj){
    _floatVars["isttWctrlFake"] = isttWctrlFake;
    _floatVars["isTriLepSR"] = isTriLepSR;
    _floatVars["isTriLepFake"] = isTriLepFake;
+   _floatVars["is3lctrlSR"] = is3lctrlSR;
+   _floatVars["is3lctrlFake"] = is3lctrlFake;
+   _floatVars["is4lctrlSR"] = is4lctrlSR;
+   _floatVars["is4lctrlFake"] = is4lctrlFake;
    _floatVars["isWZctrlSR"] = isWZctrlSR;
    _floatVars["isWZctrlFake"] = isWZctrlFake;
    _floatVars["isttZctrlSR"] = isttZctrlSR;
@@ -2687,6 +2703,22 @@ bool ttHVars::IsTriLepFake(EventContainer* EvtObj){
     if(!(nBJetLoose>=2 || nBJetMedium >=1)) return false; //BJet cut
     return true;
 };
+bool ttHVars::Is3lctrlSR(EventContainer* EvtObj){
+    if(nLep_Cat !=3 || nLepFO <3) return false;
+    if(!( fakeLeptons.at(0).isMVASel() ==1 && fakeLeptons.at(1).isMVASel() ==1 && fakeLeptons.at(2).isMVASel() ==1))return false; // selected leptons are tights
+    if(EvtObj->massL_SFOS > 101.2 || EvtObj->massL_SFOS < 81.2) return false; // inversed cut Z veto
+    if(!(EvtObj->metLD > (isSFOS_metLD ==1 ? 45 : 30) || n_presel_jet>=4)) return false; // nJet >=4 or (metLD > 30GeV, if SFOS, metLD > 45)
+    if(!n_presel_jet>=1) return false;
+    return true;
+};
+bool ttHVars::Is3lctrlFake(EventContainer* EvtObj){
+    if(nLep_Cat !=3 || nLepFO <3) return false;
+    if(fakeLeptons.at(0).isMVASel() ==1 && fakeLeptons.at(1).isMVASel() ==1 && fakeLeptons.at(2).isMVASel() ==1)return false; // selected leptons are not all tights
+    if(EvtObj->massL_SFOS > 101.2 || EvtObj->massL_SFOS < 81.2) return false; // inversed cut Z veto
+    if(!(EvtObj->metLD > (isSFOS_metLD ==1 ? 45 : 30) || n_presel_jet>=4)) return false; // nJet >=4 or (metLD > 30GeV, if SFOS, metLD > 45)
+    if(!n_presel_jet>=1) return false;
+    return true;
+};
 bool ttHVars::IsWZctrlSR(EventContainer* EvtObj){
     if(nLep_Cat !=3 || nLepFO <3) return false;
     if(!( fakeLeptons.at(0).isMVASel() ==1 && fakeLeptons.at(1).isMVASel() ==1 && fakeLeptons.at(2).isMVASel() ==1))return false; // selected leptons are tights
@@ -2830,5 +2862,23 @@ bool ttHVars::IstHlikeQuaLepFake(EventContainer* EvtObj){
     if(!(EvtObj->massL_SFOS > 101.2 || EvtObj->massL_SFOS < 81.2)) return false; // cut Z veto
     if(!(nLightJet>=1)) return false; //nLightJet cut
     if(!(nBJetMedium>=1)) return false; //BJet cut
+    return true;
+};
+bool ttHVars::Is4lctrlSR(EventContainer* EvtObj){
+    if(nLep_Cat !=4 || nLepFO <4) return false;
+    if(!(fakeLeptons.at(0).isMVASel() ==1 && fakeLeptons.at(1).isMVASel() ==1 && fakeLeptons.at(2).isMVASel() ==1 && fakeLeptons.at(3).isMVASel() ==1 ) )return false; // selected leptons are tights
+    if(EvtObj->massL_SFOS > 101.2 || EvtObj->massL_SFOS < 81.2) return false; // inversed cut Z veto
+    if(!(EvtObj->metLD > (isSFOS_metLD ==1 ? 45 : 30) || n_presel_jet>=4)) return false; // nJet >=4 or (metLD > 30GeV, if SFOS, metLD > 45)
+    if(!(n_presel_jet>=2)) return false; //nJet cut
+    if(!(nBJetLoose>=2 || nBJetMedium >=1)) return false; //BJet cut
+    return true;
+};
+bool ttHVars::Is4lctrlFake(EventContainer* EvtObj){
+    if(nLep_Cat !=4 || nLepFO <4) return false;
+    if(fakeLeptons.at(0).isMVASel() ==1 && fakeLeptons.at(1).isMVASel() ==1 && fakeLeptons.at(2).isMVASel() ==1 && fakeLeptons.at(3).isMVASel() ==1 )return false; // selected leptons are not all tights
+    if(EvtObj->massL_SFOS > 101.2 || EvtObj->massL_SFOS < 81.2) return false; // inversed cut Z veto
+    if(!(EvtObj->metLD > (isSFOS_metLD ==1 ? 45 : 30) || n_presel_jet>=4)) return false; // nJet >=4 or (metLD > 30GeV, if SFOS, metLD > 45)
+    if(!(n_presel_jet>=2)) return false; //nJet cut
+    if(!(nBJetLoose>=2 || nBJetMedium >=1)) return false; //BJet cut
     return true;
 };

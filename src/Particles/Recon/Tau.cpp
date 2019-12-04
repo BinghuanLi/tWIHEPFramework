@@ -60,6 +60,29 @@ Tau::Tau() : Particle::Particle(),
   _isTight       (0.0),
   _isVTight       (0.0),
   _rawMVA       (0.0),
+  _rawDNNVSjet (0.0) ,
+  _isVVVLooseVSjet (0.0) ,
+  _isVVLooseVSjet (0.0) ,
+  _isVLooseVSjet (0.0) ,
+  _isLooseVSjet (0.0) ,
+  _isMediumVSjet (0.0) ,
+  _isTightVSjet (0.0) ,
+  _isVTightVSjet (0.0) ,
+  _isVVTightVSjet (0.0) ,
+  _rawDNNVSmu (0.0) ,
+  _isVLooseVSmu (0.0) ,
+  _isLooseVSmu (0.0) ,
+  _isMediumVSmu (0.0) ,
+  _isTightVSmu (0.0) ,
+  _rawDNNVSe (0.0) ,
+  _isVVVLooseVSe (0.0) ,
+  _isVVLooseVSe (0.0) ,
+  _isVLooseVSe (0.0) ,
+  _isLooseVSe (0.0) ,
+  _isMediumVSe (0.0) ,
+  _isTightVSe (0.0) ,
+  _isVTightVSe (0.0) ,
+  _isVVTightVSe (0.0) ,
   _decayModeFinding       (0.0),
   _NumTracks(0.0)
 {
@@ -99,6 +122,29 @@ Tau::Tau(const Tau& other): Particle(other),
   _isTight(other.GetisTight()),
   _isVTight(other.GetisVTight()),
   _rawMVA(other.GetrawMVA()),
+  _rawDNNVSjet(other.GetrawDNNVSjet()) ,
+  _isVVVLooseVSjet(other.GetisVVVLooseVSjet()) ,
+  _isVVLooseVSjet(other.GetisVVLooseVSjet()) ,
+  _isVLooseVSjet(other.GetisVLooseVSjet()) ,
+  _isLooseVSjet(other.GetisLooseVSjet()) ,
+  _isMediumVSjet(other.GetisMediumVSjet()) ,
+  _isTightVSjet(other.GetisTightVSjet()) ,
+  _isVTightVSjet(other.GetisVTightVSjet()) ,
+  _isVVTightVSjet(other.GetisVVTightVSjet()) ,
+  _rawDNNVSmu(other.GetrawDNNVSmu()) ,
+  _isVLooseVSmu(other.GetisVLooseVSmu()) ,
+  _isLooseVSmu(other.GetisLooseVSmu()) ,
+  _isMediumVSmu(other.GetisMediumVSmu()) ,
+  _isTightVSmu(other.GetisTightVSmu()) ,
+  _rawDNNVSe(other.GetrawDNNVSe()) ,
+  _isVVVLooseVSe(other.GetisVVVLooseVSe()) ,
+  _isVVLooseVSe(other.GetisVVLooseVSe()) ,
+  _isVLooseVSe(other.GetisVLooseVSe()) ,
+  _isLooseVSe(other.GetisLooseVSe()) ,
+  _isMediumVSe(other.GetisMediumVSe()) ,
+  _isTightVSe(other.GetisTightVSe()) ,
+  _isVTightVSe(other.GetisVTightVSe()) ,
+  _isVVTightVSe(other.GetisVVTightVSe()) ,
   _decayModeFinding(other.GetdecayModeFinding()),
   _NumTracks(other.GetNumTracks())
 {
@@ -124,6 +170,29 @@ Tau::Tau(const Particle& other): Particle(other),
   _isTight       (0.0),
   _isVTight       (0.0),
   _rawMVA       (0.0),
+  _rawDNNVSjet (0.0) ,
+  _isVVVLooseVSjet (0.0) ,
+  _isVVLooseVSjet (0.0) ,
+  _isVLooseVSjet (0.0) ,
+  _isLooseVSjet (0.0) ,
+  _isMediumVSjet (0.0) ,
+  _isTightVSjet (0.0) ,
+  _isVTightVSjet (0.0) ,
+  _isVVTightVSjet (0.0) ,
+  _rawDNNVSmu (0.0) ,
+  _isVLooseVSmu (0.0) ,
+  _isLooseVSmu (0.0) ,
+  _isMediumVSmu (0.0) ,
+  _isTightVSmu (0.0) ,
+  _rawDNNVSe (0.0) ,
+  _isVVVLooseVSe (0.0) ,
+  _isVVLooseVSe (0.0) ,
+  _isVLooseVSe (0.0) ,
+  _isLooseVSe (0.0) ,
+  _isMediumVSe (0.0) ,
+  _isTightVSe (0.0) ,
+  _isVTightVSe (0.0) ,
+  _isVVTightVSe (0.0) ,
   _decayModeFinding       (0.0),
   _NumTracks(0.0)
 {
@@ -190,6 +259,29 @@ Tau& Tau::operator=(const Particle& other)
   SetisTight       (0.0);
   SetisVTight       (0.0);
   SetrawMVA       (0.0);
+  SetrawDNNVSjet (0.0) ;
+  SetisVVVLooseVSjet (0.0) ;
+  SetisVVLooseVSjet (0.0) ;
+  SetisVLooseVSjet (0.0) ;
+  SetisLooseVSjet (0.0) ;
+  SetisMediumVSjet (0.0) ;
+  SetisTightVSjet (0.0) ;
+  SetisVTightVSjet (0.0) ;
+  SetisVVTightVSjet (0.0) ;
+  SetrawDNNVSmu (0.0) ;
+  SetisVLooseVSmu (0.0) ;
+  SetisLooseVSmu (0.0) ;
+  SetisMediumVSmu (0.0) ;
+  SetisTightVSmu (0.0) ;
+  SetrawDNNVSe (0.0) ;
+  SetisVVVLooseVSe (0.0) ;
+  SetisVVLooseVSe (0.0) ;
+  SetisVLooseVSe (0.0) ;
+  SetisLooseVSe (0.0) ;
+  SetisMediumVSe (0.0) ;
+  SetisTightVSe (0.0) ;
+  SetisVTightVSe (0.0) ;
+  SetisVVTightVSe (0.0) ;
   SetdecayModeFinding       (0.0);
   SetNumTracks(0.0);
   return *this;
@@ -217,6 +309,29 @@ Tau& Tau::operator=(const Tau& other)
   SetisTight(other.GetisTight());
   SetisVTight(other.GetisVTight());
   SetrawMVA(other.GetrawMVA());
+  SetrawDNNVSjet (other.GetrawDNNVSjet()) ;
+  SetisVVVLooseVSjet (other.GetisVVVLooseVSjet()) ;
+  SetisVVLooseVSjet (other.GetisVVLooseVSjet()) ;
+  SetisVLooseVSjet (other.GetisVLooseVSjet()) ;
+  SetisLooseVSjet (other.GetisLooseVSjet()) ;
+  SetisMediumVSjet (other.GetisMediumVSjet()) ;
+  SetisTightVSjet (other.GetisTightVSjet()) ;
+  SetisVTightVSjet (other.GetisVTightVSjet()) ;
+  SetisVVTightVSjet (other.GetisVVTightVSjet()) ;
+  SetrawDNNVSmu (other.GetrawDNNVSmu()) ;
+  SetisVLooseVSmu (other.GetisVLooseVSmu()) ;
+  SetisLooseVSmu (other.GetisLooseVSmu()) ;
+  SetisMediumVSmu (other.GetisMediumVSmu()) ;
+  SetisTightVSmu (other.GetisTightVSmu()) ;
+  SetrawDNNVSe (other.GetrawDNNVSe()) ;
+  SetisVVVLooseVSe (other.GetisVVVLooseVSe()) ;
+  SetisVVLooseVSe (other.GetisVVLooseVSe()) ;
+  SetisVLooseVSe (other.GetisVLooseVSe()) ;
+  SetisLooseVSe (other.GetisLooseVSe()) ;
+  SetisMediumVSe (other.GetisMediumVSe()) ;
+  SetisTightVSe (other.GetisTightVSe()) ;
+  SetisVTightVSe (other.GetisVTightVSe()) ;
+  SetisVVTightVSe (other.GetisVVTightVSe()) ;
   SetdecayModeFinding(other.GetdecayModeFinding());
   SetNumTracks(other.GetNumTracks());
   return *this;
@@ -244,6 +359,29 @@ Tau& Tau::operator=(Tau& other)
   SetisTight(other.GetisTight());
   SetisVTight(other.GetisVTight());
   SetrawMVA(other.GetrawMVA());
+  SetrawDNNVSjet (other.GetrawDNNVSjet()) ;
+  SetisVVVLooseVSjet (other.GetisVVVLooseVSjet()) ;
+  SetisVVLooseVSjet (other.GetisVVLooseVSjet()) ;
+  SetisVLooseVSjet (other.GetisVLooseVSjet()) ;
+  SetisLooseVSjet (other.GetisLooseVSjet()) ;
+  SetisMediumVSjet (other.GetisMediumVSjet()) ;
+  SetisTightVSjet (other.GetisTightVSjet()) ;
+  SetisVTightVSjet (other.GetisVTightVSjet()) ;
+  SetisVVTightVSjet (other.GetisVVTightVSjet()) ;
+  SetrawDNNVSmu (other.GetrawDNNVSmu()) ;
+  SetisVLooseVSmu (other.GetisVLooseVSmu()) ;
+  SetisLooseVSmu (other.GetisLooseVSmu()) ;
+  SetisMediumVSmu (other.GetisMediumVSmu()) ;
+  SetisTightVSmu (other.GetisTightVSmu()) ;
+  SetrawDNNVSe (other.GetrawDNNVSe()) ;
+  SetisVVVLooseVSe (other.GetisVVVLooseVSe()) ;
+  SetisVVLooseVSe (other.GetisVVLooseVSe()) ;
+  SetisVLooseVSe (other.GetisVLooseVSe()) ;
+  SetisLooseVSe (other.GetisLooseVSe()) ;
+  SetisMediumVSe (other.GetisMediumVSe()) ;
+  SetisTightVSe (other.GetisTightVSe()) ;
+  SetisVTightVSe (other.GetisVTightVSe()) ;
+  SetisVVTightVSe (other.GetisVVTightVSe()) ;
   SetdecayModeFinding(other.GetdecayModeFinding());
   SetNumTracks(other.GetNumTracks());
   return *this;
@@ -302,7 +440,30 @@ Bool_t Tau::Fill(std::vector<Lepton>& selectedLeptons, EventTree *evtr,int iE, T
     SetisTight       (evtr -> Tau_byTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017      -> operator[](iE));
     SetisVTight       (evtr -> Tau_byVTightIsolationMVArun2017v2DBoldDMdR0p3wLT2017      -> operator[](iE));
     SetrawMVA      (evtr  -> Tau_byIsolationMVArun2017v2DBoldDMdR0p3wLTraw2017     -> operator[](iE));
-    SetdecayModeFinding       (evtr -> Tau_decayModeFinding      -> operator[](iE));
+    SetrawDNNVSjet (evtr  -> Tau_byDeepTau2017v2p1VSjetraw  -> operator[](iE));
+    SetisVVVLooseVSjet(evtr -> Tau_byVVVLooseDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisVVLooseVSjet(evtr -> Tau_byVVLooseDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisVLooseVSjet(evtr -> Tau_byVLooseDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisLooseVSjet(evtr -> Tau_byLooseDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisMediumVSjet(evtr -> Tau_byMediumDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisTightVSjet(evtr -> Tau_byTightDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisVTightVSjet(evtr -> Tau_byVTightDeepTau2017v2p1VSjet -> operator[](iE));
+    SetisVVTightVSjet(evtr -> Tau_byVVTightDeepTau2017v2p1VSjet -> operator[](iE));
+    SetrawDNNVSmu (evtr  -> Tau_byDeepTau2017v2p1VSmuraw  -> operator[](iE));
+    SetisVLooseVSmu(evtr -> Tau_byVLooseDeepTau2017v2p1VSmu -> operator[](iE));
+    SetisLooseVSmu(evtr -> Tau_byLooseDeepTau2017v2p1VSmu -> operator[](iE));
+    SetisMediumVSmu(evtr -> Tau_byMediumDeepTau2017v2p1VSmu -> operator[](iE));
+    SetisTightVSmu(evtr -> Tau_byTightDeepTau2017v2p1VSmu -> operator[](iE));
+    SetrawDNNVSe (evtr  -> Tau_byDeepTau2017v2p1VSeraw  -> operator[](iE));
+    SetisVVVLooseVSe(evtr -> Tau_byVVVLooseDeepTau2017v2p1VSe -> operator[](iE));
+    SetisVVLooseVSe(evtr -> Tau_byVVLooseDeepTau2017v2p1VSe -> operator[](iE));
+    SetisVLooseVSe(evtr -> Tau_byVLooseDeepTau2017v2p1VSe -> operator[](iE));
+    SetisLooseVSe(evtr -> Tau_byLooseDeepTau2017v2p1VSe -> operator[](iE));
+    SetisMediumVSe(evtr -> Tau_byMediumDeepTau2017v2p1VSe -> operator[](iE));
+    SetisTightVSe(evtr -> Tau_byTightDeepTau2017v2p1VSe -> operator[](iE));
+    SetisVTightVSe(evtr -> Tau_byVTightDeepTau2017v2p1VSe -> operator[](iE));
+    SetisVVTightVSe(evtr -> Tau_byVVTightDeepTau2017v2p1VSe -> operator[](iE));
+    SetdecayModeFinding       (evtr -> Tau_decayModeFindingNewDMs      -> operator[](iE));
 
     SetPtEtaPhiE(tauPt, tauEta, tauPhi, tauE);
     Setcharge(tauCharge);
@@ -337,11 +498,19 @@ Bool_t Tau::Fill(std::vector<Lepton>& selectedLeptons, EventTree *evtr,int iE, T
         std::cout << (evtr -> EVENT_event) << " "<< tauPt << " > pt 20? "<<tauEta<< " < eta 2.3? " << dxy() << " < 1000?  " << dz() << " < 0.2 ? " << decayModeFinding() << " " <<isMedium() << " ispassCommonCuts?: "<< passeCommonCuts << " isLoose()?: " << isLoose()<< " isMedium()?: "<< isMedium()<< " passesCleaning? "<< passesCleaning << std::endl;
     }
     */
+    /*
     if(     "VLoose"      == tauType) return (passesCleaning && passeCommonCuts && isVLoose());
     else if(     "Loose"      == tauType) return (passesCleaning && passeCommonCuts && isLoose());
     else if(     "Medium"      == tauType) return (passesCleaning && passeCommonCuts && isMedium());
     else if(     "Tight"      == tauType) return (passesCleaning && passeCommonCuts && isTight());
     else if(     "VTight"      == tauType) return (passesCleaning && passeCommonCuts && isVTight());
+    */
+    // shift one in purpose
+    if(     "VLoose"      == tauType) return (passesCleaning && passeCommonCuts && isVVLooseVSjet());
+    else if(     "Loose"      == tauType) return (passesCleaning && passeCommonCuts && isVLooseVSjet());
+    else if(     "Medium"      == tauType) return (passesCleaning && passeCommonCuts && isMediumVSjet());
+    else if(     "Tight"      == tauType) return (passesCleaning && passeCommonCuts && isTightVSjet());
+    else if(     "VTight"      == tauType) return (passesCleaning && passeCommonCuts && isVTightVSjet());
 
     return kTRUE;
 } //Fill()

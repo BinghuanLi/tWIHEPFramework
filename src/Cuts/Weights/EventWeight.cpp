@@ -864,10 +864,18 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
             }
             //get ttH SF
             if(_muonLooseToTightSF){
+                /* 
+                // x: pt y: abseta
                 ptbin  = std::max(1, std::min(_muonLooseToTightSF->GetNbinsX(), _muonLooseToTightSF->GetXaxis()->FindBin(lep.Pt()))); 
                 etabin = std::max(1, std::min(_muonLooseToTightSF->GetNbinsY(), _muonLooseToTightSF->GetYaxis()->FindBin(fabs(lep.Eta()))));
                 _ttH_SF = _muonLooseToTightSF->GetBinContent(ptbin, etabin);
                 _ttH_SFUnc = _muonLooseToTightSF->GetBinError(ptbin, etabin);
+                */
+                // x: abseta, y: pt
+                ptbin  = std::max(1, std::min(_muonLooseToTightSF->GetNbinsY(), _muonLooseToTightSF->GetYaxis()->FindBin(lep.Pt()))); 
+                etabin = std::max(1, std::min(_muonLooseToTightSF->GetNbinsX(), _muonLooseToTightSF->GetXaxis()->FindBin(fabs(lep.Eta()))));
+                _ttH_SF = _muonLooseToTightSF->GetBinContent(etabin, ptbin);
+                _ttH_SFUnc = _muonLooseToTightSF->GetBinError(etabin, ptbin);
                // std::cout<< " mu _ttH_SF +/- Uncerntainty " << _ttH_SF <<" +/- "<< _ttH_SFUnc<< std::endl;
             }
             mulooseWeight *= _L1_SF * _L2_SF * _L3_SF * _L4_SF ;
@@ -924,10 +932,18 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
             }
             //get ttH SF
             if(_eleLooseToTightSF){
+                /* 
+                // x: pt y: abseta
                 ptbin  = std::max(1, std::min(_eleLooseToTightSF->GetNbinsX(), _eleLooseToTightSF->GetXaxis()->FindBin(lep.Pt()))); 
                 etabin = std::max(1, std::min(_eleLooseToTightSF->GetNbinsY(), _eleLooseToTightSF->GetYaxis()->FindBin(fabs(lep.Eta()))));
                 _ttH_SF = _eleLooseToTightSF->GetBinContent(ptbin, etabin);
                 _ttH_SFUnc = _eleLooseToTightSF->GetBinError(ptbin, etabin);
+                */
+                // x: abseta, y: pt
+                ptbin  = std::max(1, std::min(_eleLooseToTightSF->GetNbinsY(), _eleLooseToTightSF->GetYaxis()->FindBin(lep.Pt()))); 
+                etabin = std::max(1, std::min(_eleLooseToTightSF->GetNbinsX(), _eleLooseToTightSF->GetXaxis()->FindBin(fabs(lep.Eta()))));
+                _ttH_SF = _eleLooseToTightSF->GetBinContent(etabin, ptbin);
+                _ttH_SFUnc = _eleLooseToTightSF->GetBinError(etabin, ptbin);
                 //    std::cout<< " ele _ttH_SF +/- Uncerntainty " << _ttH_SF <<" +/- "<< _ttH_SFUnc<< std::endl;
             }
             elelooseWeight *= _L1_SF * _L2_SF * _L3_SF * _L4_SF ;

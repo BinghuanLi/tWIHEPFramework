@@ -97,7 +97,7 @@ samples2018MC=[
 ]
 
 samples2018MVA=[
-"Legacy18V2_TTHnobb","Legacy18V2_TTTo2L","Legacy18V2_TTToSemiLep","Legacy18V2_TTToHad","Legacy18V2_ttW_Tune","Legacy18V2_ttZ_Tune","Legacy18V2_TTJets_mad","Legacy18V2_TTJets_amc",
+"Legacy18V2_TTHnobb","Legacy18V2_TTTo2L","Legacy18V2_TTToSemiLep","Legacy18V2_TTToHad","Legacy18V2_ttW_Tune","Legacy18V2_ttZ_Tune",
 # the following sample should be split into 2/3 for training , 1/3 for signal extraction based on nEvent % 3 == 0 or not
 "Legacy18V2_THQ_ctcvcp","Legacy18V2_THW_ctcvcp",
 ]

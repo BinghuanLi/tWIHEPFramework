@@ -341,8 +341,8 @@ void EventWeight::BookHistogram()
 
   //Set up the lepton efficiency SF histograms
   if (_useLeptonSFs){
-      if(_whichTrigger <=5 && _whichTrigger >=2) setLeptonHistograms(conf->GetValue("Include.MuonIDSFsFile","null"),conf->GetValue("LeptonID.MuonIDSFHistName","null"),conf->GetValue("Include.MuonISOSFsFile","null"),conf->GetValue("LeptonID.MuonIsoSFHistName","null"),conf->GetValue("Include.MuonTrigSFsFile","null"),conf->GetValue("LeptonID.MuonTrigSFHistName","null"),conf->GetValue("Include.MuonTKSFsFile","null"),conf->GetValue("Include.EleRecoFileName","null"),conf->GetValue("LeptonID.EleRecoHistName","null"),conf->GetValue("Include.EleIDFileName","null"),conf->GetValue("LeptonID.EleID_1_HistName","null"),conf->GetValue("LeptonID.EleID_2_HistName","null"),conf->GetValue("LeptonID.EleID_3_HistName","null"),conf->GetValue("Include.MuonLooseToTightSFs2lFile","null"),conf->GetValue("LeptonID.MuonLooseToTight2lHistName","null"),conf->GetValue("Include.EleLooseToTightSFs2lFile","null"),conf->GetValue("LeptonID.EleLooseToTight2lHistName","null"));
-      else if(_whichTrigger >=6) setLeptonHistograms(conf->GetValue("Include.MuonIDSFsFile","null"),conf->GetValue("LeptonID.MuonIDSFHistName","null"),conf->GetValue("Include.MuonISOSFsFile","null"),conf->GetValue("LeptonID.MuonIsoSFHistName","null"),conf->GetValue("Include.MuonTrigSFsFile","null"),conf->GetValue("LeptonID.MuonTrigSFHistName","null"),conf->GetValue("Include.MuonTKSFsFile","null"),conf->GetValue("Include.EleRecoFileName","null"),conf->GetValue("LeptonID.EleRecoHistName","null"),conf->GetValue("Include.EleIDFileName","null"),conf->GetValue("LeptonID.EleID_1_HistName","null"),conf->GetValue("LeptonID.EleID_2_HistName","null"),conf->GetValue("LeptonID.EleID_3_HistName","null"),conf->GetValue("Include.MuonLooseToTightSFs3lFile","null"),conf->GetValue("LeptonID.MuonLooseToTight3lHistName","null"),conf->GetValue("Include.EleLooseToTightSFs3lFile","null"),conf->GetValue("LeptonID.EleLooseToTight3lHistName","null"));
+      if(_whichTrigger <=5 && _whichTrigger >=2) setLeptonHistograms(conf, conf->GetValue("Include.MuonIDSFsFile","null"),conf->GetValue("LeptonID.MuonIDSFHistName","null"),conf->GetValue("Include.MuonISOSFsFile","null"),conf->GetValue("LeptonID.MuonIsoSFHistName","null"),conf->GetValue("Include.MuonTrigSFsFile","null"),conf->GetValue("LeptonID.MuonTrigSFHistName","null"),conf->GetValue("Include.MuonTKSFsFile","null"),conf->GetValue("Include.EleRecoFileName","null"),conf->GetValue("LeptonID.EleRecoHistName","null"),conf->GetValue("Include.EleIDFileName","null"),conf->GetValue("LeptonID.EleID_1_HistName","null"),conf->GetValue("LeptonID.EleID_2_HistName","null"),conf->GetValue("LeptonID.EleID_3_HistName","null"),conf->GetValue("Include.MuonLooseToTightSFs2lFile","null"),conf->GetValue("LeptonID.MuonLooseToTight2lHistName","null"),conf->GetValue("Include.EleLooseToTightSFs2lFile","null"),conf->GetValue("LeptonID.EleLooseToTight2lHistName","null"));
+      else if(_whichTrigger >=6) setLeptonHistograms(conf, conf->GetValue("Include.MuonIDSFsFile","null"),conf->GetValue("LeptonID.MuonIDSFHistName","null"),conf->GetValue("Include.MuonISOSFsFile","null"),conf->GetValue("LeptonID.MuonIsoSFHistName","null"),conf->GetValue("Include.MuonTrigSFsFile","null"),conf->GetValue("LeptonID.MuonTrigSFHistName","null"),conf->GetValue("Include.MuonTKSFsFile","null"),conf->GetValue("Include.EleRecoFileName","null"),conf->GetValue("LeptonID.EleRecoHistName","null"),conf->GetValue("Include.EleIDFileName","null"),conf->GetValue("LeptonID.EleID_1_HistName","null"),conf->GetValue("LeptonID.EleID_2_HistName","null"),conf->GetValue("LeptonID.EleID_3_HistName","null"),conf->GetValue("Include.MuonLooseToTightSFs3lFile","null"),conf->GetValue("LeptonID.MuonLooseToTight3lHistName","null"),conf->GetValue("Include.EleLooseToTightSFs3lFile","null"),conf->GetValue("LeptonID.EleLooseToTight3lHistName","null"));
       else { std::cout << "You want leptonSFs included in the weight but you haven't specified correct trigger type for this! Fix your config!" << std::endl;}
   }
   //Set up the lepton charge mismeasurement histograms
@@ -645,7 +645,7 @@ Bool_t EventWeight::Apply()
  * Input:  Names of files and histograms that are relevant to the calculation * 
  * Output: none                                                               * 
  ******************************************************************************/
-void EventWeight::setLeptonHistograms(TString muonIDFileName, TString muonIDHistName, TString muonIsoFileName, TString muonIsoHistName, TString muonTrigFileName, TString muonTrigHistName, TString muonTkFileName, TString eleRecoFileName, TString eleRecoHistName, TString eleIDFileName, TString eleID_1_HistName, TString eleID_2_HistName, TString eleID_3_HistName, TString muonLooseToTightFileName, TString muonLooseToTightHistName, TString eleLooseToTightFileName, TString eleLooseToTightHistName){
+void EventWeight::setLeptonHistograms(TEnv* config, TString muonIDFileName, TString muonIDHistName, TString muonIsoFileName, TString muonIsoHistName, TString muonTrigFileName, TString muonTrigHistName, TString muonTkFileName, TString eleRecoFileName, TString eleRecoHistName, TString eleIDFileName, TString eleID_1_HistName, TString eleID_2_HistName, TString eleID_3_HistName, TString muonLooseToTightFileName, TString muonLooseToTightHistName, TString eleLooseToTightFileName, TString eleLooseToTightHistName){
   //if (muonIsoFileName == "null" || muonIDFileName == "null"){
   //  std::cout << "You want lepton SFs included in the weight but you haven't specified files for this! Fix your config!" << std::endl;
   //}
@@ -655,6 +655,7 @@ void EventWeight::setLeptonHistograms(TString muonIDFileName, TString muonIDHist
   //if(muonIDFileName!="null") muonIDFile = TFile::Open(muonIDFileName,"READ");
   TFile* muonIDLptFile = NULL;
   TFile* muonIDHptFile = NULL;
+  
   if(muonIDFileName!="null"){
       muonIDLptFile = TFile::Open("config/weights/ttH2018/mu_scaleFactors_ptLt30.root","READ");
       muonIDHptFile = TFile::Open("config/weights/ttH2018/mu_scaleFactors_ptGt30.root","READ");
@@ -716,15 +717,21 @@ void EventWeight::setLeptonHistograms(TString muonIDFileName, TString muonIDHist
   //TFile* eleRecoFile = NULL; 
   //if(eleRecoFileName!="null") eleRecoFile = TFile::Open(eleRecoFileName,"READ");
   TFile* eleRecoLptFile = NULL; 
-  TFile* eleRecoHptFile = NULL; 
-  if(eleRecoFileName!="null"){
-      eleRecoLptFile = TFile::Open("config/weights/ttH2018/el_scaleFactors_gsf_ptLt20.root","READ");
-      eleRecoHptFile = TFile::Open("config/weights/ttH2018/el_scaleFactors_gsf_ptGt20.root","READ");
+  TFile* eleRecoHptFile = NULL;
+  TString eleRecoLptFileName = config -> GetValue("Include.EleRecoLptFileName","null");
+  TString eleRecoHptFileName = config -> GetValue("Include.EleRecoHptFileName","null");
+  TString eleRecoLptHistName = config -> GetValue("LeptonID.EleRecoLptHistName","null");
+  TString eleRecoHptHistName = config -> GetValue("LeptonID.EleRecoHptHistName","null");
+  if(eleRecoLptFileName!="null"){
+      std::cout<<" get eleRecoLptFile "<< eleRecoLptFileName << std::endl;
+      eleRecoLptFile = TFile::Open(eleRecoLptFileName,"READ");
+      std::cout<<" get eleRecoHptFile "<< eleRecoHptFileName << std::endl;
+      eleRecoHptFile = TFile::Open(eleRecoHptFileName,"READ");
   }
   if(eleRecoLptFile){
-    _eleRecoSFLpt = (TH2F*)eleRecoLptFile->Get(eleRecoHistName)->Clone();
+    _eleRecoSFLpt = (TH2F*)eleRecoLptFile->Get(eleRecoLptHistName)->Clone();
     _eleRecoSFLpt->SetDirectory(0);
-    _eleRecoSFHpt = (TH2F*)eleRecoHptFile->Get(eleRecoHistName)->Clone();
+    _eleRecoSFHpt = (TH2F*)eleRecoHptFile->Get(eleRecoHptHistName)->Clone();
     _eleRecoSFHpt->SetDirectory(0);
     eleRecoLptFile->Close();
     eleRecoHptFile->Close();
@@ -759,7 +766,32 @@ void EventWeight::setLeptonHistograms(TString muonIDFileName, TString muonIDHist
   }else{
     std::cout << "Muon looseToTight file not found!" << std::endl;
   }
+  
+  TFile* muon_ptErr_file = NULL; 
+  TFile* muon_etaErr_file = NULL;
+  TString lepSF_muon_ptErr_filename = config -> GetValue("Include.MuonLooseToTight2lUncPtFile","null");
+  TString lepSF_muon_etaErr_filename = config -> GetValue("Include.MuonLooseToTight2lUncEtaFile","null");
+  TString lepSF_muon_ptErr_histname = config -> GetValue("LeptonID.MuonLooseToTight2lPtHistName","null");
+  TString lepSF_muon_etaErr_histname = config -> GetValue("LeptonID.MuonLooseToTight2lEtaHistName","null");
 
+  if(lepSF_muon_ptErr_filename!="null"){
+      std::cout<<" get lepSF_muon_ptErr_file "<< lepSF_muon_ptErr_filename << std::endl;
+      muon_ptErr_file = TFile::Open(lepSF_muon_ptErr_filename,"READ");
+  }
+  if(lepSF_muon_etaErr_filename!="null"){
+      std::cout<<" get lepSF_muon_etaErr_file "<< lepSF_muon_etaErr_filename << std::endl;
+      muon_etaErr_file = TFile::Open(lepSF_muon_etaErr_filename,"READ");
+  }
+  if(muon_ptErr_file){
+    _muonptSFerr = (TH1D*)muon_ptErr_file->Get(lepSF_muon_ptErr_histname)->Clone();
+    _muonptSFerr->SetDirectory(0);
+    muon_ptErr_file->Close();
+    _muonetaSFerr = (TH1D*)muon_etaErr_file->Get(lepSF_muon_etaErr_histname)->Clone();
+    _muonetaSFerr->SetDirectory(0);
+    muon_etaErr_file->Close();
+  }else{
+    std::cout << "muon loose to tight closure file not found!" << std::endl;
+  }
   //std::cout << " before eleLooseToTight " << std::endl;  
   TFile* eleLooseToTightFile = NULL;
   if(eleLooseToTightFileName!="null") eleLooseToTightFile = TFile::Open(eleLooseToTightFileName,"READ");
@@ -773,8 +805,33 @@ void EventWeight::setLeptonHistograms(TString muonIDFileName, TString muonIDHist
     std::cout << "Ele looseToTight file not found!" << std::endl;
   }
   
+  TFile* ele_ptErr_file = NULL; 
+  TFile* ele_etaErr_file = NULL;
+  TString lepSF_ele_ptErr_filename = config -> GetValue("Include.EleLooseToTight2lUncPtFile","null");
+  TString lepSF_ele_etaErr_filename = config -> GetValue("Include.EleLooseToTight2lUncEtaFile","null");
+  TString lepSF_ele_ptErr_histname = config -> GetValue("LeptonID.EleLooseToTight2lPtHistName","null");
+  TString lepSF_ele_etaErr_histname = config -> GetValue("LeptonID.EleLooseToTight2lEtaHistName","null");
+
+  if(lepSF_ele_ptErr_filename!="null"){
+      std::cout<<" get lepSF_ele_ptErr_file "<< lepSF_ele_ptErr_filename << std::endl;
+      ele_ptErr_file = TFile::Open(lepSF_ele_ptErr_filename,"READ");
+  }
+  if(lepSF_ele_etaErr_filename!="null"){
+      std::cout<<" get lepSF_ele_etaErr_file "<< lepSF_ele_etaErr_filename << std::endl;
+      ele_etaErr_file = TFile::Open(lepSF_ele_etaErr_filename,"READ");
+  }
+  if(ele_ptErr_file){
+    _eleptSFerr = (TH1D*)ele_ptErr_file->Get(lepSF_ele_ptErr_histname)->Clone();
+    _eleptSFerr->SetDirectory(0);
+    ele_ptErr_file->Close();
+    _eleetaSFerr = (TH1D*)ele_etaErr_file->Get(lepSF_ele_etaErr_histname)->Clone();
+    _eleetaSFerr->SetDirectory(0);
+    ele_etaErr_file->Close();
+  }else{
+    std::cout << "ele loose to tight closure file not found!" << std::endl;
+  }
   //delete muonIsoFile,muonIDFile,muonTrigFile,muonTkFile,eleRecoFile,eleIDFile, muonLooseToTightFile, eleLooseToTightFile;
-  delete muonIsoFile,muonIDLptFile,muonIDHptFile,muonTrigFile,muonTkLptFile,muonTkHptFile,eleRecoLptFile,eleRecoHptFile,eleIDFile, muonLooseToTightFile, eleLooseToTightFile;
+  delete muonIsoFile,muonIDLptFile,muonIDHptFile,muonTrigFile,muonTkLptFile,muonTkHptFile,eleRecoLptFile,eleRecoHptFile,eleIDFile, muonLooseToTightFile, eleLooseToTightFile, ele_ptErr_file, ele_etaErr_file, muon_etaErr_file, muon_ptErr_file;
 
 }
 
@@ -804,7 +861,7 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
         if(lep.isMVASel() < 0.5) continue;
         if(fabs(lep.pdgId())==13){
             // get iso
-            int ptbin, etabin;
+            int ptbin, etabin, errptbin, erretabin;
             if(_muonIsoSF){
                 ptbin  = std::max(1, std::min(_muonIsoSF->GetNbinsX(), _muonIsoSF->GetXaxis()->FindBin(lep.Pt()))); 
                 etabin = std::max(1, std::min(_muonIsoSF->GetNbinsY(), _muonIsoSF->GetYaxis()->FindBin(fabs(lep.Eta()))));
@@ -874,8 +931,12 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
                 // x: abseta, y: pt
                 ptbin  = std::max(1, std::min(_muonLooseToTightSF->GetNbinsY(), _muonLooseToTightSF->GetYaxis()->FindBin(lep.Pt()))); 
                 etabin = std::max(1, std::min(_muonLooseToTightSF->GetNbinsX(), _muonLooseToTightSF->GetXaxis()->FindBin(fabs(lep.Eta()))));
+                if(_muonptSFerr){
+                    errptbin  = std::max(1, std::min(_muonptSFerr->GetNbinsX(), _muonptSFerr->FindBin(lep.Pt()))); 
+                    erretabin  = std::max(1, std::min(_muonetaSFerr->GetNbinsX(), _muonetaSFerr->FindBin(lep.Pt()))); 
+                    _ttH_SFUnc = std::max(fabs(1-_muonptSFerr->GetBinContent(errptbin)), fabs(1-_muonetaSFerr->GetBinContent(erretabin)));
+                }
                 _ttH_SF = _muonLooseToTightSF->GetBinContent(etabin, ptbin);
-                _ttH_SFUnc = _muonLooseToTightSF->GetBinError(etabin, ptbin);
                // std::cout<< " mu _ttH_SF +/- Uncerntainty " << _ttH_SF <<" +/- "<< _ttH_SFUnc<< std::endl;
             }
             mulooseWeight *= _L1_SF * _L2_SF * _L3_SF * _L4_SF ;
@@ -891,7 +952,7 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
                 }
         }else{
             //get id1
-            int ptbin, etabin;
+            int ptbin, etabin, errptbin, erretabin;
             if(_eleID1SF){
                 etabin  = std::max(1, std::min(_eleID1SF->GetNbinsX(), _eleID1SF->GetXaxis()->FindBin(lep.Eta()))); 
                 ptbin = std::max(1, std::min(_eleID1SF->GetNbinsY(), _eleID1SF->GetYaxis()->FindBin(lep.Pt())));
@@ -942,8 +1003,12 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
                 // x: abseta, y: pt
                 ptbin  = std::max(1, std::min(_eleLooseToTightSF->GetNbinsY(), _eleLooseToTightSF->GetYaxis()->FindBin(lep.Pt()))); 
                 etabin = std::max(1, std::min(_eleLooseToTightSF->GetNbinsX(), _eleLooseToTightSF->GetXaxis()->FindBin(fabs(lep.Eta()))));
+                if(_eleptSFerr){
+                    errptbin  = std::max(1, std::min(_eleptSFerr->GetNbinsX(), _eleptSFerr->FindBin(lep.Pt()))); 
+                    erretabin  = std::max(1, std::min(_eleetaSFerr->GetNbinsX(), _eleetaSFerr->FindBin(lep.Pt()))); 
+                    _ttH_SFUnc = std::max(fabs(1-_eleptSFerr->GetBinContent(errptbin)), fabs(1-_eleetaSFerr->GetBinContent(erretabin)));
+                }
                 _ttH_SF = _eleLooseToTightSF->GetBinContent(etabin, ptbin);
-                _ttH_SFUnc = _eleLooseToTightSF->GetBinError(etabin, ptbin);
                 //    std::cout<< " ele _ttH_SF +/- Uncerntainty " << _ttH_SF <<" +/- "<< _ttH_SFUnc<< std::endl;
             }
             elelooseWeight *= _L1_SF * _L2_SF * _L3_SF * _L4_SF ;
@@ -1031,6 +1096,7 @@ void EventWeight::setChargeMisHistograms(TString ChargeMisFileName,TString Charg
   }
   TFile* ChargeMisFile = TFile::Open(ChargeMisFileName,"READ");
   if (!ChargeMisFile) std::cout << "ChargeMis file not found!" << std::endl;
+  std::cout << "get chargemis hist:" << ChargeMisHistName << ", from file:"<< ChargeMisFileName << std::endl;
   _chargeMis = (TH2F*)ChargeMisFile->Get(ChargeMisHistName)->Clone();
   _chargeMis->SetDirectory(0);
   ChargeMisFile->Close();

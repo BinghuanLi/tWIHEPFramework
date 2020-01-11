@@ -290,6 +290,12 @@ class EventContainer
   inline void SetBkgdTreeName(const TString& tna) { _BkgdTreeName=tna; };
   inline TString GetBkgdTreeName() const { return _BkgdTreeName; };
   inline TString BkgdTreeName() const { return GetBkgdTreeName(); };
+ 
+ // Jec Sourne name
+  inline void SetJecSourceName(const TString& jecsourcename) { _JecSourceName=jecsourcename; };
+  inline TString GetJecSourceName() const { return _JecSourceName; };
+  inline TString JecSourceName() const { return GetJecSourceName(); };
+ 
   //
   // b-tag algorithm
   inline void SetBTagAlgo(const TString& algo) { _bTagAlgo=algo; };
@@ -549,6 +555,7 @@ class EventContainer
   ////////////////////////////////////
 
   TString _BkgdTreeName;
+  TString _JecSourceName;
   Bool_t _doOnlyMVATree;
   Int_t _HFOR;
   Bool_t _isFirstEvent;

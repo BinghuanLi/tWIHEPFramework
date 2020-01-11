@@ -40,6 +40,9 @@
 #include "SingleTopRootAnalysis/Particles/Recon/Tau.hpp"
 #include "SingleTopRootAnalysis/Trees/EventTree.hpp"
 #include "SingleTopRootAnalysis/Trees/FastSimTree.hpp"
+#include "SingleTopRootAnalysis/Base/Dictionary/FactorizedJetCorrector.hpp"
+#include "SingleTopRootAnalysis/Base/Dictionary/JetCorrectorParameters.hpp"
+#include "SingleTopRootAnalysis/Base/Dictionary/JetCorrectionUncertainty.hpp"
 //#include "SingleTopRootAnalysis/Base/Dictionary/MultijetJESUncertaintyProvider.hpp"
 //#include "SingleTopRootAnalysis/Base/Dictionary/JetEfficiencyEstimator.hpp"
 //#include "SingleTopRootAnalysis/Base/Dictionary/JERProvider.hpp"
@@ -339,6 +342,8 @@ class Jet: public Particle
 
   // ttH functions
   void set_HjMVAreader(TEnv* config);
+  // jec 
+  void SetJECUncSource(TEnv* config, TString jecsourceName);
   
   
   // Overloaded Operators
@@ -444,7 +449,12 @@ class Jet: public Particle
 
   // Apply the jet correction systematics
   void SystematicPtShift(EventTree * evtr, Int_t iE, TLorentzVector * met, Bool_t useLepAware);
- 
+  // Calculate regrouped JEC sources
+  JetCorrectionUncertainty* jecAK4PFchsMCUncSource_;
+  float CalculateUncSource(Double_t jesSF, bool jesup, int eventNumber );
+  TString _sourcefilename;
+  TString _jecsourceName;
+   
   ////////////////////////////////////////////////////////////////////////////////
   // Integrate classes into the Root system
   // Must come at end of class definition

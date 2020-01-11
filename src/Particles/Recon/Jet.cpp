@@ -853,6 +853,8 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr,  int& mu_start_index, int&
   } 
   SetisNormalJet(passPt && passEta && passesJetID && passesCleaning && passNormalJet);
   SetisForwardJet(passPt && passEta && passesJetID && passesCleaning && passForwardJet);
+  
+
   if (passPt && passEta && passesJetID && passesCleaning) return kTRUE;
   
   return kFALSE;
@@ -975,6 +977,46 @@ Bool_t Jet::FillFastSim( std::vector<MCJet>& MCBJets, std::vector<MCJet>& MCCJet
 } //FillFastSim()
 
 /******************************************************************************         
+ * void Jet::CalculateUncSource(TString JECfile, TString SourceName, Bool_t SystUp)*
+ *                                                                            *         
+ * Calculate JEC uncertainty source                                           *
+ *                                                                            *         
+ * Input:  - SourceName, SystUp, txtfilenmame                                 # 
+ * Output: -                                                                  *
+ ******************************************************************************/
+float Jet::CalculateUncSource(Double_t jesSF, bool jesup, int eventNumber ){
+    /*
+    if(eventNumber == 16125347 || eventNumber == 16124780 ){
+        std::cout<< " eventNumber " << eventNumber << " JetEta " << Eta() << " JetPt " << Pt() << " jesSF " << jesSF << std::endl;
+    } 
+    */
+    //std::cout << " calculate unc source "<< _jecsourceName << " set pt eta " << std::endl;
+    float jecvar = 1.;
+    if(jesSF == 1 )return jecvar;
+    jecAK4PFchsMCUncSource_->setJetEta( Eta() );
+    jecAK4PFchsMCUncSource_->setJetPt( Pt() );
+    float corrUpAK4PFchs_up = jesSF * (1 + fabs(jecAK4PFchsMCUncSource_->getUncertainty(1)));
+    jecAK4PFchsMCUncSource_->setJetEta( Eta() );
+    jecAK4PFchsMCUncSource_->setJetPt( Pt() );
+    float corrUpAK4PFchs_down = jesSF * (1 - fabs(jecAK4PFchsMCUncSource_->getUncertainty(-1)));
+    //std::cout << "_jecsource "<< _jecsourceName <<" jet Pt  " << Pt() << " jet eta "  << Eta() << " jesSF " << jesSF << " jesFlavorQCDup " << corrUpAK4PFchs_up << " jesFlavorQCDdown " << corrUpAK4PFchs_down << std::endl;
+    if(jesup)jecvar = corrUpAK4PFchs_up;
+    else jecvar = corrUpAK4PFchs_down;
+    return jecvar;
+};
+
+void Jet::SetJECUncSource(TEnv * config, TString jecsourceName){
+   _sourcefilename = config->GetValue("Systs.JecSourceFile","config/weights/ttH2018/Regrouped_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt");
+   _jecsourceName = jecsourceName;
+   std::cout<< " set jecsource " << jecsourceName << " _jecsource " << _jecsourceName << std::endl;
+   //_sourcename = config->GetValue("FlavorQCD");
+   if(_jecsourceName != "NONE"){
+    jecAK4PFchsMCUncSource_   =  new JetCorrectionUncertainty(*(new JetCorrectorParameters(_sourcefilename.Data(), _jecsourceName.Data())));
+   }
+};
+
+
+/******************************************************************************         
  * void Jet::SystematicPtShift(EventTree * evtr)                         *
  *                                                                            *         
  * Apply systematic shifts in jet pt                                          *
@@ -984,14 +1026,31 @@ Bool_t Jet::FillFastSim( std::vector<MCJet>& MCBJets, std::vector<MCJet>& MCCJet
  ******************************************************************************/
 void Jet::SystematicPtShift(EventTree * evtr, Int_t iE, TLorentzVector * met, Bool_t useLepAware){
 
-
-  //  std::cout << "syst correct" << std::endl;
+  
   float ptSF = 1.0;
+  float jecvar = 1.0;
+  float jesSF = evtr->Jet_JesSF -> operator[](iE);
+  int evtNumber = evtr -> EVENT_event; 
+  /*
+  if( evtNumber== 16125347 || evtNumber == 16124780){
+    std::cout << " syst useLepAware " << useLepAware << std::endl;
+  }
+  */
   if (_jesUp){
-    ptSF = evtr->Jet_JesSFup->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
+    if(_jecsourceName != "NONE"){
+        jecvar = CalculateUncSource(jesSF, true, evtNumber);
+        ptSF = jecvar/jesSF;
+    }else{
+        ptSF = evtr->Jet_JesSFup->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
+    }
   }
   if (_jesDown){
-    ptSF = evtr->Jet_JesSFdown->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
+    if(_jecsourceName != "NONE"){
+        jecvar = CalculateUncSource(jesSF, false, evtNumber);
+        ptSF = jecvar/jesSF;
+    }else{
+        ptSF = evtr->Jet_JesSFdown->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
+    }
   }
   if (_jerUp && !useLepAware){
     ptSF = evtr->Jet_JerSFup->operator[](iE)/evtr->Jet_JerSF->operator[](iE);

@@ -267,6 +267,15 @@ int main(int argc, char **argv)
       } //if
       mystudy.SetBkgdTreeName(argv[i+1]);
     }// if BkgdTreeName
+    if (!strcmp(argv[i],"-JecSourceName")){
+      // Check if JecSource is specified.  
+      if (argc < i+1) {
+	    cout << " <AnalysisMain::ParseCmdLine> " << "ERROR: Missing Value for JecSource!" << endl;
+	    return 1;
+      } //if
+      cout << " set JecSourceName to " << argv[i+1] << endl;
+      mystudy.SetJecSourceName(argv[i+1]);
+    }// if JecSourceName
     if (!strcmp(argv[i],"-nJets")){
       nJets = atoi(argv[i+1]);
     }// if nJets

@@ -471,6 +471,7 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["lep1_dz"] = 999;
   _floatVars["lep1_mvaId"] = 999;
   _floatVars["lep1_eta"] = 999;
+  _floatVars["lep1_SCeta"] = 999;
   _floatVars["lep1_minIso"] = 999;
   _floatVars["lep1_minIsoCh"] = 999;
   _floatVars["lep1_minIsoNeu"] = 999;
@@ -491,6 +492,7 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["lep2_dz"] = 999;
   _floatVars["lep2_mvaId"] = 999;
   _floatVars["lep2_eta"] = 999;
+  _floatVars["lep2_SCeta"] = 999;
   _floatVars["lep2_minIso"] = 999;
   _floatVars["lep2_minIsoCh"] = 999;
   _floatVars["lep2_minIsoNeu"] = 999;
@@ -511,6 +513,7 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["lep3_dz"] = 999;
   _floatVars["lep3_mvaId"] = 999;
   _floatVars["lep3_eta"] = 999;
+  _floatVars["lep3_SCeta"] = 999;
   _floatVars["lep3_minIso"] = 999;
   _floatVars["lep3_minIsoCh"] = 999;
   _floatVars["lep3_minIsoNeu"] = 999;
@@ -989,6 +992,7 @@ void ttHVars::Clear(){
     lep1_dz = -9;
     lep1_mvaId = -9;
     lep1_eta = -9;
+    lep1_SCeta = -9;
     lep1_minIso = -9;
     lep1_minIsoCh = -9;
     lep1_minIsoNeu = -9;
@@ -1009,6 +1013,7 @@ void ttHVars::Clear(){
     lep2_dz = -9;
     lep2_mvaId = -9;
     lep2_eta = -9;
+    lep2_SCeta = -9;
     lep2_minIso = -9;
     lep2_minIsoCh = -9;
     lep2_minIsoNeu = -9;
@@ -1029,6 +1034,7 @@ void ttHVars::Clear(){
     lep3_dz = -9;
     lep3_mvaId = -9;
     lep3_eta = -9;
+    lep3_SCeta = -9;
     lep3_minIso = -9;
     lep3_minIsoCh = -9;
     lep3_minIsoNeu = -9;
@@ -1954,6 +1960,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["lep1_dz"] = lep1_dz;
   _floatVars["lep1_mvaId"] = lep1_mvaId;
   _floatVars["lep1_eta"] = lep1_eta;
+  _floatVars["lep1_SCeta"] = lep1_SCeta;
   _floatVars["lep1_minIso"] = lep1_minIso;
   _floatVars["lep1_minIsoCh"] = lep1_minIsoCh;
   _floatVars["lep1_minIsoNeu"] = lep1_minIsoNeu;
@@ -1974,6 +1981,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["lep2_dz"] = lep2_dz;
   _floatVars["lep2_mvaId"] = lep2_mvaId;
   _floatVars["lep2_eta"] = lep2_eta;
+  _floatVars["lep2_SCeta"] = lep2_SCeta;
   _floatVars["lep2_minIso"] = lep2_minIso;
   _floatVars["lep2_minIsoCh"] = lep2_minIsoCh;
   _floatVars["lep2_minIsoNeu"] = lep2_minIsoNeu;
@@ -1994,6 +2002,7 @@ void ttHVars::FillBranches(EventContainer * evtObj){
   _floatVars["lep3_dz"] = lep3_dz;
   _floatVars["lep3_mvaId"] = lep3_mvaId;
   _floatVars["lep3_eta"] = lep3_eta;
+  _floatVars["lep3_SCeta"] = lep3_SCeta;
   _floatVars["lep3_minIso"] = lep3_minIso;
   _floatVars["lep3_minIsoCh"] = lep3_minIsoCh;
   _floatVars["lep3_minIsoNeu"] = lep3_minIsoNeu;
@@ -2156,6 +2165,10 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         if( jet.isToptag()!=1 && jet.HjDisc() > maxHj_hadTop) maxHj_hadTop = jet.HjDisc();
         if( jet.HjDisc() > maxHj_all ) maxHj_all = jet.HjDisc();
         for(uint bjet_en=jet_en+1; bjet_en < Jets.size(); bjet_en++){
+            bLooseJet1.SetPtEtaPhiE(0,0,0,0);
+            bLooseJet2.SetPtEtaPhiE(0,0,0,0);
+            bMediumJet1.SetPtEtaPhiE(0,0,0,0);
+            bMediumJet2.SetPtEtaPhiE(0,0,0,0);
             Jet bjet = Jets.at(bjet_en);
             sum_jet_dr += bjet.DeltaR(jet);
             if(jet.isLooseBdisc())bLooseJet1.SetPtEtaPhiE(jet.Pt(),jet.Eta(),jet.Phi(),jet.E());
@@ -2214,15 +2227,15 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
             double second_dr = secondLepton.DeltaR(jet);
             double third_dr = thirdLepton.DeltaR(jet);
             double csv = jet.bDiscriminator();
-            if(lead_dr>0.4 && leadLep_closedr > lead_dr){
+            if(leadLep_closedr > lead_dr){
                 leadLep_closedr = lead_dr;
                 leadLep_jetcsv = csv; 
             }
-            if(second_dr>0.4 && secondLep_closedr > second_dr){
+            if(secondLep_closedr > second_dr){
                 secondLep_closedr = second_dr;
                 secondLep_jetcsv = csv; 
             }
-            if(third_dr>0.4 && thirdLep_closedr > third_dr && thirdLepton.Pt()>0.0001){
+            if(thirdLep_closedr > third_dr && thirdLepton.Pt()>0.0001){
                 thirdLep_closedr = third_dr;
                 thirdLep_jetcsv = csv; 
             }
@@ -2316,6 +2329,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         lep1_dz = firstLepton.dz()  ;
         lep1_mvaId = firstLepton.mvaValue_nonIso()  ;
         lep1_eta = firstLepton.Eta()  ;
+        lep1_SCeta = firstLepton.SCeta()  ;
         lep1_minIso = firstLepton.miniIsoRel()  ;
         lep1_minIsoCh = firstLepton.miniIsoCh()  ;
         lep1_minIsoNeu = firstLepton.miniIsoPUsub()  ;
@@ -2339,6 +2353,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
         lep2_dz = secondLepton.dz()  ;
         lep2_mvaId = secondLepton.mvaValue_nonIso()  ;
         lep2_eta = secondLepton.Eta()  ;
+        lep2_SCeta = secondLepton.SCeta()  ;
         lep2_minIso = secondLepton.miniIsoRel()  ;
         lep2_minIsoCh = secondLepton.miniIsoCh()  ;
         lep2_minIsoNeu = secondLepton.miniIsoPUsub()  ;
@@ -2443,6 +2458,7 @@ void ttHVars::Cal_event_variables(EventContainer* EvtObj){
             lep3_dz = thirdLepton.dz()  ;
             lep3_mvaId = thirdLepton.mvaValue_nonIso()  ;
             lep3_eta = thirdLepton.Eta()  ;
+            lep3_SCeta = thirdLepton.SCeta()  ;
             lep3_minIso = thirdLepton.miniIsoRel()  ;
             lep3_minIsoCh = thirdLepton.miniIsoCh()  ;
             lep3_minIsoNeu = thirdLepton.miniIsoPUsub()  ;

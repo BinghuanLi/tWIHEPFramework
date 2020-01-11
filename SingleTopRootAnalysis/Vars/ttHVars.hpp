@@ -555,6 +555,7 @@ private:
   float lep1_dz;
   float lep1_mvaId;
   float lep1_eta;
+  float lep1_SCeta;
   float lep1_minIso;
   float lep1_minIsoCh;
   float lep1_minIsoNeu;
@@ -575,6 +576,7 @@ private:
   float lep2_dz;
   float lep2_mvaId;
   float lep2_eta;
+  float lep2_SCeta;
   float lep2_minIso;
   float lep2_minIsoCh;
   float lep2_minIsoNeu;
@@ -595,6 +597,7 @@ private:
   float lep3_dz;
   float lep3_mvaId;
   float lep3_eta;
+  float lep3_SCeta;
   float lep3_minIso;
   float lep3_minIsoCh;
   float lep3_minIsoNeu;

@@ -143,11 +143,11 @@ void HadTopVars::Reco_hadTop(EventContainer *EvtObj){
         Jet w1jet = Jets.at(i2);
         Jet w2jet = Jets.at(i3);
         
-        EvtObj->var_btagDisc_b = bjet.pfDeepCSVBJetTags();
-        EvtObj->var_btagDisc_Wj1 = w1jet.pfDeepCSVBJetTags();
-        EvtObj->var_btagDisc_Wj2 = w2jet.pfDeepCSVBJetTags();
-        EvtObj->var_qg_Wj1 = w1jet.qg();
-        EvtObj->var_qg_Wj2 = w2jet.qg();
+        EvtObj->var_btagDisc_b = max(bjet.pfDeepCSVBJetTags(),0.);
+        EvtObj->var_btagDisc_Wj1 = max(w1jet.pfDeepCSVBJetTags(), 0.);
+        EvtObj->var_btagDisc_Wj2 = max(w2jet.pfDeepCSVBJetTags(),0.);
+        EvtObj->var_qg_Wj1 = max(w1jet.qg(),0.);
+        EvtObj->var_qg_Wj2 = max(w2jet.qg(),0.);
         EvtObj->var_m_Wj1Wj2_div_m_bWj1Wj2 = (w1jet + w2jet +bjet).M()>0? (w1jet + w2jet).M()/(w1jet + w2jet +bjet).M() : -1;
         EvtObj->var_pT_Wj1Wj2 = (w1jet + w2jet).Pt(); 
         EvtObj->var_dR_Wj1Wj2 = w1jet.DeltaR(w2jet);

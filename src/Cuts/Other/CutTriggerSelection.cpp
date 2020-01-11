@@ -175,9 +175,9 @@ Bool_t CutTriggerSelection::Apply()
 
 
   if(ContainerObj -> fakeLeptons.size()>=2){
-    if(fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId())==22)selectedChannel =3; //isEE
-    if(fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId())==24)selectedChannel =4; //isEM
-    if(fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId())==26)selectedChannel =2; //isMM
+    if((fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId()))==22)selectedChannel =3; //isEE
+    if((fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId()))==24)selectedChannel =4; //isEM
+    if((fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId()))==26)selectedChannel =2; //isMM
   }
   if(ContainerObj -> fakeLeptons.size()>=3 && _whichtrigger == 6 ){
     if((fabs(ContainerObj -> fakeLeptons.at(0).pdgId())+fabs(ContainerObj -> fakeLeptons.at(1).pdgId())+fabs(ContainerObj -> fakeLeptons.at(2).pdgId()))==33)selectedChannel =61;//isEEE
@@ -290,6 +290,13 @@ Bool_t CutTriggerSelection::Apply()
         }
     }
   }
+    selectedChannel =3; //isEE
+    selectedChannel =4; //isEM
+    selectedChannel =2; //isMM
+    selectedChannel =61;//isEEE
+    selectedChannel =62;//isEEM
+    selectedChannel =63;//isEMM
+    selectedChannel =64;//isMMM
   */
   if(ContainerObj->_DataEra==2017 || ContainerObj->_DataEra==2016){
       if (_whichtrigger >=2 && _whichtrigger <=5 ){
@@ -297,19 +304,59 @@ Bool_t CutTriggerSelection::Apply()
             (nEle >= 2 &&  ( ContainerObj->Trig_2Ele==1 || ContainerObj->Trig_1Ele ==1 )) ||
             (nEle >= 1 && nMu >=1 &&  (ContainerObj->Trig_1Mu1Ele==1 || ContainerObj->Trig_1Ele ==1 || ContainerObj->Trig_1Mu ==1 )) ||
             (nMu >= 2 &&  (ContainerObj->Trig_2Mu==1 || ContainerObj->Trig_1Mu ==1 )));
+        
+        // 2017/2016 : 1000/1001 SEle, 2000/2001 SMu, 3000/3001 2Mu, 4000/4001 2EleR, 5000/5001 MuEleR
         if(SampleType == 4000 || SampleType == 4001){
             if(ContainerObj->Trig_2Ele==1) DiLeptrigger =1;
         }else if(SampleType == 3000 || SampleType == 3001){
-            if(ContainerObj->Trig_2Ele!=1 &&  ContainerObj->Trig_2Mu==1)  DiLeptrigger =1;
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu==1)  DiLeptrigger =1;
         }else if(SampleType == 5000 || SampleType == 5001){
             if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele==1 ) DiLeptrigger =1;
-        }else if(SampleType == 1000 || SampleType == 1001){
-            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele ==1 ) DiLeptrigger =1;
         }else if(SampleType == 2000 || SampleType == 2001){
-            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Ele !=1 && ContainerObj->Trig_1Mu ==1 ) DiLeptrigger =1;
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Mu ==1 ) DiLeptrigger =1;
+        }else if(SampleType == 1000 || SampleType == 1001){
+            if(ContainerObj->Trig_2Ele!=1 && ContainerObj->Trig_2Mu!=1 && ContainerObj->Trig_1Mu1Ele!=1 && ContainerObj->Trig_1Mu !=1 && ContainerObj->Trig_1Ele ==1 ) DiLeptrigger =1;
         }else{
             DiLeptrigger = ContainerObj->TTHLep_2L;
         }
+        /*
+        if(selectedChannel == 3){ //isEE
+            if((SampleType == 4000 || SampleType == 4001) && ContainerObj->Trig_2Ele==1){
+                DiLeptrigger = 1;
+            }else if((SampleType == 1000 || SampleType == 1001) && ContainerObj->Trig_2Ele !=1 && ContainerObj->Trig_1Ele==1){
+                DiLeptrigger = 1;
+            }else if(SampleType == 3000 || SampleType == 3001 || SampleType == 5000 || SampleType == 5001 || SampleType == 2000 || SampleType == 2001){
+                DiLeptrigger = 0;
+            }else if(SampleType==0){//MC
+                DiLeptrigger = ContainerObj->TTHLep_2L;
+            }
+        }else if(selectedChannel==2){//isMM
+            if((SampleType == 3000 || SampleType == 3001) && ContainerObj->Trig_2Mu==1){
+                DiLeptrigger = 1;
+            }else if((SampleType == 2000 || SampleType == 2001) && ContainerObj->Trig_2Mu !=1 && ContainerObj->Trig_1Mu==1){
+                DiLeptrigger = 1;
+            }else if(SampleType == 1000 || SampleType == 1001 || SampleType == 5000 || SampleType == 5001 || SampleType == 4000 || SampleType == 4001){
+                DiLeptrigger = 0;
+            }else if(SampleType==0){//MC
+                DiLeptrigger = ContainerObj->TTHLep_2L;
+            }
+        }else if(selectedChannel==4){//isEM
+            if((SampleType == 5000 || SampleType == 5001) && ContainerObj->Trig_1Mu1Ele==1){
+                DiLeptrigger = 1;
+            }else if((SampleType == 2000 || SampleType == 2001) && ContainerObj->Trig_1Mu1Ele !=1 && ContainerObj->Trig_1Mu==1){
+                DiLeptrigger = 1;
+            }else if((SampleType == 1000 || SampleType == 1001) && ContainerObj->Trig_1Mu1Ele !=1 && ContainerObj->Trig_1Mu !=1 && ContainerObj->Trig_1Ele==1){
+                DiLeptrigger = 1;
+                //std::cout<<"Event Number : " << ContainerObj->eventNumber<< " pick up EM events from SEle samples: SampleType "<< SampleType << "  Trig_1Mu1Ele " << ContainerObj->Trig_1Mu1Ele << " Trig_1Mu " << ContainerObj->Trig_1Mu << " Trig_1Ele " << ContainerObj->Trig_1Ele  << std::endl;
+            }else if(SampleType == 3000 || SampleType == 3001 || SampleType == 4000 || SampleType == 4001){
+                DiLeptrigger = 0;
+            }else if(SampleType==0){//MC
+                DiLeptrigger = ContainerObj->TTHLep_2L;
+            }
+        }else{
+            std::cout<<"ERROR in CutTrigger: selectedChannel must be 2,3 or 4, something is wrong ! " << std::endl;
+        }
+        */
       }
       if (_whichtrigger ==6  || _whichtrigger==7){
         TriLeptriggerPath ==(

@@ -524,6 +524,7 @@ private:
   int istHlikeTriLepFake;
   int istHlikeQuaLepSR;
   int istHlikeQuaLepFake;
+  int isWHfromVH;
 
 
   // variables for plots

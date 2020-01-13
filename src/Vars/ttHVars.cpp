@@ -571,6 +571,7 @@ ttHVars::ttHVars(bool makeHistos, bool useTTHLoose){
   _floatVars["istHlikeTriLepFake"] = 999;
   _floatVars["istHlikeQuaLepSR"] = 999;
   _floatVars["istHlikeQuaLepFake"] = 999;
+  _floatVars["isWHfromVH"] = 999;
   
   SetDoHists(makeHistos);
   _useTTHLoose = useTTHLoose;
@@ -1092,6 +1093,7 @@ void ttHVars::Clear(){
     istHlikeTriLepFake = -9;
     istHlikeQuaLepSR = -9;
     istHlikeQuaLepFake = -9;
+    isWHfromVH = -9;
 }
 
 void ttHVars::FillBranches(EventContainer * evtObj){
@@ -1103,6 +1105,13 @@ void ttHVars::FillBranches(EventContainer * evtObj){
     fakeLeptons.assign(evtObj -> fakeLeptons.begin(), evtObj -> fakeLeptons.end());
     tightLeptons.assign(evtObj -> tightLeptons.begin(), evtObj -> tightLeptons.end());
     Taus.assign(evtObj -> looseTaus.begin(), evtObj -> looseTaus.end());
+  
+   int n_genW = evtObj -> MCWs.size();
+   int n_genH = evtObj -> MCHs.size();
+   int n_genZ = evtObj -> MCZs.size();
+   isWHfromVH= (n_genH>0 && n_genW > n_genZ) ? 1 : 0; 
+   // this flag is only meaningful for VHToNonbb sample
+   _floatVars["isWHfromVH"] = isWHfromVH;
   
    int n_looseMu =0; 
    int n_fakeMu =0; 

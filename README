@@ -41,3 +41,4 @@ Main modules:
 
 Submit Jobs:
     utils/makeHEPSubmitLegacy.py and utils/makeJobsForLegacyRegions.py are two scripts help submit condor jobs at IHEP 
+    utils/submitJobs/resubmitJobs.py and utils/submitJobs/mergeCheck.py are two scripts to help collect failed jobs and resubmit 

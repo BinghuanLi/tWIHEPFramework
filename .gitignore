@@ -14,7 +14,6 @@ moreCopies.txt
 log
 *.tar.*
 *.txt
-lib/*
 .*
 *Class.cc
 obj/

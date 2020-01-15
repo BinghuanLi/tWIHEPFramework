@@ -574,9 +574,9 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr,  int& mu_start_index, int&
   //jerSF = 1.0; 
  
   jetPt     = evtr -> Jet_pt -> operator[](iE) * jerSF;
-  jetE      = evtr -> Jet_energy -> operator[](iE);
+  jetE      = evtr -> Jet_energy -> operator[](iE) * jerSF;
   jetEta    = evtr -> Jet_eta    -> operator[](iE);
-  jetPhi    = evtr -> Jet_phi    -> operator[](iE) * jerSF;
+  jetPhi    = evtr -> Jet_phi    -> operator[](iE);
 
   if(jetE > 0){
     SetPtEtaPhiE(jetPt,jetEta,jetPhi,jetE);

@@ -49,6 +49,9 @@ Submit Jobs for JES variations:
     loop over k from ["isSigExt"]
     loop over j from ["JESUp","JESDown"]
     select the JES source you want to run in Jecsources
+    
+    makeJobsForLegacyRegions.py will call utils/makeHEPSubitLegacyV2.py
+    change frameworkDir in utils/makeHEPSubmitLegacyV2.py to your tWIHEPFramework path
 
     python makeJobsForLegacyRegions.py
     this should create script "all.sh"

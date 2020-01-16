@@ -39,6 +39,36 @@ Main modules:
     src/Cuts/                   - All the event cuts
     src/Vars/                   - Add some additional variables
 
-Submit Jobs:
-    utils/makeHEPSubmitLegacy.py and utils/makeJobsForLegacyRegions.py are two scripts help submit condor jobs at IHEP 
+Submit Jobs for JES variations:
+    utils/submitJobs/makeJobsForLegacyRegions.py are two scripts help submit condor jobs at IHEP 
     utils/submitJobs/resubmitJobs.py and utils/submitJobs/mergeCheck.py are two scripts to help collect failed jobs and resubmit 
+
+    create and goes to new directory:
+    cp utils/submitJobs/makeJobsForLegacyRegions.py .
+    change baseDir to your tWIHEPFramework path
+    loop over k from ["isSigExt"]
+    loop over j from ["JESUp","JESDown"]
+    select the JES source you want to run in Jecsources
+
+    python makeJobsForLegacyRegions.py
+    this should create script "all.sh"
+    submit your jobs by bash all.sh
+    
+    once job are finished, use utils/submitJobs/resubmitJobs.py to check the job status and create failure jobs for resubmission 
+    cp utils/submitJobs/resubmitJobs.py .
+    change ignoredDirs for your purpose, directories in this list is not checked
+
+    python resubmitJobs.py
+    this should create a script "allmissingjob.sh" and printout the number of missing jobs
+    bash allmissingjob.sh to resubmit the jobs
+
+    A job is succussfully finished once this resubmitJobs.py script returns 0 missing jobs.
+    
+    The success rate should be > 99%.
+
+    Notice: 
+   
+    one can only submit 20000 jobs, at the moment, run once three years simulation is 900 jobs.
+    This means you can run run at most 10 jes source at time ( in total 11 sources )
+    For this reason, you should change the Jecsources in makeJobsForLegacyRegions.py 
+

@@ -17,6 +17,9 @@ HjTagger::HjTagger(bool makeHistos){
   SetName("HjTagger");
 
   _doubleVecs["Jet25_qg"] = {-0.1,100};
+  _doubleVecs["Jet25_JerSFdown"] = {-0.1,100};
+  _doubleVecs["Jet25_JerSFup"] = {-0.1,100};
+  _doubleVecs["Jet25_JerSF"] = {-0.1,100};
   _doubleVecs["Jet25_axis2"] = {-0.1,100};
   _doubleVecs["Jet25_bDiscriminator"] = {-0.1,100};
   _doubleVecs["Jet25_HjBDT"] = {-0.1,100};
@@ -169,6 +172,9 @@ void HjTagger::Clear(){
     Jet25_isMediumBdisc.clear();
     Jet25_isTightBdisc.clear();
     Jet25_qg.clear();
+    Jet25_JerSF.clear();
+    Jet25_JerSFup.clear();
+    Jet25_JerSFdown.clear();
     Jet25_ptD.clear();
     Jet25_mult.clear();
     Jet25_pfCombinedCvsLJetTags.clear();
@@ -309,6 +315,9 @@ void HjTagger::FillBranches(EventContainer * evtObj){
       Jet25_isTightBdisc.push_back(jet.isTightBdisc());
       Jet25_isFromLepTop.push_back(isFromLepTop);
       Jet25_qg.push_back(jet.qg());
+      Jet25_JerSFdown.push_back(jet.JerSFdown());
+      Jet25_JerSFup.push_back(jet.JerSFup());
+      Jet25_JerSF.push_back(jet.JerSF());
       Jet25_ptD.push_back(jet.ptD());
       Jet25_mult.push_back(jet.mult());
       Jet25_pfCombinedCvsLJetTags.push_back(jet.pfCombinedCvsLJetTags());
@@ -469,6 +478,9 @@ void HjTagger::FillBranches(EventContainer * evtObj){
     _doubleVecs["Jet25_isMediumBdisc"] = Jet25_isMediumBdisc;
     _doubleVecs["Jet25_isTightBdisc"] = Jet25_isTightBdisc;
     _doubleVecs["Jet25_qg"] = Jet25_qg;
+    _doubleVecs["Jet25_JerSF"] = Jet25_JerSF;
+    _doubleVecs["Jet25_JerSFup"] = Jet25_JerSFup;
+    _doubleVecs["Jet25_JerSFdown"] = Jet25_JerSFdown;
     _doubleVecs["Jet25_ptD"] = Jet25_ptD;
     _doubleVecs["Jet25_mult"] = Jet25_mult;
     _doubleVecs["Jet25_pfCombinedCvsLJetTags"] = Jet25_pfCombinedCvsLJetTags;

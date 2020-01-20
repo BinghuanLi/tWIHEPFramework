@@ -43,6 +43,8 @@
 #include "SingleTopRootAnalysis/Base/Dictionary/FactorizedJetCorrector.hpp"
 #include "SingleTopRootAnalysis/Base/Dictionary/JetCorrectorParameters.hpp"
 #include "SingleTopRootAnalysis/Base/Dictionary/JetCorrectionUncertainty.hpp"
+#include "SingleTopRootAnalysis/Base/Dictionary/JetResolution.hpp"
+#include "SingleTopRootAnalysis/Base/Dictionary/JetResolutionObject.hpp"
 //#include "SingleTopRootAnalysis/Base/Dictionary/MultijetJESUncertaintyProvider.hpp"
 //#include "SingleTopRootAnalysis/Base/Dictionary/JetEfficiencyEstimator.hpp"
 //#include "SingleTopRootAnalysis/Base/Dictionary/JERProvider.hpp"
@@ -102,6 +104,9 @@ class Jet: public Particle
  _HjDisc =0.0;
  _L1corrPt = 0.0;
  _uncorrE = 0.0;
+ _JerSF = 1.0;
+ _JerSFup = 1.0;
+ _JerSFdown = 1.0;
  _partonFlavour =0.0;
  _hadronFlavour =0.0;
  _genMother_pdgId =0.0;
@@ -183,6 +188,18 @@ class Jet: public Particle
   inline void SetuncorrE(Double_t uncorrE){_uncorrE = uncorrE;};
   inline Double_t GetuncorrE() const {return _uncorrE;};
   inline Double_t uncorrE() const {return _uncorrE;};
+
+  inline void SetJerSF(Double_t JerSF){_JerSF = JerSF;};
+  inline Double_t GetJerSF() const {return _JerSF;};
+  inline Double_t JerSF() const {return _JerSF;};
+
+  inline void SetJerSFup(Double_t JerSFup){_JerSFup = JerSFup;};
+  inline Double_t GetJerSFup() const {return _JerSFup;};
+  inline Double_t JerSFup() const {return _JerSFup;};
+
+  inline void SetJerSFdown(Double_t JerSFdown){_JerSFdown = JerSFdown;};
+  inline Double_t GetJerSFdown() const {return _JerSFdown;};
+  inline Double_t JerSFdown() const {return _JerSFdown;};
 
   inline void SetTagged(Bool_t isTagged){_tagged = isTagged;};
   inline Bool_t IsTagged() const {return _tagged;};
@@ -375,6 +392,9 @@ class Jet: public Particle
   Double_t _uncorrPt; 
   Double_t _L1corrPt; 
   Double_t _uncorrE; 
+  Double_t _JerSF; 
+  Double_t _JerSFup; 
+  Double_t _JerSFdown; 
   Bool_t _tagged;
   Double_t _closestLep;
   Double_t _isNormalJet;
@@ -454,6 +474,12 @@ class Jet: public Particle
   float CalculateUncSource(Double_t jesSF, bool jesup, int eventNumber );
   TString _sourcefilename;
   TString _jecsourceName;
+  
+  // reCalculate jer
+  void Getjer(float rhoJER, bool isgenmatch, TLorentzVector genjet, float &JERScaleFactor, float &JERScaleFactorUP, float &JERScaleFactorDOWN, int nEvent);
+  JME::JetResolution resolution;
+  JME::JetResolutionScaleFactor res_sf;
+
    
   ////////////////////////////////////////////////////////////////////////////////
   // Integrate classes into the Root system

@@ -96,6 +96,9 @@ ClassImp(Jet)
   _index       (0.0),
   _L1corrPt       (0.0),
   _uncorrE       (0.0),
+  _JerSF       (1.0),
+  _JerSFup       (1.0),
+  _JerSFdown       (1.0),
   _partonFlavour       (0.0),
   _hadronFlavour       (0.0),
   _genMother_pdgId       (0.0),
@@ -138,6 +141,9 @@ _mass 				(other.Getmass()),
 _uncorrPt 			(other.GetuncorrPt()), 
 _L1corrPt 			(other.GetL1corrPt()), 
 _uncorrE 			(other.GetuncorrE()), 
+_JerSF 			(other.GetJerSF()), 
+_JerSFup 			(other.GetJerSFup()), 
+_JerSFdown 			(other.GetJerSFdown()), 
 _neutralHadEnergyFraction	(other.GetneutralHadEnergyFraction()), 
 _neutralEmEmEnergyFraction 	(other.GetneutralEmEmEnergyFraction()),
  _chargedHadronEnergyFraction 	(other.GetchargedHadronEnergyFraction()), 
@@ -219,6 +225,9 @@ _numberOfConstituents(0), _chargedMultiplicity(0),  _bDiscriminator ( -999.0), _
   _pfDeepCSVBJetTags       (0.0),
   _L1corrPt  (0.0),
   _uncorrE  (0.0),
+  _JerSF  (1.0),
+  _JerSFup  (1.0),
+  _JerSFdown  (1.0),
   _lepdrmax       (0.0),
   _lepdrmin       (0.0),
   _partonFlavour       (0.0),
@@ -291,6 +300,9 @@ Jet& Jet::operator=(const Particle& other)
   SetuncorrPt ( 0.0); 
   SetL1corrPt ( 0.0); 
   SetuncorrE ( 0.0); 
+  SetJerSF ( 1.0); 
+  SetJerSFup ( 1.0); 
+  SetJerSFdown ( 1.0); 
   SetneutralHadEnergyFraction(0.0); 
   SetneutralEmEmEnergyFraction ( 0.0); 
   SetchargedHadronEnergyFraction (0.0); 
@@ -359,6 +371,9 @@ Jet& Jet::operator=(const Jet& other)
   SetuncorrPt 				(other.GetuncorrPt());
   SetL1corrPt 				(other.GetL1corrPt());
   SetuncorrE 				(other.GetuncorrE());
+  SetJerSF 				(other.GetJerSF());
+  SetJerSFup 				(other.GetJerSFup());
+  SetJerSFdown 				(other.GetJerSFdown());
   SetneutralHadEnergyFraction		(other.GetneutralHadEnergyFraction());
   SetneutralEmEmEnergyFraction 		(other.GetneutralEmEmEnergyFraction());
   SetchargedHadronEnergyFraction 	(other.GetchargedHadronEnergyFraction());
@@ -425,6 +440,9 @@ Jet& Jet::operator=(Jet& other)
   SetuncorrPt 				(other.GetuncorrPt());
   SetL1corrPt 				(other.GetL1corrPt());
   SetuncorrE 				(other.GetuncorrE());
+  SetJerSF 				(other.GetJerSF());
+  SetJerSFup 				(other.GetJerSFup());
+  SetJerSFdown 				(other.GetJerSFdown());
   SetneutralHadEnergyFraction		(other.GetneutralHadEnergyFraction());
   SetneutralEmEmEnergyFraction 		(other.GetneutralEmEmEnergyFraction());
   SetchargedHadronEnergyFraction 	(other.GetchargedHadronEnergyFraction());
@@ -571,10 +589,28 @@ Bool_t Jet::Fill( double myJESCorr, double myJERCorr,  int& mu_start_index, int&
   jetUncorrE = (evtr -> Jet_energy -> operator[](iE))/(evtr -> Jet_pt -> operator[](iE))*jetUncorrPt;
   jesSF = evtr->Jet_JesSF -> operator[](iE);
   jerSF = evtr->Jet_JerSF -> operator[](iE);
-  //jerSF = 1.0; 
- 
-  jetPt     = evtr -> Jet_pt -> operator[](iE) * jerSF;
-  jetE      = evtr -> Jet_energy -> operator[](iE) * jerSF;
+  //jerSF = 1.0;
+  SetJerSF 				(jerSF);
+  SetJerSFup(evtr->Jet_JerSFup->operator[](iE));
+  SetJerSFdown(evtr->Jet_JerSFdown->operator[](iE));
+  if(jerSF > 1.1 && !useLepAwareJets){
+    //>99% of jerSF > 1.1 is due to the bug in stochastic method , recalculation here
+    float rho = evtr->EVENT_rhopog;
+    TLorentzVector genJet={0,0,0,0}; 
+    float JerScaleFactor(1.), JerScaleFactorUP(1.), JerScaleFactorDOWN(1.);
+    Getjer(rho, false, genJet, JerScaleFactor, JerScaleFactorUP, JerScaleFactorDOWN, eventNumber);
+    SetJerSF(JerScaleFactor);
+    SetJerSFup(JerScaleFactorUP);
+    SetJerSFdown(JerScaleFactorDOWN);
+  }
+  // jer SF is not applied to lepAware jets 
+  if(!useLepAwareJets){
+    jetPt     = evtr -> Jet_pt -> operator[](iE) * JerSF();
+    jetE      = evtr -> Jet_energy -> operator[](iE) * JerSF();
+  }else{
+    jetPt     = evtr -> Jet_pt -> operator[](iE);
+    jetE      = evtr -> Jet_energy -> operator[](iE);
+  }
   jetEta    = evtr -> Jet_eta    -> operator[](iE);
   jetPhi    = evtr -> Jet_phi    -> operator[](iE);
 
@@ -1007,84 +1043,156 @@ float Jet::CalculateUncSource(Double_t jesSF, bool jesup, int eventNumber ){
 
 void Jet::SetJECUncSource(TEnv * config, TString jecsourceName){
    _sourcefilename = config->GetValue("Systs.JecSourceFile","config/weights/ttH2018/Regrouped_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt");
+  resolution = JME::JetResolution(config->GetValue("Systs.JerResFile","config/weights/ttH2018/Autumn18_V7_MC_PtResolution_AK4PFchs.txt"));
+  res_sf = JME::JetResolutionScaleFactor(config->GetValue("Systs.JerSFFile","config/weights/ttH2018/Autumn18_V7_MC_SF_AK4PFchs.txt"));
    _jecsourceName = jecsourceName;
    std::cout<< " set jecsource " << jecsourceName << " _jecsource " << _jecsourceName << std::endl;
-   //_sourcename = config->GetValue("FlavorQCD");
-   if(_jecsourceName != "NONE"){
-    jecAK4PFchsMCUncSource_   =  new JetCorrectionUncertainty(*(new JetCorrectorParameters(_sourcefilename.Data(), _jecsourceName.Data())));
-   }
-};
+       std::cout<< " set jerresfile " << config->GetValue("Systs.JerResFile","config/weights/ttH2018/Autumn18_V7_MC_PtResolution_AK4PFchs.txt") << " _jerSFFile " << config->GetValue("Systs.JerSFFile","config/weights/ttH2018/Autumn18_V7_MC_SF_AK4PFchs.txt") << std::endl;
+       //_sourcename = config->GetValue("FlavorQCD");
+       if(_jecsourceName != "NONE"){
+        jecAK4PFchsMCUncSource_   =  new JetCorrectionUncertainty(*(new JetCorrectorParameters(_sourcefilename.Data(), _jecsourceName.Data())));
+       }
+    };
+
+    /******************************************************************************         
+     * void Jet::CalculateUncSource(TString JECfile, TString SourceName, Bool_t SystUp)*
+     *                                                                            *         
+     * Calculate JEC uncertainty source                                           *
+     *                                                                            *         
+     * Input:  - SourceName, SystUp, txtfilenmame                                 # 
+     * Output: -                                                                  *
+     ******************************************************************************/
+    void Jet::Getjer(float rhoJER, bool isgenmatch, TLorentzVector genjet, float &JERScaleFactor, float &JERScaleFactorUP, float &JERScaleFactorDOWN, int nEvent){
+      double cFactorJER = 1.0; 
+      double cFactorJERdown = 1.0;
+      double cFactorJERup = 1.0;
+      //https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#JER_Scaling_factors_and_Unce_AN1
+      
+      double recoJetPt = Pt();
+      JME::JetParameters parameters;
+      parameters.setJetPt(Pt());
+      parameters.setJetEta(Eta());
+      parameters.setRho(rhoJER);
+      float relpterr = resolution.getResolution(parameters);
+      cFactorJER = res_sf.getScaleFactor(parameters);
+      cFactorJERup = res_sf.getScaleFactor(parameters, Variation::UP);
+      cFactorJERdown = res_sf.getScaleFactor(parameters, Variation::DOWN);
+      if(isgenmatch){
+        // scale method
+        double genJetPt = genjet.Pt();
+        double diffPt    = recoJetPt - genJetPt;
+        // cone size 
+        double conesize = 0.4;
+        if(genJetPt>0. && genjet.DeltaR(*this)<conesize/2
+         && (abs(recoJetPt-genjet.Pt())<3*relpterr*recoJetPt)) {
+            JERScaleFactor     = (std::max(0., genJetPt + cFactorJER*diffPt))/recoJetPt;
+            JERScaleFactorUP   = (std::max(0., genJetPt + cFactorJERup*diffPt))/recoJetPt;
+            JERScaleFactorDOWN = (std::max(0., genJetPt + cFactorJERdown*diffPt))/recoJetPt;
+        } else {
+            JERScaleFactor     = 1.;
+            JERScaleFactorUP   = 1.;
+            JERScaleFactorDOWN = 1.;
+        }
+      }else{
+        // stochastic method
+        // https://github.com/cms-sw/cmssw/blob/CMSSW_8_0_25/PhysicsTools/PatUtils/interface/SmearedJetProducerT.h#L239-L247
+        if(cFactorJER>1){
+            double sigma = relpterr * std::sqrt(cFactorJER*cFactorJER-1);
+            //sigma = 1.0; // set to 1 for debugging
+            //std::normal_distribution<> d(0, sigma);
+            JERScaleFactor = (std::max(0., 1. + jet_jer_myran.Gaus(0,sigma)));
+            //std::cout<<" Event " << nEvent << " Get jer stochastic method : setting sigma to "<< sigma << " jet pt "<< Pt() << " jet eta " << Eta() << " jerSF " << JERScaleFactor  <<std::endl;
+        }else{
+            JERScaleFactor = 1.;
+        }
+        if(cFactorJERup>1){
+            double sigma = relpterr * std::sqrt(cFactorJERup*cFactorJERup-1);
+            //std::normal_distribution<> d(0, sigma);
+            JERScaleFactorUP = (std::max(0., 1. + jet_jer_myran.Gaus(0,sigma)));
+        }else{
+            JERScaleFactorUP = 1.;
+        }
+        if(cFactorJERdown>1){
+            double sigma = relpterr * std::sqrt(cFactorJERdown*cFactorJERdown-1);
+            //std::normal_distribution<> d(0, sigma);
+            JERScaleFactorDOWN = (std::max(0., 1. + jet_jer_myran.Gaus(0,sigma)));
+        }else{
+            JERScaleFactorDOWN = 1.;
+        }
+      }
+    };
+
+    /******************************************************************************         
+     * void Jet::SystematicPtShift(EventTree * evtr)                         *
+     *                                                                            *         
+     * Apply systematic shifts in jet pt                                          *
+     *                                                                            *         
+     * Input:  - the event tree (to access systematic SFs and MET info)      *
+     * Output: -                                                                  *
+     ******************************************************************************/
+    void Jet::SystematicPtShift(EventTree * evtr, Int_t iE, TLorentzVector * met, Bool_t useLepAware){
+
+      
+      float ptSF = 1.0;
+      float jecvar = 1.0;
+      float jesSF = evtr->Jet_JesSF -> operator[](iE);
+      int evtNumber = evtr -> EVENT_event; 
+      /*
+      if( evtNumber== 16125347 || evtNumber == 16124780){
+        std::cout << " syst useLepAware " << useLepAware << std::endl;
+      }
+      */
+      if (_jesUp){
+        if(_jecsourceName != "NONE"){
+            jecvar = CalculateUncSource(jesSF, true, evtNumber);
+            ptSF = jecvar/jesSF;
+        }else{
+            ptSF = evtr->Jet_JesSFup->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
+        }
+      }
+      if (_jesDown){
+        if(_jecsourceName != "NONE"){
+            jecvar = CalculateUncSource(jesSF, false, evtNumber);
+            ptSF = jecvar/jesSF;
+        }else{
+            ptSF = evtr->Jet_JesSFdown->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
+        }
+      }
+      if (_jerUp && !useLepAware){
+        //ptSF = evtr->Jet_JerSFup->operator[](iE)/evtr->Jet_JerSF->operator[](iE);
+        ptSF = JerSFup()/JerSF();
+      }
+      if (_jerDown && !useLepAware){
+        //ptSF = evtr->Jet_JerSFdown->operator[](iE)/evtr->Jet_JerSF->operator[](iE);
+        ptSF = JerSFdown()/JerSF();
+      }
+      //  float ptBefore = Pt();
+      if(!useLepAware){
+      //Remove jet from MET
+        met->SetPx(met->Px() + Px());
+        met->SetPy(met->Py() + Py());
+      //Apply the correction
+      //  std::cout << Px() << " " << Py() << " " << Pt() << std::endl;
+        SetPx(Px()*ptSF);
+        SetPy(Py()*ptSF);
+        SetPz(Pz()*ptSF);
+        SetE(E()*ptSF);
+      //std::cout << Px() << " " << Py() << " " << Pt() << std::endl << std::endl;
+      
+      //Propagate to MET
+        met->SetPx(met->Px() - Px());
+        met->SetPy(met->Py() - Py());
+      }
+      //  float ptAfter = Pt();
+      //  if (ptBefore < 30 && ptAfter > 30) {
+      //  std::cout << "Now selected: Jet #" << iE << "Jet Pt: " << ptBefore << " JER SF: " << evtr->Jet_JerSF->operator[](iE) << " up: " << evtr->Jet_JerSFup->operator[](iE) << " down: " << evtr->Jet_JerSFdown->operator[](iE) << " JES SF: " << evtr->Jet_JesSF->operator[](iE) << " up: " << evtr->Jet_JesSFup->operator[](iE) << " down: " << evtr->Jet_JesSFdown->operator[](iE);
+      //  std::cout << " Pt SF: " << ptSF << " Jet pt after: " << Pt() << std::endl;
+      //}
+      //if (ptBefore > 30 && ptAfter < 30) {
+      //  std::cout << "No longer selected: Jet #" << iE << "Jet Pt: " << ptBefore << " JER SF: " << evtr->Jet_JerSF->operator[](iE) << " up: " << evtr->Jet_JerSFup->operator[](iE) << " down: " << evtr->Jet_JerSFdown->operator[](iE) << " JES SF: " << evtr->Jet_JesSF->operator[](iE) << " up: " << evtr->Jet_JesSFup->operator[](iE) << " down: " << evtr->Jet_JesSFdown->operator[](iE);
+      //  std::cout << " Pt SF: " << ptSF << " Jet pt after: " << Pt() << std::endl;
+      //}
 
 
-/******************************************************************************         
- * void Jet::SystematicPtShift(EventTree * evtr)                         *
- *                                                                            *         
- * Apply systematic shifts in jet pt                                          *
- *                                                                            *         
- * Input:  - the event tree (to access systematic SFs and MET info)      *
- * Output: -                                                                  *
- ******************************************************************************/
-void Jet::SystematicPtShift(EventTree * evtr, Int_t iE, TLorentzVector * met, Bool_t useLepAware){
 
-  
-  float ptSF = 1.0;
-  float jecvar = 1.0;
-  float jesSF = evtr->Jet_JesSF -> operator[](iE);
-  int evtNumber = evtr -> EVENT_event; 
-  /*
-  if( evtNumber== 16125347 || evtNumber == 16124780){
-    std::cout << " syst useLepAware " << useLepAware << std::endl;
-  }
-  */
-  if (_jesUp){
-    if(_jecsourceName != "NONE"){
-        jecvar = CalculateUncSource(jesSF, true, evtNumber);
-        ptSF = jecvar/jesSF;
-    }else{
-        ptSF = evtr->Jet_JesSFup->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
     }
-  }
-  if (_jesDown){
-    if(_jecsourceName != "NONE"){
-        jecvar = CalculateUncSource(jesSF, false, evtNumber);
-        ptSF = jecvar/jesSF;
-    }else{
-        ptSF = evtr->Jet_JesSFdown->operator[](iE)/evtr->Jet_JesSF->operator[](iE);
-    }
-  }
-  if (_jerUp && !useLepAware){
-    ptSF = evtr->Jet_JerSFup->operator[](iE)/evtr->Jet_JerSF->operator[](iE);
-  }
-  if (_jerDown && !useLepAware){
-    ptSF = evtr->Jet_JerSFdown->operator[](iE)/evtr->Jet_JerSF->operator[](iE);
-  }
-  //  float ptBefore = Pt();
-  if(!useLepAware){
-  //Remove jet from MET
-    met->SetPx(met->Px() + Px());
-    met->SetPy(met->Py() + Py());
-  //Apply the correction
-  //  std::cout << Px() << " " << Py() << " " << Pt() << std::endl;
-    SetPx(Px()*ptSF);
-    SetPy(Py()*ptSF);
-    SetPz(Pz()*ptSF);
-    SetE(E()*ptSF);
-  //std::cout << Px() << " " << Py() << " " << Pt() << std::endl << std::endl;
-  
-  //Propagate to MET
-    met->SetPx(met->Px() - Px());
-    met->SetPy(met->Py() - Py());
-  }
-  //  float ptAfter = Pt();
-  //  if (ptBefore < 30 && ptAfter > 30) {
-  //  std::cout << "Now selected: Jet #" << iE << "Jet Pt: " << ptBefore << " JER SF: " << evtr->Jet_JerSF->operator[](iE) << " up: " << evtr->Jet_JerSFup->operator[](iE) << " down: " << evtr->Jet_JerSFdown->operator[](iE) << " JES SF: " << evtr->Jet_JesSF->operator[](iE) << " up: " << evtr->Jet_JesSFup->operator[](iE) << " down: " << evtr->Jet_JesSFdown->operator[](iE);
-  //  std::cout << " Pt SF: " << ptSF << " Jet pt after: " << Pt() << std::endl;
-  //}
-  //if (ptBefore > 30 && ptAfter < 30) {
-  //  std::cout << "No longer selected: Jet #" << iE << "Jet Pt: " << ptBefore << " JER SF: " << evtr->Jet_JerSF->operator[](iE) << " up: " << evtr->Jet_JerSFup->operator[](iE) << " down: " << evtr->Jet_JerSFdown->operator[](iE) << " JES SF: " << evtr->Jet_JesSF->operator[](iE) << " up: " << evtr->Jet_JesSFup->operator[](iE) << " down: " << evtr->Jet_JesSFdown->operator[](iE);
-  //  std::cout << " Pt SF: " << ptSF << " Jet pt after: " << Pt() << std::endl;
-  //}
-
-
-
-}

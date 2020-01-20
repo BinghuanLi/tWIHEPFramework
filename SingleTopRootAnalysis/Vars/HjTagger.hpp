@@ -94,6 +94,9 @@ private:
     std::vector<double> Jet25_isFromLepTop;
     std::vector<double> Jet25_pfCombinedCvsLJetTags;
     std::vector<double> Jet25_pfCombinedCvsBJetTags;
+    std::vector<double> Jet25_JerSF;
+    std::vector<double> Jet25_JerSFup;
+    std::vector<double> Jet25_JerSFdown;
     std::vector<double> Jet25_qg;
     std::vector<double> Jet25_axis2;
     std::vector<double> Jet25_ptD;

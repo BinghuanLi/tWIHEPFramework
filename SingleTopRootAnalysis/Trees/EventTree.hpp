@@ -52,10 +52,10 @@ public :
    std::vector<double>  *EVENT_genWeights;
    std::vector<double>  *EVENT_psWeights;
    std::vector<double>  *EVENT_rWeights;
+   Double_t        EVENT_rhopog;
    /*
    Double_t        EVENT_genHT;
    Double_t        EVENT_genPt;
-   Double_t        EVENT_rhopog;
    Double_t        EVENT_rhotth;
    Double_t        EVENT_scalePDF;
    Double_t        EVENT_Q2tthbbWeightUp;
@@ -910,10 +910,10 @@ public :
    TBranch        *b_EVENT_psWeights;   //!
    TBranch        *b_EVENT_rWeights;   //!
    TBranch        *b_EVENT_originalXWGTUP;   //!
+   TBranch        *b_EVENT_rhopog;   //!
    /*
    TBranch        *b_EVENT_genHT;   //!
    TBranch        *b_EVENT_genPt;   //!
-   TBranch        *b_EVENT_rhopog;   //!
    TBranch        *b_EVENT_rhotth;   //!
    TBranch        *b_EVENT_scalePDF;   //!
    TBranch        *b_EVENT_Q2tthbbWeightUp;   //!
@@ -2580,10 +2580,10 @@ void EventTree::Init(TTree *tree)
    fChain->SetBranchAddress("EVENT_psWeights", &EVENT_psWeights, &b_EVENT_psWeights);
    fChain->SetBranchAddress("EVENT_rWeights", &EVENT_rWeights, &b_EVENT_rWeights);
    fChain->SetBranchAddress("EVENT_originalXWGTUP", &EVENT_originalXWGTUP, &b_EVENT_originalXWGTUP);
+   fChain->SetBranchAddress("EVENT_rhopog", &EVENT_rhopog, &b_EVENT_rhopog);
    /*
    fChain->SetBranchAddress("EVENT_genHT", &EVENT_genHT, &b_EVENT_genHT);
    fChain->SetBranchAddress("EVENT_genPt", &EVENT_genPt, &b_EVENT_genPt);
-   fChain->SetBranchAddress("EVENT_rhopog", &EVENT_rhopog, &b_EVENT_rhopog);
    fChain->SetBranchAddress("EVENT_rhotth", &EVENT_rhotth, &b_EVENT_rhotth);
    fChain->SetBranchAddress("EVENT_scalePDF", &EVENT_scalePDF, &b_EVENT_scalePDF);
    fChain->SetBranchAddress("EVENT_Q2tthbbWeightUp", &EVENT_Q2tthbbWeightUp, &b_EVENT_Q2tthbbWeightUp);

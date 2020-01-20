@@ -7,7 +7,9 @@
 #include <vector>
 #include <cmath>
 
+#ifndef STANDALONE
 #define STANDALONE
+#endif
 
 #ifdef STANDALONE
 #include <stdexcept>

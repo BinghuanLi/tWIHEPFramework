@@ -95,9 +95,9 @@ endif
 ####################################################################################
 
 ifeq ($(VERSION-4),true)
-        CFLAGS = $(SPECIALFLAGS) -iquote- -iquote. -iquote${DIR_INC} -iquote${DIR_SRC}
+        CFLAGS = -DSTANDALONE $(SPECIALFLAGS) -iquote- -iquote. -iquote${DIR_INC} -iquote${DIR_SRC}
 else
-        CFLAGS = $(SPECIALFLAGS) -I. -I${DIR_INC} -I${DIR_SRC}
+        CFLAGS = -DSTANDALONE $(SPECIALFLAGS) -I. -I${DIR_INC} -I${DIR_SRC} 
 endif
 
 LFLAGS = $(SPECIALFLAGS)

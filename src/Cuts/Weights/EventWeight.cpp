@@ -955,7 +955,7 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
                 etabin = std::max(1, std::min(_muonLooseToTightSF->GetNbinsX(), _muonLooseToTightSF->GetXaxis()->FindBin(fabs(lep.Eta()))));
                 if(_muonptSFerr){
                     errptbin  = std::max(1, std::min(_muonptSFerr->GetNbinsX(), _muonptSFerr->FindBin(lep.Pt()))); 
-                    erretabin  = std::max(1, std::min(_muonetaSFerr->GetNbinsX(), _muonetaSFerr->FindBin(lep.Pt()))); 
+                    erretabin  = std::max(1, std::min(_muonetaSFerr->GetNbinsX(), _muonetaSFerr->FindBin(lep.Eta()))); 
                     _ttH_SFUnc = std::max(fabs(1-_muonptSFerr->GetBinContent(errptbin)), fabs(1-_muonetaSFerr->GetBinContent(erretabin)));
                 }
                 _ttH_SF = _muonLooseToTightSF->GetBinContent(etabin, ptbin);
@@ -1002,12 +1002,12 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
             if(_eleRecoSFLpt){
                 if(lep.Pt()<20){
                     ptbin  = std::max(1, std::min(_eleRecoSFLpt->GetNbinsY(), _eleRecoSFLpt->GetYaxis()->FindBin(lep.Pt()))); 
-                    etabin = std::max(1, std::min(_eleRecoSFLpt->GetNbinsX(), _eleRecoSFLpt->GetXaxis()->FindBin(lep.Eta())));
+                    etabin = std::max(1, std::min(_eleRecoSFLpt->GetNbinsX(), _eleRecoSFLpt->GetXaxis()->FindBin(lep.SCeta())));
                     _L4_SF = _eleRecoSFLpt->GetBinContent(etabin, ptbin);
                     _L4_SFUnc = _eleRecoSFLpt->GetBinError(etabin, ptbin);
                 }else{
                     ptbin  = std::max(1, std::min(_eleRecoSFHpt->GetNbinsY(), _eleRecoSFHpt->GetYaxis()->FindBin(lep.Pt()))); 
-                    etabin = std::max(1, std::min(_eleRecoSFHpt->GetNbinsX(), _eleRecoSFHpt->GetXaxis()->FindBin(lep.Eta())));
+                    etabin = std::max(1, std::min(_eleRecoSFHpt->GetNbinsX(), _eleRecoSFHpt->GetXaxis()->FindBin(lep.SCeta())));
                     _L4_SF = _eleRecoSFHpt->GetBinContent(etabin, ptbin);
                     _L4_SFUnc = _eleRecoSFHpt->GetBinError(etabin, ptbin);
                 }
@@ -1027,7 +1027,7 @@ std::tuple<Double_t,Double_t, Double_t, Double_t, Double_t,Double_t,Double_t,Dou
                 etabin = std::max(1, std::min(_eleLooseToTightSF->GetNbinsX(), _eleLooseToTightSF->GetXaxis()->FindBin(fabs(lep.Eta()))));
                 if(_eleptSFerr){
                     errptbin  = std::max(1, std::min(_eleptSFerr->GetNbinsX(), _eleptSFerr->FindBin(lep.Pt()))); 
-                    erretabin  = std::max(1, std::min(_eleetaSFerr->GetNbinsX(), _eleetaSFerr->FindBin(lep.Pt()))); 
+                    erretabin  = std::max(1, std::min(_eleetaSFerr->GetNbinsX(), _eleetaSFerr->FindBin(lep.Eta()))); 
                     _ttH_SFUnc = std::max(fabs(1-_eleptSFerr->GetBinContent(errptbin)), fabs(1-_eleetaSFerr->GetBinContent(erretabin)));
                 }
                 _ttH_SF = _eleLooseToTightSF->GetBinContent(etabin, ptbin);

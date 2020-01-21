@@ -611,3 +611,8 @@ Weight.Source.100120: 634.05
 Events.Source.100120: 27868119
 PileUp.Source.100120: Legacy16V2_W4JetsToLNu_ext
 
+# 100121 - Legacy16V2_WGToLNuG_01J
+Weight.Source.100121: 191.6
+Events.Source.100121: 13856695
+PileUp.Source.100121: Legacy16V2_WGToLNuG_01J
+

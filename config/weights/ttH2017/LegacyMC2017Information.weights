@@ -686,3 +686,8 @@ Weight.Source.100135: 182.76
 Events.Source.100135: 56286241
 PileUp.Source.100135: Legacy17V2_TTJets_TbarToSingleLep
 
+# 100136 - Legacy17V2_WGToLNuG_01J
+Weight.Source.100136: 191.6
+Events.Source.100136: 13806612
+PileUp.Source.100136: Legacy17V2_WGToLNuG_01J
+

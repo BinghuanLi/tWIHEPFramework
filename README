@@ -40,6 +40,9 @@ Main modules:
     src/Vars/                   - Add some additional variables
 
 Submit Jobs for JES variations:
+    setup environment for condor jobs:
+    export PATH=$PATH:/afs/ihep.ac.cn/soft/common/sysgroup/hep_job/bin/
+    
     utils/submitJobs/makeJobsForLegacyRegions.py are two scripts help submit condor jobs at IHEP 
     utils/submitJobs/resubmitJobs.py and utils/submitJobs/mergeCheck.py are two scripts to help collect failed jobs and resubmit 
 

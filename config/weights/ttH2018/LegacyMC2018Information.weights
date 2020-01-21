@@ -436,3 +436,8 @@ Weight.Source.100085: 88.4
 Events.Source.100085: 28674426
 PileUp.Source.100085: Legacy18V2_TTJets_DiLep
 
+# 100086 - Legacy18V2_WGToLNuG_01J
+Weight.Source.100086: 191.6
+Events.Source.100086: 16780663
+PileUp.Source.100086: Legacy18V2_WGToLNuG_01J
+

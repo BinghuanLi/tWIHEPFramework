@@ -43,6 +43,13 @@ Submit Jobs for JES variations:
     setup environment for condor jobs:
     export PATH=$PATH:/afs/ihep.ac.cn/soft/common/sysgroup/hep_job/bin/
     
+    check job status : 
+        hep_q -u username
+    remove all jobs:
+        hep_rm -a
+    remove jobs by jobid:
+        hep_rm jobid
+
     utils/submitJobs/makeJobsForLegacyRegions.py are two scripts help submit condor jobs at IHEP 
     utils/submitJobs/resubmitJobs.py and utils/submitJobs/mergeCheck.py are two scripts to help collect failed jobs and resubmit 
 

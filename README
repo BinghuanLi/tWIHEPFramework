@@ -42,6 +42,8 @@ Main modules:
 Submit Jobs for JES variations:
     setup environment for condor jobs:
     export PATH=$PATH:/afs/ihep.ac.cn/soft/common/sysgroup/hep_job/bin/
+    Below is the English version of guide for IHEP farm:
+    http://afsapply.ihep.ac.cn/cchelp/en/
     
     check job status : 
         hep_q -u username

@@ -474,6 +474,9 @@ private:
   float mT2_top_3particle;
   float mT2_top_2particle;
   float mT2_W;
+  float deta_highest2b;
+  float acuteangle_bbpp_highest2b;
+  float cosa_highest2b;
   float angle_bbpp_loose2b;
   float angle_bbpp_highest2b;
   float Hj_tagger;
@@ -533,6 +536,8 @@ private:
   float mass3L;
   float Trilep_mtWmin;
   float SubCat3L;
+  float Bin4Lctrl;
+  float nZPair;
   float Sum3LCharge;
   float Trilep_n_mu;
   float Trilep_nTight;

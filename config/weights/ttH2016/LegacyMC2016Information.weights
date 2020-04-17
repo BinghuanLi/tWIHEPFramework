@@ -616,3 +616,123 @@ Weight.Source.100121: 191.6
 Events.Source.100121: 13856695
 PileUp.Source.100121: Legacy16V2_WGToLNuG_01J
 
+# 100300 - Legacy16V2_QCD_HT50to100
+Weight.Source.100300: 185400000
+Events.Source.100300: 4180469
+PileUp.Source.100300: Legacy16V2_QCD_HT50to100
+
+# 100301 - Legacy16V2_QCD_HT100to200
+Weight.Source.100301: 23660000
+Events.Source.100301: 82293477
+PileUp.Source.100301: Legacy16V2_QCD_HT100to200
+
+# 100302 - Legacy16V2_QCD_HT200to300_v1
+Weight.Source.100302: 1549000
+Events.Source.100302: 57580393
+PileUp.Source.100302: Legacy16V2_QCD_HT200to300_v1
+
+# 100303 - Legacy16V2_QCD_HT200to300_ext
+Weight.Source.100303: 1549000
+Events.Source.100303: 57580393
+PileUp.Source.100303: Legacy16V2_QCD_HT200to300_ext
+
+# 100304 - Legacy16V2_QCD_HT300to500_v1
+Weight.Source.100304: 323000
+Events.Source.100304: 54552852 
+PileUp.Source.100304: Legacy16V2_QCD_HT300to500_v1
+
+# 100305 - Legacy16V2_QCD_HT300to500_ext
+Weight.Source.100305: 323000
+Events.Source.100305: 54552852
+PileUp.Source.100305: Legacy16V2_QCD_HT300to500_ext
+
+# 100306 - Legacy16V2_QCD_HT500to700_v1
+Weight.Source.100306: 29960
+Events.Source.100306: 62622029
+PileUp.Source.100306: Legacy16V2_QCD_HT500to700_v1
+
+# 100307 - Legacy16V2_QCD_HT500to700_ext
+Weight.Source.100307: 29960
+Events.Source.100307: 62622029
+PileUp.Source.100307: Legacy16V2_QCD_HT500to700_ext
+
+# 100308 - Legacy16V2_QCD_HT700to1000_v1
+Weight.Source.100308: 6353
+Events.Source.100308: 37233786
+PileUp.Source.100308: Legacy16V2_QCD_HT700to1000_v1
+
+# 100309 - Legacy16V2_QCD_HT700to1000_ext
+Weight.Source.100309: 6353
+Events.Source.100309: 37233786
+PileUp.Source.100309: Legacy16V2_QCD_HT700to1000_ext
+
+# 100310 - Legacy16V2_QCD_HT1000to1500_v1
+Weight.Source.100310: 1093
+Events.Source.100310: 15210939
+PileUp.Source.100310: Legacy16V2_QCD_HT1000to1500_v1
+
+# 100311 - Legacy16V2_QCD_HT1000to1500_ext
+Weight.Source.100311: 1093
+Events.Source.100311: 15210939
+PileUp.Source.100311: Legacy16V2_QCD_HT1000to1500_ext
+
+# 100312 - Legacy16V2_QCD_HT1500to2000_v1
+Weight.Source.100312: 99.35
+Events.Source.100312: 11839357
+PileUp.Source.100312: Legacy16V2_QCD_HT1500to2000_v1
+
+# 100313 - Legacy16V2_QCD_HT1500to2000_ext
+Weight.Source.100313: 99.35
+Events.Source.100313: 11839357
+PileUp.Source.100313: Legacy16V2_QCD_HT1500to2000_ext
+
+# 100314 - Legacy16V2_QCD_HT2000toInf_v1
+Weight.Source.100314: 20.26
+Events.Source.100314: 5004542
+PileUp.Source.100314: Legacy16V2_QCD_HT2000toInf_v1
+
+# 100315 - Legacy16V2_QCD_HT2000toInf_ext
+Weight.Source.100315: 20.26
+Events.Source.100315: 5004542
+PileUp.Source.100315: Legacy16V2_QCD_HT2000toInf_ext
+
+# 100320 - Legacy16V2_ggZZto4tau
+Weight.Source.100320: 0.00159
+Events.Source.100320: 495800
+PileUp.Source.100320: Legacy16V2_ggZZto4tau
+
+# 100321 - Legacy16V2_ggZZto4mu
+Weight.Source.100321: 0.00159
+Events.Source.100321: 819000
+PileUp.Source.100321: Legacy16V2_ggZZto4mu
+
+# 100322 - Legacy16V2_ggZZto4e
+Weight.Source.100322: 0.00159
+Events.Source.100322: 688600
+PileUp.Source.100322: Legacy16V2_ggZZto4e
+
+# 100323 - Legacy16V2_ggZZto2mu2tau
+Weight.Source.100323: 0.00319
+Events.Source.100323: 209800
+PileUp.Source.100323: Legacy16V2_ggZZto2mu2tau
+
+# 100324 - Legacy16V2_ggZZto2mu2nu
+Weight.Source.100324: 0.01914
+Events.Source.100324: 500000
+PileUp.Source.100324: Legacy16V2_ggZZto2mu2nu
+
+# 100325 - Legacy16V2_ggZZto2e2tau
+Weight.Source.100325: 0.00319
+Events.Source.100325: 500000
+PileUp.Source.100325: Legacy16V2_ggZZto2e2tau
+
+# 100326 - Legacy16V2_ggZZto2e2nu
+Weight.Source.100326: 0.01914
+Events.Source.100326: 499200
+PileUp.Source.100326: Legacy16V2_ggZZto2e2nu
+
+# 100327 - Legacy16V2_ggZZto2e2mu
+Weight.Source.100327: 0.00319
+Events.Source.100327: 1044400
+PileUp.Source.100327: Legacy16V2_ggZZto2e2mu
+

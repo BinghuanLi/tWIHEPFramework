@@ -219,7 +219,7 @@ EventContainer::EventContainer():
   _sourceName("NONE"),
   _globalEventWeight(1.), _treeEventWeight(1.), _outputEventWeight(1.),_EventPileupWeight(-1),
   _EventPileupMinBiasUpWeight(-1),_EventPileupMinBiasDownWeight(-1),
-  _config("Configuration"), _JESconfig("JESConfiguration"),_jesError(0.), _jesShift(0), _bTagAlgo("default"), _bTagCut(999), _misTagCut(999), jeteoverlap(kFALSE),closeindex(999),ejordr(999), bestjetdr(999), _isFirstEvent(true), isSimulation(kTRUE), _badJetEvent(kFALSE),  _celloutShift(0),_softjetShift(0),_pileupShift(0),_larShift(0),_metShift(0), _JESconfigread(false),_jesUShift(0),_jesPtShift(0),_jesEtaShift(0),_useUnisolatedLeptons(kFALSE),_trigID(0), _JecSourceName("NONE")
+  _config("Configuration"), _JESconfig("JESConfiguration"),_jesError(0.), _jesShift(0), _bTagAlgo("default"), _bTagCut(999), _misTagCut(999), jeteoverlap(kFALSE),closeindex(999),ejordr(999), bestjetdr(999), _isFirstEvent(true), isSimulation(kTRUE), _badJetEvent(kFALSE),  _celloutShift(0),_softjetShift(0),_pileupShift(0),_larShift(0),_metShift(0), _JESconfigread(false),_jesUShift(0),_jesPtShift(0),_jesEtaShift(0),_useUnisolatedLeptons(kFALSE),_trigID(0), _JecSourceName("NONE"), _JerSourceName("NONE")
 {
  
 } //EventContainer()
@@ -452,7 +452,7 @@ void EventContainer::SetupObjectDefinitions(){
 
   newLepton.set_lepMVAreader(GetConfig());
   newJet.set_HjMVAreader(GetConfig());
-  newJet.SetJECUncSource(GetConfig(), _JecSourceName);
+  newJet.SetJECUncSource(GetConfig(), _JecSourceName, _JerSourceName);
 }
 
 /******************************************************************************

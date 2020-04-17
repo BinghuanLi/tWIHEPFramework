@@ -63,12 +63,14 @@ samples2016MC=[
 "Legacy16V2_WW_DS", "Legacy16V2_WWW", "Legacy16V2_WWZ", "Legacy16V2_WZZ", "Legacy16V2_ZZZ", "Legacy16V2_TTTT", "Legacy16V2_tZq_ext", "Legacy16V2_WpWpJJ", "Legacy16V2_GGHToTauTau",
 "Legacy16V2_VBFHToTauTau", "Legacy16V2_VHToNonbb", "Legacy16V2_ZHTobb", "Legacy16V2_ZHToTauTau", "Legacy16V2_ggHToTauTau_v3", "Legacy16V2_ggHToZZTo4L", "Legacy16V2_ggHToWWToLNuQQ", "Legacy16V2_ggHToWWTo2L2Nu", "Legacy16V2_ggHToMuMu", "Legacy16V2_ggHToBB_v2",
 "Legacy16V2_ggHToBB_ext1", "Legacy16V2_ggHToGG", "Legacy16V2_VBFHToZZTo4L", "Legacy16V2_VBFHToWWToLNuQQ", "Legacy16V2_VBFHToWWTo2L2Nu", "Legacy16V2_VBFHToMuMu", "Legacy16V2_VBFHToBB_v1", "Legacy16V2_VBFHToBB_ext1", "Legacy16V2_VBFHToGG_ext1", "Legacy16V2_TTWH",
-"Legacy16V2_TTZH", "Legacy16V2_ggHHTo2B2VTo2L2Nu_nodeSM", "Legacy16V2_ggHHTo2B2VTo2L2Nu_nodebox", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node1", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node2", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node3", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node4", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node5", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node6", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node7",
-"Legacy16V2_ggHHTo2B2VTo2L2Nu_node8", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node9", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node10", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node11", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node12", "Legacy16V2_ggHHTo2B2Tau_nodeSM", "Legacy16V2_ggHHTo2B2Tau_nodebox", "Legacy16V2_ggHHTo2B2Tau_node2", "Legacy16V2_ggHHTo2B2Tau_node9", "Legacy16V2_ggHHTo2B2Tau_node10",
-"Legacy16V2_ggHHTo2B2Tau_node11", "Legacy16V2_ggHHTo2B2Tau_node12", "Legacy16V2_ggHHTo2B2Tau_node13", "Legacy16V2_ggHHTo4Tau_nodeSM", "Legacy16V2_ggHHTo4Tau_nodebox", "Legacy16V2_ggHHTo4Tau_node2", "Legacy16V2_ggHHTo4Tau_node3", "Legacy16V2_ggHHTo4Tau_node4", "Legacy16V2_ggHHTo4Tau_node5", "Legacy16V2_ggHHTo4Tau_node6",
-"Legacy16V2_ggHHTo4Tau_node7", "Legacy16V2_ggHHTo4Tau_node8", "Legacy16V2_ggHHTo4Tau_node9", "Legacy16V2_ggHHTo4Tau_node10", "Legacy16V2_ggHHTo4Tau_node11", "Legacy16V2_ggHHTo4Tau_node12", "Legacy16V2_TTJets_DiLep_v1", 
-"Legacy16V2_TTJets_DiLep_ext",
+"Legacy16V2_TTZH", 
+#"Legacy16V2_ggHHTo2B2VTo2L2Nu_nodeSM", "Legacy16V2_ggHHTo2B2VTo2L2Nu_nodebox", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node1", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node2", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node3", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node4", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node5", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node6", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node7",
+#"Legacy16V2_ggHHTo2B2VTo2L2Nu_node8", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node9", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node10", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node11", "Legacy16V2_ggHHTo2B2VTo2L2Nu_node12", "Legacy16V2_ggHHTo2B2Tau_nodeSM", "Legacy16V2_ggHHTo2B2Tau_nodebox", "Legacy16V2_ggHHTo2B2Tau_node2", "Legacy16V2_ggHHTo2B2Tau_node9", "Legacy16V2_ggHHTo2B2Tau_node10",
+#"Legacy16V2_ggHHTo2B2Tau_node11", "Legacy16V2_ggHHTo2B2Tau_node12", "Legacy16V2_ggHHTo2B2Tau_node13", "Legacy16V2_ggHHTo4Tau_nodeSM", "Legacy16V2_ggHHTo4Tau_nodebox", "Legacy16V2_ggHHTo4Tau_node2", "Legacy16V2_ggHHTo4Tau_node3", "Legacy16V2_ggHHTo4Tau_node4", "Legacy16V2_ggHHTo4Tau_node5", "Legacy16V2_ggHHTo4Tau_node6",
+#"Legacy16V2_ggHHTo4Tau_node7", "Legacy16V2_ggHHTo4Tau_node8", "Legacy16V2_ggHHTo4Tau_node9", "Legacy16V2_ggHHTo4Tau_node10", "Legacy16V2_ggHHTo4Tau_node11", "Legacy16V2_ggHHTo4Tau_node12", 
+"Legacy16V2_TTJets_DiLep_v1", "Legacy16V2_TTJets_DiLep_ext",
 "Legacy16V2_TTJets_TToSingleLep_v1", "Legacy16V2_TTJets_TToSingleLep_ext", "Legacy16V2_TTJets_TbarToSingleLep_v1", "Legacy16V2_TTJets_TbarToSingleLep_ext", 
+"Legacy16V2_ggZZto4tau", "Legacy16V2_ggZZto4mu", "Legacy16V2_ggZZto4e", "Legacy16V2_ggZZto2mu2tau", "Legacy16V2_ggZZto2e2tau", "Legacy16V2_ggZZto2e2mu",
 ]
 
 samples2016MVA=[
@@ -90,13 +92,16 @@ samples2017MC=[
 "Legacy17V2_WW_DS", "Legacy17V2_WWW", "Legacy17V2_WWZ", "Legacy17V2_WZZ", "Legacy17V2_ZZZ", "Legacy17V2_TTTT_PS", "Legacy17V2_tZq", "Legacy17V2_WpWpJJ",
 "Legacy17V2_GGHToTauTau_v1", "Legacy17V2_GGHToTauTau_ext", "Legacy17V2_VBFHToTauTau", "Legacy17V2_VHToNonbb", "Legacy17V2_ZHTobb", "Legacy17V2_ZHToTauTau", "Legacy17V2_ggHToZZTo4L_ext1", "Legacy17V2_ggHToZZTo4L_ext3", "Legacy17V2_ggHToZZTo4L_ext4", "Legacy17V2_ggHToZZTo2L2Q",
 "Legacy17V2_ggHToWWToLNuQQ", "Legacy17V2_ggHToWWTo2L2Nu", "Legacy17V2_ggHToMuMu_v1", "Legacy17V2_ggHToMuMu_ext1", "Legacy17V2_ggHToBB", "Legacy17V2_ggHToGG", "Legacy17V2_VBFHToZZTo4L_ext2", "Legacy17V2_VBFHToZZTo4L_ext1", "Legacy17V2_VBFHToZZTo4L_v1", "Legacy17V2_VBFHToWWToLNuQQ", 
-"Legacy17V2_VBFHToWWTo2L2Nu", "Legacy17V2_VBFHToMuMu", "Legacy17V2_VBFHToBB", "Legacy17V2_VBFHToGG", "Legacy17V2_TTWH", "Legacy17V2_TTZH", "Legacy17V2_ggHHTo2B2VTo2L2Nu_nodeSM", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node2", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node3", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node7",
-"Legacy17V2_ggHHTo2B2VTo2L2Nu_node9", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node12", "Legacy17V2_ggHHTo2B2Tau_nodeSM", "Legacy17V2_ggHHTo2B2Tau_node2", "Legacy17V2_ggHHTo2B2Tau_node3", "Legacy17V2_ggHHTo2B2Tau_node4", "Legacy17V2_ggHHTo2B2Tau_node7", "Legacy17V2_ggHHTo2B2Tau_node9", "Legacy17V2_ggHHTo2B2Tau_node12", "Legacy17V2_ggHHTo4Tau_nodeSM",
-"Legacy17V2_ggHHTo4Tau_node2", "Legacy17V2_ggHHTo4Tau_node3", "Legacy17V2_ggHHTo4Tau_node7", "Legacy17V2_ggHHTo4Tau_node9", "Legacy17V2_ggHHTo4Tau_node12", "Legacy17V2_ggHHTo2V2Tau_nodeSM", "Legacy17V2_ggHHTo2V2Tau_node2", "Legacy17V2_ggHHTo2V2Tau_node3", "Legacy17V2_ggHHTo2V2Tau_node4", "Legacy17V2_ggHHTo2V2Tau_node5",
-"Legacy17V2_ggHHTo2V2Tau_node6", "Legacy17V2_ggHHTo2V2Tau_node7", "Legacy17V2_ggHHTo2V2Tau_node8", "Legacy17V2_ggHHTo2V2Tau_node9", "Legacy17V2_ggHHTo2V2Tau_node10", "Legacy17V2_ggHHTo2V2Tau_node11", "Legacy17V2_ggHHTo2V2Tau_node12", "Legacy17V2_ggHHTo4V_nodeSM", "Legacy17V2_ggHHTo4V_node2", "Legacy17V2_ggHHTo4V_node3",
-"Legacy17V2_ggHHTo4V_node4", "Legacy17V2_ggHHTo4V_node5", "Legacy17V2_ggHHTo4V_node6", "Legacy17V2_ggHHTo4V_node7", "Legacy17V2_ggHHTo4V_node8", "Legacy17V2_ggHHTo4V_node9", "Legacy17V2_ggHHTo4V_node10", "Legacy17V2_ggHHTo4V_node11", "Legacy17V2_ggHHTo4V_node12", 
-"Legacy17V2_TTJets_DiLep", 
-"Legacy17V2_TTJets_TToSingleLep", "Legacy17V2_TTJets_TbarToSingleLep",
+"Legacy17V2_VBFHToWWTo2L2Nu", "Legacy17V2_VBFHToMuMu", "Legacy17V2_VBFHToBB", "Legacy17V2_VBFHToGG", "Legacy17V2_TTWH", "Legacy17V2_TTZH", 
+#"Legacy17V2_ggHHTo2B2VTo2L2Nu_nodeSM", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node2", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node3", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node7",
+#"Legacy17V2_ggHHTo2B2VTo2L2Nu_node9", "Legacy17V2_ggHHTo2B2VTo2L2Nu_node12", "Legacy17V2_ggHHTo2B2Tau_nodeSM", "Legacy17V2_ggHHTo2B2Tau_node2", "Legacy17V2_ggHHTo2B2Tau_node3", "Legacy17V2_ggHHTo2B2Tau_node4", "Legacy17V2_ggHHTo2B2Tau_node7", "Legacy17V2_ggHHTo2B2Tau_node9", "Legacy17V2_ggHHTo2B2Tau_node12", "Legacy17V2_ggHHTo4Tau_nodeSM",
+#"Legacy17V2_ggHHTo4Tau_node2", "Legacy17V2_ggHHTo4Tau_node3", "Legacy17V2_ggHHTo4Tau_node7", "Legacy17V2_ggHHTo4Tau_node9", "Legacy17V2_ggHHTo4Tau_node12", "Legacy17V2_ggHHTo2V2Tau_nodeSM", "Legacy17V2_ggHHTo2V2Tau_node2", "Legacy17V2_ggHHTo2V2Tau_node3", "Legacy17V2_ggHHTo2V2Tau_node4", "Legacy17V2_ggHHTo2V2Tau_node5",
+#"Legacy17V2_ggHHTo2V2Tau_node6", "Legacy17V2_ggHHTo2V2Tau_node7", "Legacy17V2_ggHHTo2V2Tau_node8", "Legacy17V2_ggHHTo2V2Tau_node9", "Legacy17V2_ggHHTo2V2Tau_node10", "Legacy17V2_ggHHTo2V2Tau_node11", "Legacy17V2_ggHHTo2V2Tau_node12", "Legacy17V2_ggHHTo4V_nodeSM", "Legacy17V2_ggHHTo4V_node2", "Legacy17V2_ggHHTo4V_node3",
+#"Legacy17V2_ggHHTo4V_node4", "Legacy17V2_ggHHTo4V_node5", "Legacy17V2_ggHHTo4V_node6", "Legacy17V2_ggHHTo4V_node7", "Legacy17V2_ggHHTo4V_node8", "Legacy17V2_ggHHTo4V_node9", "Legacy17V2_ggHHTo4V_node10", "Legacy17V2_ggHHTo4V_node11", "Legacy17V2_ggHHTo4V_node12", 
+"Legacy17V2_TTJets_DiLep", "Legacy17V2_TTJets_TToSingleLep", "Legacy17V2_TTJets_TbarToSingleLep",
+"Legacy17V2_ggZZto4tau_ext", "Legacy17V2_ggZZto4tau_v1", "Legacy17V2_ggZZto4mu_ext2", "Legacy17V2_ggZZto4mu_ext1", "Legacy17V2_ggZZto4mu_v2", "Legacy17V2_ggZZto4mu_v1", "Legacy17V2_ggZZto4e_ext2", "Legacy17V2_ggZZto4e_ext1", "Legacy17V2_ggZZto4e_v2", "Legacy17V2_ggZZto4e_v1",
+"Legacy17V2_ggZZto2mu2tau_ext1", "Legacy17V2_ggZZto2mu2tau_v3", "Legacy17V2_ggZZto2mu2tau_v2", "Legacy17V2_ggZZto2e2tau_ext1", "Legacy17V2_ggZZto2e2tau_v3", "Legacy17V2_ggZZto2e2tau_v2","Legacy17V2_ggZZto2e2tau_v1", 
+"Legacy17V2_ggZZto2e2mu_ext1", "Legacy17V2_ggZZto2e2mu_v3", "Legacy17V2_ggZZto2e2mu_v2", "Legacy17V2_ggZZto2e2mu_v1",
 ]
 
 samples2017MVA=[
@@ -114,10 +119,13 @@ samples2018MC=[
 "Legacy18V2_WW_DS", "Legacy18V2_WWW", "Legacy18V2_WWZ",
 "Legacy18V2_WZZ", "Legacy18V2_ZZZ", "Legacy18V2_TTTT", "Legacy18V2_tZq", "Legacy18V2_WpWpJJ", "Legacy18V2_GGHToTauTau", "Legacy18V2_VBFHToTauTau", "Legacy18V2_VHToNonbb", "Legacy18V2_ZHTobb_v2", "Legacy18V2_ZHTobb_ext",
 "Legacy18V2_ZHToTauTau", "Legacy18V2_ggHToZZTo4L", "Legacy18V2_ggHToZZTo2L2Q", "Legacy18V2_ggHToWWToLNuQQ", "Legacy18V2_ggHToWWTo2L2Nu", "Legacy18V2_ggHToMuMu_v2", "Legacy18V2_ggHToMuMu_ext1", "Legacy18V2_ggHToBB", "Legacy18V2_ggHToGG", "Legacy18V2_VBFHToZZTo4L",
-"Legacy18V2_VBFHToWWToLNuQQ", "Legacy18V2_VBFHToWWTo2L2Nu", "Legacy18V2_VBFHToMuMu", "Legacy18V2_VBFHToBB", "Legacy18V2_VBFHToGG", "Legacy18V2_TTWH", "Legacy18V2_TTZH", "Legacy18V2_ggHTo2B2Tau_nodeSM", "Legacy18V2_ggHTo2B2Tau_node2", "Legacy18V2_ggHTo2B2Tau_node3",
-"Legacy18V2_ggHTo2B2Tau_node4", "Legacy18V2_ggHTo2B2Tau_node5", "Legacy18V2_ggHTo2B2Tau_node6", "Legacy18V2_ggHTo2B2Tau_node7", "Legacy18V2_ggHTo2B2Tau_node8", "Legacy18V2_ggHTo2B2Tau_node9", "Legacy18V2_ggHTo2B2Tau_node10", "Legacy18V2_ggHTo2B2Tau_node11", "Legacy18V2_ggHTo2B2Tau_node12", 
+"Legacy18V2_VBFHToWWToLNuQQ", "Legacy18V2_VBFHToWWTo2L2Nu", "Legacy18V2_VBFHToMuMu", "Legacy18V2_VBFHToBB", "Legacy18V2_VBFHToGG", "Legacy18V2_TTWH", "Legacy18V2_TTZH", 
+#"Legacy18V2_ggHTo2B2Tau_nodeSM", "Legacy18V2_ggHTo2B2Tau_node2", "Legacy18V2_ggHTo2B2Tau_node3",
+#"Legacy18V2_ggHTo2B2Tau_node4", "Legacy18V2_ggHTo2B2Tau_node5", "Legacy18V2_ggHTo2B2Tau_node6", "Legacy18V2_ggHTo2B2Tau_node7", "Legacy18V2_ggHTo2B2Tau_node8", "Legacy18V2_ggHTo2B2Tau_node9", "Legacy18V2_ggHTo2B2Tau_node10", "Legacy18V2_ggHTo2B2Tau_node11", "Legacy18V2_ggHTo2B2Tau_node12", 
 "Legacy18V2_TTJets_TbarToSingleLep", "Legacy18V2_TTJets_TToSingleLep", 
 "Legacy18V2_TTJets_DiLep",
+"Legacy18V2_ggZZto4tau_ext", "Legacy18V2_ggZZto4tau_v2", "Legacy18V2_ggZZto4tau_v1", "Legacy18V2_ggZZto4mu_ext", "Legacy18V2_ggZZto4mu_v2", "Legacy18V2_ggZZto4mu_v1", "Legacy18V2_ggZZto4e_ext", "Legacy18V2_ggZZto4e_v2", "Legacy18V2_ggZZto4e_v1", "Legacy18V2_ggZZto2mu2tau",
+"Legacy18V2_ggZZto2e2tau", "Legacy18V2_ggZZto2e2mu",
 ]
 
 samples2018MVA=[
@@ -190,12 +198,26 @@ def SetPars(YEAR, JEC, JECSource, SampleType, NLEP):
                 print (" SampleType isSigExt, skip JEC type %s with NLEP %i"%(JEC,NLEP))
                 sys.exit()
                 
-        elif JEC in ["JERUp", "JERDown","MetShiftUp","MetShiftDown"]:
+        elif JEC in ["MetShiftUp","MetShiftDown"]:
             Analysis += "SR"
             if NLEP==2:
                 Analysis +=  "2L%s"%JEC
                 TriggerName = "TTHLep_2L"
                 ConfigFile = "config/overall/ttHRunII/"+sYear+"/ttH.MultiLeptons.DiLepton%s.SR.config"%JEC
+            else:
+                print (" SampleType isSigExt, skip JEC type %s with NLEP %i"%(JEC,NLEP))
+                sys.exit()
+        elif JEC in ["JERUp", "JERDown"]:
+            Analysis += "SR"
+            if NLEP==2:
+                if JECSource in ["HEM","eta1p9","eta2p5","eta3lowpt","eta3highpt","eta5lowpt","eta5highpt"]:
+                    Analysis +=  "2L%s_%s"%(JEC,JECSource)
+                    TriggerName = "TTHLep_2L"
+                    InvPostfix += " -JerSourceName %s"%JECSource  
+                    ConfigFile = "config/overall/ttHRunII/"+sYear+"/ttH.MultiLeptons.DiLepton%s.SR.config"%JEC
+                else:
+                    print (" Skip JerSource %s "%(JECSource))
+                    sys.exit()
             else:
                 print (" SampleType isSigExt, skip JEC type %s with NLEP %i"%(JEC,NLEP))
                 sys.exit()

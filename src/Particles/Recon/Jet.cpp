@@ -1053,12 +1053,15 @@ float Jet::CalculateUncSource(Double_t jesSF, bool jesup, int eventNumber ){
     return jecvar;
 };
 
-void Jet::SetJECUncSource(TEnv * config, TString jecsourceName){
+void Jet::SetJECUncSource(TEnv * config, TString jecsourceName, TString jersourceName){
    _sourcefilename = config->GetValue("Systs.JecSourceFile","config/weights/ttH2018/Regrouped_Autumn18_V19_MC_UncertaintySources_AK4PFchs.txt");
   resolution = JME::JetResolution(config->GetValue("Systs.JerResFile","config/weights/ttH2018/Autumn18_V7_MC_PtResolution_AK4PFchs.txt"));
   res_sf = JME::JetResolutionScaleFactor(config->GetValue("Systs.JerSFFile","config/weights/ttH2018/Autumn18_V7_MC_SF_AK4PFchs.txt"));
    _jecsourceName = jecsourceName;
+   _jersourceName = jersourceName;
+
    std::cout<< " set jecsource " << jecsourceName << " _jecsource " << _jecsourceName << std::endl;
+   std::cout<< " set jersource " << jersourceName << " _jersource " << _jersourceName << std::endl;
    std::cout<< " set jerresfile " << config->GetValue("Systs.JerResFile","config/weights/ttH2018/Autumn18_V7_MC_PtResolution_AK4PFchs.txt") << " _jerSFFile " << config->GetValue("Systs.JerSFFile","config/weights/ttH2018/Autumn18_V7_MC_SF_AK4PFchs.txt") << std::endl;
    //_sourcename = config->GetValue("FlavorQCD");
    if(_jecsourceName != "NONE"){
@@ -1173,11 +1176,71 @@ void Jet::SystematicPtShift(EventTree * evtr, Int_t iE, TLorentzVector * met, Bo
   }
   if (_jerUp && !useLepAware){
     //ptSF = evtr->Jet_JerSFup->operator[](iE)/evtr->Jet_JerSF->operator[](iE);
-    ptSF = JerSFup()/JerSF();
+    if(_jersourceName =="NONE"){
+        ptSF = JerSFup()/JerSF();
+    }else if(_jersourceName =="HEM"){
+        //https://hypernews.cern.ch/HyperNews/CMS/get/JetMET/2000.html
+        //20 % for jets with -1.57 <phi< -0.87 and -2.5<eta<-1.3
+        //35 % for jets with -1.57 <phi< -0.87 and -3.0<eta<-2.5
+        if (Phi() < -0.87 && Phi() > -1.57 && Eta() < -1.3 && Eta()>-2.5)ptSF=1.2;
+        else if(Phi() < -0.87 && Phi() > -1.57 && Eta() < -2.5 && Eta()>-3.0)ptSF=1.35;
+        else ptSF= 1.0;
+    }
+    //https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#Run2_JER_uncertainty_correlation
+    //- in region |eta| < 1.93 use one pT bin: (0,Inf)
+    //- in region 1.93 < |eta| < 2.5 use one pT bin: (0,Inf)
+    //- in region 2.5 < |eta| < 3 use two pT bins: (0,50) and (50,Inf)
+    //- in region 3 < |eta| < 5 use two pT bins: (0,50) and (50,Inf)
+    else if(_jersourceName == "eta1p9" && abs(Eta())<1.93){
+        ptSF = JerSFup()/JerSF();
+    }
+    else if(_jersourceName == "eta2p5" && 1.93 < abs(Eta()) && abs(Eta()) < 2.5){
+        ptSF = JerSFup()/JerSF();
+    }
+    else if(_jersourceName == "eta3lowpt" && 2.5 < abs(Eta()) && abs(Eta()) < 3.0 && Pt() < 50){
+        ptSF = JerSFup()/JerSF();
+    }
+    else if(_jersourceName == "eta3highpt"&& 2.5 < abs(Eta()) && abs(Eta()) < 3.0 && Pt() > 50   ){
+        ptSF = JerSFup()/JerSF();
+    }
+    else if(_jersourceName == "eta5lowpt" && 3.0 < abs(Eta()) && abs(Eta()) < 5.0 && Pt() < 50 ){
+        ptSF = JerSFup()/JerSF();
+    }
+    else if(_jersourceName == "eta5highpt" && 3.0 < abs(Eta()) && abs(Eta()) < 5.0 && Pt() > 50  ){
+        ptSF = JerSFup()/JerSF();
+    }else{
+        ptSF=1.0;
+    }
   }
   if (_jerDown && !useLepAware){
     //ptSF = evtr->Jet_JerSFdown->operator[](iE)/evtr->Jet_JerSF->operator[](iE);
-    ptSF = JerSFdown()/JerSF();
+    if(_jersourceName =="NONE"){
+        ptSF = JerSFdown()/JerSF();
+    }else if(_jersourceName =="HEM"){
+        if (Phi() < -0.87 && Phi() > -1.57 && Eta() < -1.3 && Eta()>-2.5)ptSF=0.8;
+        else if(Phi() < -0.87 && Phi() > -1.57 && Eta() < -2.5 && Eta()>-3.0)ptSF=0.65;
+        else ptSF= 1.0;
+    }
+    else if(_jersourceName == "eta1p9" && abs(Eta())<1.93){
+        ptSF = JerSFdown()/JerSF();
+    }
+    else if(_jersourceName == "eta2p5" && 1.93 < abs(Eta()) && abs(Eta()) < 2.5){
+        ptSF = JerSFdown()/JerSF();
+    }
+    else if(_jersourceName == "eta3lowpt" && 2.5 < abs(Eta()) && abs(Eta()) < 3.0 && Pt() < 50){
+        ptSF = JerSFdown()/JerSF();
+    }
+    else if(_jersourceName == "eta3highpt"&& 2.5 < abs(Eta()) && abs(Eta()) < 3.0 && Pt() > 50   ){
+        ptSF = JerSFdown()/JerSF();
+    }
+    else if(_jersourceName == "eta5lowpt" && 3.0 < abs(Eta()) && abs(Eta()) < 5.0 && Pt() < 50 ){
+        ptSF = JerSFdown()/JerSF();
+    }
+    else if(_jersourceName == "eta5highpt" && 3.0 < abs(Eta()) && abs(Eta()) < 5.0 && Pt() > 50  ){
+        ptSF = JerSFdown()/JerSF();
+    }else{
+        ptSF=1.0;
+    }
   }
   //  float ptBefore = Pt();
   if(!useLepAware){

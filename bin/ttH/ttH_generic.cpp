@@ -276,6 +276,15 @@ int main(int argc, char **argv)
       cout << " set JecSourceName to " << argv[i+1] << endl;
       mystudy.SetJecSourceName(argv[i+1]);
     }// if JecSourceName
+    if (!strcmp(argv[i],"-JerSourceName")){
+      // Check if JecSource is specified.  
+      if (argc < i+1) {
+	    cout << " <AnalysisMain::ParseCmdLine> " << "ERROR: Missing Value for JerSource!" << endl;
+	    return 1;
+      } //if
+      cout << " set JerSourceName to " << argv[i+1] << endl;
+      mystudy.SetJerSourceName(argv[i+1]);
+    }// if JecSourceName
     if (!strcmp(argv[i],"-nJets")){
       nJets = atoi(argv[i+1]);
     }// if nJets
@@ -359,7 +368,8 @@ int main(int argc, char **argv)
     mystudy.AddCut(new CutLeptonTightCharge(particlesObj,"TTHLoose")); 
     mystudy.AddCut(new CutLeptonN(particlesObj, "TTHTight"));     //require that lepton to be isolated, central, high pt
   }
-  mystudy.AddCut(new CutJetN(particlesObj,nJets));
+  
+  //mystudy.AddCut(new CutJetN(particlesObj,nJets));
   
   /*
   mystudy.AddCut(new CutLightJetN(particlesObj));

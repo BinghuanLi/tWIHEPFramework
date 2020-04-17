@@ -1199,7 +1199,8 @@ Bool_t Lepton::Fill(std::vector<Muon>& selectedMuons,  std::vector<Jet>& lepAwar
   }
   */
   // calculate conept
-  Setconept((isMedium && BDT() > 0.9) ?  lepPt : 0.9 * lepPt / jetptratioV2());
+  //Setconept((isMedium && BDT() > 0.9) ?  lepPt : 0.9 * lepPt / jetptratioV2());
+  Setconept((isMedium && BDT() > _BDTCuts[leptonType]) ?  lepPt : 0.9 * lepPt / jetptratioV2());
   // calculate lepton tight selections
   SetpassTightCharge   ((pdgid==13 && TMath::Abs(pTErrOVpT_bt())<0.2)||(pdgid==11 && (isGsfCtfScPixChargeConsistent() + isGsfScPixChargeConsistent()) >1));
   SetpassMissHit       ((pdgid==13)||(expectedMissingInnerHits()==0 && pdgid ==11));

@@ -296,7 +296,11 @@ class EventContainer
   inline TString GetJecSourceName() const { return _JecSourceName; };
   inline TString JecSourceName() const { return GetJecSourceName(); };
  
-  //
+ // Jer Sourne name
+  inline void SetJerSourceName(const TString& jersourcename) { _JerSourceName=jersourcename; };
+  inline TString GetJerSourceName() const { return _JerSourceName; };
+  inline TString JerSourceName() const { return GetJerSourceName(); };
+  
   // b-tag algorithm
   inline void SetBTagAlgo(const TString& algo) { _bTagAlgo=algo; };
   inline void SetBTagAlgorithm(const TString& algo) { SetBTagAlgo(algo); };
@@ -557,6 +561,7 @@ class EventContainer
   
   TString _BkgdTreeName;
   TString _JecSourceName;
+  TString _JerSourceName; // Jer and HEM name
   Bool_t _doOnlyMVATree;
   Int_t _HFOR;
   Bool_t _isFirstEvent;

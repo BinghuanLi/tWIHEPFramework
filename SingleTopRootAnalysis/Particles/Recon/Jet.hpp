@@ -360,7 +360,7 @@ class Jet: public Particle
   // ttH functions
   void set_HjMVAreader(TEnv* config);
   // jec 
-  void SetJECUncSource(TEnv* config, TString jecsourceName);
+  void SetJECUncSource(TEnv* config, TString jecsourceName, TString jersourceName);
   
   
   // Overloaded Operators
@@ -474,6 +474,7 @@ class Jet: public Particle
   float CalculateUncSource(Double_t jesSF, bool jesup, int eventNumber );
   TString _sourcefilename;
   TString _jecsourceName;
+  TString _jersourceName;
   
   // reCalculate jer
   void Getjer(float rhoJER, bool isgenmatch, TLorentzVector genjet, float &JERScaleFactor, float &JERScaleFactorUP, float &JERScaleFactorDOWN, int nEvent);

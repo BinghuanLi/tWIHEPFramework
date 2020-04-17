@@ -14,6 +14,8 @@ Jecsources={
 #"2018":["FlavorQCD","RelativeSample_2018"],
 }
 
+Jersources = ["HEM","eta1p9","eta2p5","eta3lowpt","eta3highpt","eta5lowpt","eta5highpt"]
+
 baseDir = "/publicfs/cms/data/TopQuark/cms13TeV/Binghuan/tWIHEPFramework/"
 
 for i in ["2016","2017","2018"]:
@@ -31,7 +33,17 @@ for i in ["2016","2017","2018"]:
             for l in ["2"]:
                 if l!="2" and j!="nominal":
                     continue
+                for jer in Jersources:
+                    if j not in ["JERUp","JERDown"]:
+                        continue
+                    optstring = "-s %s -j %s -y %s -n %s -u %s"%(k,j,i,l,jer)
+                    print "python "+baseDir+"utils/makeHEPSubmitLegacyV2.py "+optstring
+                    subprocess.call( "python "+baseDir+"utils/makeHEPSubmitLegacyV2.py "+optstring, shell=True)
+                    
                 for u in jecs:
+                    # skip overall jer if jer is splitted
+                    if len(Jersources) > 0 and j in ["JERUp","JERDown"] and len(u)==0:
+                        continue
                     if len(u)>0 and j not in ["JESUp","JESDown"]:
                         continue
                     if len(u)==0 and j in ["JESUp","JESDown"]:

@@ -781,7 +781,7 @@ void EventWeight::setLeptonHistograms(TEnv* config, TString muonIDFileName, TStr
   //std::cout << " before muonLooseToTightFile " << std::endl;  
   if(muonLooseToTightFileName!="null") muonLooseToTightFile = TFile::Open(muonLooseToTightFileName,"READ");
   if (muonLooseToTightFile){
-  //std::cout << " before muonLooseToTightHist " << std::endl;
+    //std::cout << " before muonLooseToTightHist " << std::endl;
     _muonLooseToTightSF = (TH2F*)muonLooseToTightFile->Get(muonLooseToTightHistName)->Clone();
     _muonLooseToTightSF->SetDirectory(0);
     muonLooseToTightFile->Close();
@@ -796,6 +796,7 @@ void EventWeight::setLeptonHistograms(TEnv* config, TString muonIDFileName, TStr
   TString lepSF_muon_ptErr_histname = config -> GetValue("LeptonID.MuonLooseToTight2lPtHistName","null");
   TString lepSF_muon_etaErr_histname = config -> GetValue("LeptonID.MuonLooseToTight2lEtaHistName","null");
 
+  //std::cout << " before muon_pt_Err_file " << std::endl;  
   if(lepSF_muon_ptErr_filename!="null"){
       std::cout<<" get lepSF_muon_ptErr_file "<< lepSF_muon_ptErr_filename << std::endl;
       muon_ptErr_file = TFile::Open(lepSF_muon_ptErr_filename,"READ");
@@ -817,7 +818,7 @@ void EventWeight::setLeptonHistograms(TEnv* config, TString muonIDFileName, TStr
   //std::cout << " before eleLooseToTight " << std::endl;  
   TFile* eleLooseToTightFile = NULL;
   if(eleLooseToTightFileName!="null") eleLooseToTightFile = TFile::Open(eleLooseToTightFileName,"READ");
-  if (eleLooseToTightFile){
+  if(eleLooseToTightFile){
     //std::cout<< "ele hist name " << eleLooseToTightHistName << std::endl;
     _eleLooseToTightSF = (TH2F*)eleLooseToTightFile->Get(eleLooseToTightHistName)->Clone();
     //_eleLooseToTightSF = (TH2F*)eleLooseToTightFile->Get("sf")->Clone();

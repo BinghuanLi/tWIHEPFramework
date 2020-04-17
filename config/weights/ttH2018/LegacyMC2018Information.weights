@@ -441,3 +441,118 @@ Weight.Source.100086: 191.6
 Events.Source.100086: 16780663
 PileUp.Source.100086: Legacy18V2_WGToLNuG_01J
 
+# 100090 - Legacy18V2_QCD_HT50to100
+Weight.Source.100090: 185400000
+Events.Source.100090: 38753686
+PileUp.Source.100090: Legacy18V2_QCD_HT50to100
+
+# 100091 - Legacy18V2_QCD_HT100to200
+Weight.Source.100091: 23660000
+Events.Source.100091: 93952968
+PileUp.Source.100091: Legacy18V2_QCD_HT100to200
+
+# 100092 - Legacy18V2_QCD_HT200to300
+Weight.Source.100092: 1549000
+Events.Source.100092: 54251666
+PileUp.Source.100092: Legacy18V2_QCD_HT200to300
+
+# 100093 - Legacy18V2_QCD_HT300to500
+Weight.Source.100093: 323000
+Events.Source.100093: 54600685
+PileUp.Source.100093: Legacy18V2_QCD_HT300to500
+
+# 100094 - Legacy18V2_QCD_HT500to700
+Weight.Source.100094: 29960
+Events.Source.100094: 55056202
+PileUp.Source.100094: Legacy18V2_QCD_HT500to700
+
+# 100095 - Legacy18V2_QCD_HT700to1000
+Weight.Source.100095: 6353
+Events.Source.100095: 48038740
+PileUp.Source.100095: Legacy18V2_QCD_HT700to1000
+
+# 100096 - Legacy18V2_QCD_HT1000to1500
+Weight.Source.100096: 1093
+Events.Source.100096: 15365843
+PileUp.Source.100096: Legacy18V2_QCD_HT1000to1500
+
+# 100097 - Legacy18V2_QCD_HT1500to2000
+Weight.Source.100097: 99.35
+Events.Source.100097: 10887751
+PileUp.Source.100097: Legacy18V2_QCD_HT1500to2000
+
+# 100098 - Legacy18V2_QCD_HT2000toInf
+Weight.Source.100098: 20.26
+Events.Source.100098: 5414545
+PileUp.Source.100098: Legacy18V2_QCD_HT2000toInf
+
+# 100100 - Legacy18V2_ggZZto4tau_ext
+Weight.Source.100100: 0.00159
+Events.Source.100100: 1417991
+PileUp.Source.100100: Legacy18V2_ggZZto4tau_ext
+
+# 100101 - Legacy18V2_ggZZto4tau_v2
+Weight.Source.100101: 0.00159
+Events.Source.100101: 1417991
+PileUp.Source.100101: Legacy18V2_ggZZto4tau_v2
+
+# 100102 - Legacy18V2_ggZZto4tau_v1
+Weight.Source.100102: 0.00159
+Events.Source.100102: 1417991
+PileUp.Source.100102: Legacy18V2_ggZZto4tau_v1
+
+# 100103 - Legacy18V2_ggZZto4mu_ext
+Weight.Source.100103: 0.00159
+Events.Source.100103: 2876448 
+PileUp.Source.100103: Legacy18V2_ggZZto4mu_ext
+
+# 100104 - Legacy18V2_ggZZto4mu_v2
+Weight.Source.100104: 0.00159
+Events.Source.100104: 2876448
+PileUp.Source.100104: Legacy18V2_ggZZto4mu_v2
+
+# 100105 - Legacy18V2_ggZZto4mu_v1
+Weight.Source.100105: 0.00159
+Events.Source.100105: 2876448
+PileUp.Source.100105: Legacy18V2_ggZZto4mu_v1
+
+# 100106 - Legacy18V2_ggZZto4e_ext
+Weight.Source.100106: 0.00159
+Events.Source.100106: 2500800
+PileUp.Source.100106: Legacy18V2_ggZZto4e_ext
+
+# 100107 - Legacy18V2_ggZZto4e_v2
+Weight.Source.100107: 0.00159
+Events.Source.100107: 2500800
+PileUp.Source.100107: Legacy18V2_ggZZto4e_v2
+
+# 100108 - Legacy18V2_ggZZto4e_v1
+Weight.Source.100108: 0.00159
+Events.Source.100108: 2500800
+PileUp.Source.100108: Legacy18V2_ggZZto4e_v1
+
+# 100109 - Legacy18V2_ggZZto2mu2tau
+Weight.Source.100109: 0.00319
+Events.Source.100109: 395000
+PileUp.Source.100109: Legacy18V2_ggZZto2mu2tau
+
+# 100110 - Legacy18V2_ggZZto2mu2nu
+Weight.Source.100110: 0.01914
+Events.Source.100110: 491200
+PileUp.Source.100110: Legacy18V2_ggZZto2mu2nu
+
+# 100111 - Legacy18V2_ggZZto2e2tau
+Weight.Source.100111: 0.00319
+Events.Source.100111: 492000
+PileUp.Source.100111: Legacy18V2_ggZZto2e2tau
+
+# 100112 - Legacy18V2_ggZZto2e2nu
+Weight.Source.100112: 0.01914
+Events.Source.100112: 485000
+PileUp.Source.100112: Legacy18V2_ggZZto2e2nu
+
+# 100113 - Legacy18V2_ggZZto2e2mu
+Weight.Source.100113: 0.00319
+Events.Source.100113: 168000
+PileUp.Source.100113: Legacy18V2_ggZZto2e2mu
+

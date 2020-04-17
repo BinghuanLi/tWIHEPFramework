@@ -691,3 +691,188 @@ Weight.Source.100136: 191.6
 Events.Source.100136: 13806612
 PileUp.Source.100136: Legacy17V2_WGToLNuG_01J
 
+# 100140 - Legacy17V2_QCD_HT50to100
+Weight.Source.100140: 185400000
+Events.Source.100140: 40455558
+PileUp.Source.100140: Legacy17V2_QCD_HT50to100
+
+# 100141 - Legacy17V2_QCD_HT100to200_v1
+Weight.Source.100141: 23660000
+Events.Source.100141: 171821716 
+PileUp.Source.100141: Legacy17V2_QCD_HT100to200_v1
+
+# 100142 - Legacy17V2_QCD_HT100to200_ext
+Weight.Source.100142: 23660000
+Events.Source.100142: 171821716
+PileUp.Source.100142: Legacy17V2_QCD_HT100to200_ext
+
+# 100143 - Legacy17V2_QCD_HT200to300
+Weight.Source.100143: 1549000
+Events.Source.100143: 59360369
+PileUp.Source.100143: Legacy17V2_QCD_HT200to300
+
+# 100144 - Legacy17V2_QCD_HT300to500
+Weight.Source.100144: 323000
+Events.Source.100144: 59459614
+PileUp.Source.100144: Legacy17V2_QCD_HT300to500
+
+# 100145 - Legacy17V2_QCD_HT500to700
+Weight.Source.100145: 29960
+Events.Source.100145: 56041018
+PileUp.Source.100145: Legacy17V2_QCD_HT500to700
+
+# 100146 - Legacy17V2_QCD_HT700to1000
+Weight.Source.100146: 6353
+Events.Source.100146: 46638985
+PileUp.Source.100146: Legacy17V2_QCD_HT700to1000
+
+# 100147 - Legacy17V2_QCD_HT1000to1500
+Weight.Source.100147: 1093
+Events.Source.100147: 16770762
+PileUp.Source.100147: Legacy17V2_QCD_HT1000to1500
+
+# 100148 - Legacy17V2_QCD_HT1500to2000
+Weight.Source.100148: 99.35
+Events.Source.100148: 11508604
+PileUp.Source.100148: Legacy17V2_QCD_HT1500to2000
+
+# 100149 - Legacy17V2_QCD_HT2000toInf
+Weight.Source.100149: 20.26
+Events.Source.100149: 5825566
+PileUp.Source.100149: Legacy17V2_QCD_HT2000toInf
+
+# 100150 - Legacy17V2_ggZZto4tau_ext
+Weight.Source.100150: 0.00159
+Events.Source.100150: 961820
+PileUp.Source.100150: Legacy17V2_ggZZto4tau_ext
+
+# 100151 - Legacy17V2_ggZZto4tau_v1
+Weight.Source.100151: 0.00159
+Events.Source.100151: 961820
+PileUp.Source.100151: Legacy17V2_ggZZto4tau_v1
+
+# 100152 - Legacy17V2_ggZZto4mu_ext2
+Weight.Source.100152: 0.00159
+Events.Source.100152: 3850681
+PileUp.Source.100152: Legacy17V2_ggZZto4mu_ext2
+
+# 100153 - Legacy17V2_ggZZto4mu_ext1
+Weight.Source.100153: 0.00159
+Events.Source.100153: 3850681
+PileUp.Source.100153: Legacy17V2_ggZZto4mu_ext1
+
+# 100154 - Legacy17V2_ggZZto4mu_v2
+Weight.Source.100154: 0.00159
+Events.Source.100154: 3850681
+PileUp.Source.100154: Legacy17V2_ggZZto4mu_v2
+
+# 100155 - Legacy17V2_ggZZto4mu_v1
+Weight.Source.100155: 0.00159
+Events.Source.100155: 3850681
+PileUp.Source.100155: Legacy17V2_ggZZto4mu_v1
+
+# 100156 - Legacy17V2_ggZZto4e_ext2
+Weight.Source.100156: 0.00159
+Events.Source.100156: 3479828
+PileUp.Source.100156: Legacy17V2_ggZZto4e_ext2
+
+# 100157 - Legacy17V2_ggZZto4e_ext1
+Weight.Source.100157: 0.00159
+Events.Source.100157: 3479828
+PileUp.Source.100157: Legacy17V2_ggZZto4e_ext1
+
+# 100158 - Legacy17V2_ggZZto4e_v2
+Weight.Source.100158: 0.00159
+Events.Source.100158: 3479828
+PileUp.Source.100158: Legacy17V2_ggZZto4e_v2
+
+# 100159 - Legacy17V2_ggZZto4e_v1
+Weight.Source.100159: 0.00159
+Events.Source.100159: 3479828
+PileUp.Source.100159: Legacy17V2_ggZZto4e_v1
+
+# 100160 - Legacy17V2_ggZZto2mu2tau_ext1
+Weight.Source.100160: 0.00319
+Events.Source.100160: 1230900
+PileUp.Source.100160: Legacy17V2_ggZZto2mu2tau_ext1
+
+# 100161 - Legacy17V2_ggZZto2mu2tau_v3
+Weight.Source.100161: 0.00319
+Events.Source.100161: 1230900
+PileUp.Source.100161: Legacy17V2_ggZZto2mu2tau_v3
+
+# 100162 - Legacy17V2_ggZZto2mu2tau_v2
+Weight.Source.100162: 0.00319
+Events.Source.100162: 1230900
+PileUp.Source.100162: Legacy17V2_ggZZto2mu2tau_v2
+
+# 100163 - Legacy17V2_ggZZto2mu2nu_ext1
+Weight.Source.100163: 0.01914
+Events.Source.100163: 1373100
+PileUp.Source.100163: Legacy17V2_ggZZto2mu2nu_ext1
+
+# 100164 - Legacy17V2_ggZZto2mu2nu_v2
+Weight.Source.100164: 0.01914
+Events.Source.100164: 1373100
+PileUp.Source.100164: Legacy17V2_ggZZto2mu2nu_v2
+
+# 100165 - Legacy17V2_ggZZto2mu2nu_v1
+Weight.Source.100165: 0.01914
+Events.Source.100165: 1373100
+PileUp.Source.100165: Legacy17V2_ggZZto2mu2nu_v1
+
+# 100166 - Legacy17V2_ggZZto2e2tau_ext1
+Weight.Source.100166: 0.00319
+Events.Source.100166: 1492000
+PileUp.Source.100166: Legacy17V2_ggZZto2e2tau_ext1
+
+# 100167 - Legacy17V2_ggZZto2e2tau_v3
+Weight.Source.100167: 0.00319
+Events.Source.100167: 1492000
+PileUp.Source.100167: Legacy17V2_ggZZto2e2tau_v3
+
+# 100168 - Legacy17V2_ggZZto2e2tau_v2
+Weight.Source.100168: 0.00319
+Events.Source.100168: 1492000
+PileUp.Source.100168: Legacy17V2_ggZZto2e2tau_v2
+
+# 100169 - Legacy17V2_ggZZto2e2tau_v1
+Weight.Source.100169: 0.00319
+Events.Source.100169: 1492000
+PileUp.Source.100169: Legacy17V2_ggZZto2e2tau_v1
+
+# 100170 - Legacy17V2_ggZZto2e2nu_ext1
+Weight.Source.100170: 0.01914
+Events.Source.100170: 1151948
+PileUp.Source.100170: Legacy17V2_ggZZto2e2nu_ext1
+
+# 100171 - Legacy17V2_ggZZto2e2nu_v2
+Weight.Source.100171: 0.01914
+Events.Source.100171: 1151948
+PileUp.Source.100171: Legacy17V2_ggZZto2e2nu_v2
+
+# 100172 - Legacy17V2_ggZZto2e2nu_v1
+Weight.Source.100172: 0.01914
+Events.Source.100172: 1151948
+PileUp.Source.100172: Legacy17V2_ggZZto2e2nu_v1
+
+# 100173 - Legacy17V2_ggZZto2e2mu_ext1
+Weight.Source.100173: 0.00319
+Events.Source.100173: 2038142
+PileUp.Source.100173: Legacy17V2_ggZZto2e2mu_ext1
+
+# 100174 - Legacy17V2_ggZZto2e2mu_v3
+Weight.Source.100174: 0.00319
+Events.Source.100174: 2038142
+PileUp.Source.100174: Legacy17V2_ggZZto2e2mu_v3
+
+# 100175 - Legacy17V2_ggZZto2e2mu_v2
+Weight.Source.100175: 0.00319
+Events.Source.100175: 2038142
+PileUp.Source.100175: Legacy17V2_ggZZto2e2mu_v2
+
+# 100176 - Legacy17V2_ggZZto2e2mu_v1
+Weight.Source.100176: 0.00319
+Events.Source.100176: 2038142
+PileUp.Source.100176: Legacy17V2_ggZZto2e2mu_v1
+
